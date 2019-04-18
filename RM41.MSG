@@ -1,0 +1,230 @@
+[messages for room 41 -- rmHoneymoonSuite
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"Your are in the casino hotel's honeymoon suite.
+ The heart-shaped bed is just waiting for you and Fawn.
+ The dim lighting provides the perfect atmosphere.
+ You've always appreciated the \"Early American Gaudy\" look.
+ There is a radio on the shelf behind the bed."
+
+%message	2
+"This is the honeymoon suite.
+ The heart-shaped bed would have been perfect for you and Fawn.
+ Too bad things worked out like this!"
+
+%message	3
+""
+
+%message	4
+"The radio interrupts the Frank Sinatra medley with an obnoxious
+ singing commercial..."
+
+%message	5
+"\"
+We're Ajax Liquor,\n
+and we're proud to say,\n
+we deliver all across\n
+the U.S.A.\""
+
+%message	6
+"\"
+You're out of luck\n
+if you want to dine,\n
+but if you just need booze,\n
+dial 555-8039!\""
+
+%message	7
+"Sounds like a nice mellow station..."
+
+%message	8
+"\"And now, back to our music.\""
+
+%message	9
+"Click."
+
+%message	10
+"She doesn't appear to be in the mood yet, Larry."
+
+%message	11
+"Good idea. Unfortunately, you have nothing with which to cut a rope, Larry."
+
+%message	12
+"Right!\n\n
+Using the pocket knife you got from the old bum by the convenience store,
+ you saw through the ropes holding you to the bed."
+
+%message	13
+"You never know when a nice piece of rope will come in handy."
+
+%message	14
+"Since you have no way of cutting the ropes,
+ and they're far too tightly tied for you to loosen,
+ it looks like this is the end for you, Larry."
+
+%message	15
+"You can't. She fastened them quite securely!"
+
+%message	16
+"You can't. You're tied to a bed!"
+
+%message	17
+"She is so beautiful you want to do wonderful things to, er, ah, FOR her."
+
+%message	18
+"\"You know, a little wine would help me get in the mood, Larry.\""
+
+%message	19
+"\"I'd think the least a gentleman would do is to buy a lady
+ a bottle of wine.\""
+
+%message	20
+"She looks ready, Larry."
+
+%message	21
+"She says, \"Lie down, Larry.
+ I have a special surprise for you!\""
+
+%message	22
+"Then she says, \"Close your eyes,\"
+ and you do because you're sure that, finally, success is at hand."
+
+%message	23
+"\"Oh, Fawn!\" you moan."
+
+%message	24
+"You grab your wallet and look inside.\n\n
+Oh, well.
+ At least she didn't find the %v90 bucks you hid in that secret compartment.
+ With your consummate gambling skills, you should be back on your feet
+ in no time!"
+
+%message	25
+"You're tied to the bed and can't move."
+
+%message	26
+"When Fawn has you securely tied to the bed, she grabs your wallet, saying,
+ \"You forgot to pay me for the wine,\" then heads out the door."
+
+%message	27
+"\"FAWN! Come back!\" you shout. \"This isn't funny!!\""
+
+%message	28
+"\"Aren't you going to pour the wine?\" she says, her eyes flashing."
+
+%message	29
+"\"I'm ready when you are, honey!\"\n\n
+Come on, Larry; what are you waiting for?"
+
+%message	30
+"She looks like she could use some of that wine."
+
+%message	31
+"There's no wine here."
+
+%message	32
+"Right. Sure. Pour another for her while you're at it!"
+
+%message	33
+"You grab the bottle, and fortify your courage with a long, hard belt!"
+
+%message	34
+"You carefully remove the bottle from the wine bucket,
+ unscrew the cap, and pour two glasses.
+ She downs her glass immediately, you refill it, and she does it again.
+ Her eyes meet yours, and you're sure luck is with you this time!"
+
+%message	35
+"This room doesn't even have a telephone!"
+
+%message	36
+"It's pretty complicated. There's a knob that says \"On.\""
+
+%message	37
+"The radio IS off."
+
+%message	38
+"The radio IS on."
+
+%message	39
+"\"Ooh, Baby!\n\n
+That feels so good!\n\n
+Ooooooooooh!!\""
+
+%message	40
+"\"Hey, what's the deal with the rope?\""
+
+%message	41
+""
+
+%message	42
+"\"Why are you tying me to the bed?\""
+
+%message	43
+"You have more important things on your mind than sitting."
+
+%message	44
+"This window doesn't open."
+
+%message	45
+"The tuning knob on the radio is stuck.
+ Looks like you're stuck with the Easy Listening station."
+
+%message	46
+"You can't move the knob,
+ but it doesn't matter since the radio isn't on anyway!"
+
+%message	47
+"You see the lights of Lost Wages spread out before you."
+
+%message	48
+"\"Oh, Larry, it's you!\" Fawn says.
+ \"I thought it was that cute, young delivery boy again.\""
+
+%message	49
+"Hmmm. Was \"Tuesday\" a good year?"
+
+%message	50
+"It's a table model, not a portable."
+
+%message	51
+"Besides, the hotel bolted it to the table."
+
+%message	52
+"You are unable to break the window."
+
+%message	53
+"You can't.
+ It's the same brand that people can't break
+ when they want to christen a ship!"
+
+%message	54
+"Move closer to the handle."
+
+%message	55
+"Don't you think a heart-shaped bed is trite?"
+
+%message	56
+"You can't. The delivery boy glued it to the table."
+
+%message	57
+"\"FAWN!! You scum-sucking gutter slug, get back in here!\""
+
+%message	58
+"Unfortunately, your pleas go unheeded."
+
+%message	59
+"\"Say, Fawn, when are you going to get undressed?\""
+
+%message	60
+"Hmmm. You wonder if there's any way a guy can \"consummate\" by himself?"
+
+%message	61
+"Larry, it looks like \"the honeymoon's over.\""
+
+%message	62
+"As she heads out the door, she laughs and says, \"So long, turkey!\""
+

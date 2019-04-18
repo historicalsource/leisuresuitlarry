@@ -1,0 +1,93 @@
+[messages for room 55 -- lgc.help
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[			 0    5    10   15   20   25   30   35 39
+[			 |    |    |    |    |    |    |    |   |
+
+%message	1	         "Leisure Suit Larry in"
+%message	2	     "the Land of the Lounge Lizards"
+
+
+%message	3	"KEYBOARD COMMANDS"
+
+
+
+%message	4	"Use arrows or number keys to move"
+%message	5	"Larry."
+	
+
+%message	6	"Press ESC to use the menus."
+%message	7	"Press ENTER to choose from a menu,"
+%message	8	"or ESC to return to the game."
+
+	
+%message	9	"Some menu choices list a function key"
+%message	10	"\"shortcut\" beside their name."
+
+%message	17	"For a Hint Book, call (209) 683-6858."[
+%message	18	" (For a good time, call the author!)" [
+[%message	1	         "Leisure Suit Larry in"
+[%message	2	     "the Land of the Lounge Lizards"
+
+
+%message	21	"JOYSTICK COMMANDS"
+
+
+
+%message	22	"Point joystick in desired direction"
+%message	23	"to move Larry."
+
+	
+%message	24	"Press top button to use the menus."
+%message	25	"Press other button to see the status"
+%message	26	"screen."
+
+%message	11	"Press button to use the menus."
+%message	12	"Double-click button to see the status"
+%message	13	"screen."
+	
+[%message	 9	"Some menu choices list a function key"
+[%message	 10	"\"shortcut\" beside their name."
+
+
+
+[%message	1	         "Leisure Suit Larry in"
+[%message	2	     "the Land of the Lounge Lizards"
+
+
+%message	41	"MOUSE COMMANDS"
+	
+	
+	
+%message	42	"Put cursor where you want Larry to"	[	EVERYBODY!
+%message	43	"go, then click the button."			[	Mac/Cortland only
+%message	48	"go, then click left button."			[	non-Apple
+%message	44	"Press right button to use menus."		[	ST only
+%message	49	"Double-click right button to see the"	[    ST only
+%message	50	"status screen."
+%message	45	"Press left button in the window"		[	AMIGA only
+%message	46	"bar to use menus."					[	AMIGA only
+	
+
+[%message	 9	"Some menu choices list a function key"
+[%message	 10	"\"shortcut\" beside their name."
+	
+	
+%message	47	"Press any key to return to game."
+

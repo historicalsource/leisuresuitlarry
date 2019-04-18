@@ -1,0 +1,146 @@
+[logics for room 19 -- rmSunrise
+[	"Leisure-Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm19.msg"
+%include	"gamedefs.h"
+
+
+
+#define	shakeCycles			lv0
+
+#object	aSun					1
+#object	aBang				2
+
+
+
+if (initLog)
+	{
+	Print( 1);
+	Print( 2);
+	Print( 3);
+	Print( 4);
+
+	SetHorizon( 4);
+
+	PreventInput();
+
+	picture = picBlack;
+	LoadPic( picture);
+	LoadPic( currentRoom);
+
+	LoadView( vSunrise);
+	LoadView( vEgoSunrise);
+	LoadView( vSunriseBang);
+
+	LoadSound( mSunrise);
+	LoadSound( mFuneral);
+	LoadSound( sBang);
+
+[	DON'T	Draw( ego);
+
+	DrawPic( currentRoom);
+
+	AddToPic( vEgoSunrise, 0, 0, 56, 129, 5, 4);	[	Larry's face
+
+	AnimateObj( aSun);
+	SetPriority( aSun, 4);
+	SetView( aSun, vSunrise);
+	SetLoop( aSun, 0);
+	SetCel( aSun, 0);
+	Position( aSun, 23, 91);
+	Draw( aSun);
+	MoveObj( aSun, 81, 33, 1, scriptDone);
+
+
+	ShowPic( );
+
+	Sound( mSunrise, done);
+	Return( );
+
+	}							[	end initLOG
+
+
+
+[*****
+:handleInput
+[*****
+
+PreventInput();
+
+[*****
+:noInput
+[*****
+
+if (scriptDone)
+	{
+	Reset( scriptDone);
+	++script;
+
+	if (script == 1)
+		{
+		UnanimateAll();
+		AddToPic( vEgoSunrise, 0, 1, 32, 161, 14, 4);
+				[view, loop, cel, x, y, obj priority, box priority
+		scriptTimer = 4;
+		}
+
+	if (script == 2)
+		{
+		AddToPic( vEgoSunrise, 1, 0, 69, 119, 5, 4);
+		Sound( mFuneral, done);
+		scriptTimer = 4;
+		}
+
+	if (script == 3)
+		{
+		AddToPic( vEgoSunrise, 1, 1, 69, 119, 6, 4);
+		scriptTimer = 4;
+	}
+
+	if (script == 4)
+		{
+		DrawPic( picture);
+
+		AnimateObj( aBang);
+		SetView( aBang, vSunriseBang);
+		SetLoop( aBang, 0);
+		Position( aBang, 50, 105);
+		StartCycling( aBang);
+		Draw( aBang);
+
+		ShowPic();
+		
+		shakeCycles = 14;
+		}
+
+	if (script == 5)
+		{
+		Erase( aBang);
+		Set( certainDeath);
+		}
+	}
+
+
+--shakeCycles;
+if ((shakeCycles == 10 ||
+	shakeCycles ==  8 ||
+	shakeCycles ==  6 ||
+	shakeCycles ==  4 ||
+	shakeCycles ==  2))
+	{
+	Sound( sBang, done);
+	ShakeScreen( 1);
+	}
+
+if (shakeCycles == 1)
+	{
+	Set( scriptDone);
+	}
+
+
+
+[*****
+:exit							[	test for leaving the room
+[*****
+

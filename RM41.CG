@@ -1,0 +1,751 @@
+[logics for room 41 -- rmHoneymoonSuite
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm41.msg"
+%include	"gamedefs.h"
+
+
+
+%define	nearBed				lf0
+%define	pouredWine			lf1
+%define	nearRadio				lf2
+%define	nearDoor				lf3
+%define	radioOn				lf4
+%define	doorDone				lf5
+%define	fawnCycling			lf6
+%define	egoCycling			lf7
+%define	nearWine				lf8
+
+%define	radioTimer			lv0
+%define	knifeTimer			lv1
+%define	fawnCycles			lv2
+%define	egoTiedCycles			lv3
+
+%object	aDoor				1
+%object	aFawn				2
+%object	aWine				3
+%object	aRope				4
+
+
+
+if (initLog)
+	{
+	LoadPic( currentRoom);
+	DrawPic( currentRoom);
+	DiscardPic( currentRoom);
+
+	LoadView( vFireworks);
+	LoadView( vHoneymoonSuiteStuff);
+	LoadView( vFawn);
+	LoadView( vEgoWithFawnRm41);
+	LoadView( vEgoTiedOnBed);
+[	LoadView( v);
+
+
+	AnimateObj( aDoor);
+	IgnoreBlocks( aDoor);
+	IgnoreObjs( aDoor);
+	SetView( aDoor, vHoneymoonSuiteStuff);
+	SetLoop( aDoor, 1);
+	SetCel( aDoor, 0);
+	SetPriority( aDoor, 10);
+	Position( aDoor, 113, 131);
+	work = DOOR_CYCLE_TIME;
+	CycleTime( aDoor, work);
+	Draw( aDoor);
+	StopUpdate( aDoor);
+
+	Set( fawnInRoom);				[	Redundant, since can't enter
+	if (fawnInRoom)				[	unless she is in the room!
+		{
+		AnimateObj( aFawn);
+		IgnoreBlocks( aFawn);
+		Position( aFawn, 91, 120);
+		SetView( aFawn, vHoneymoonSuiteStuff);
+		SetLoop( aFawn, 2);
+		Draw( aFawn);
+		StopCycling( aFawn);
+		Random( 22, 44, fawnCycles);
+		}
+
+
+	if (orderedWine)
+		{
+		AnimateObj( aWine);
+		SetView( aWine, vHoneymoonSuiteStuff);
+		SetLoop( aWine, 0);
+		Position( aWine, 89, 95);
+		Draw( aWine);
+		StopUpdate( aWine);
+		}
+
+
+	AnimateObj( aRope);
+	SetView( aRope, vHoneymoonSuiteStuff);
+	SetLoop( aRope, 3);
+	Position( aRope, 74, 124);
+	if (ropeOnBed)
+		{
+		Draw( aRope);
+		StopUpdate( aRope);
+		}
+
+	egoX = 124;
+	egoY = 129;
+	PositionV( ego, egoX, egoY);
+
+	Draw( ego);
+	StartMotion( ego);
+
+	ShowPic( );
+
+	if (orderedWine && !seenDeliveryBoyGag)
+		{
+		Set( seenDeliveryBoyGag);
+		Print( 48);
+		}
+
+	Return( );
+
+	}							[	end initLOG
+
+
+
+Reset( nearRadio);
+if (Posn( ego, 50, 117, 60, 125))
+	{
+	Set( nearRadio);
+	}
+
+Reset( nearDoor);
+if (Posn( ego, 116, 129, 125, 136))
+	{
+	Set( nearDoor);
+	}
+
+Reset( nearBed);
+if (Posn( ego, 54, 117, 98, 140))
+	{
+	Set( nearBed);
+	}
+
+if (nearBed && fawnInRoom)
+	{
+	Set( nearPerson);
+	}
+
+Reset( nearWine);
+if (Posn( ego, 92, 117, 103, 126))
+	{
+	Set( nearWine);
+	}
+
+
+
+[*****
+:handleInput
+[*****
+
+if (!haveInput)				{goto noInput;}
+
+if ((Said( look) ||
+	Said( look, room) ||
+	Said( look, hotel, room) ||
+	Said( look, casino, hotel, room) ||
+	Said( look, suite) ||
+	Said( look, hotel, suite) ||
+	Said( look, casino, hotel, suite) ||
+	Said( look, bedroom)))
+	{
+	if (fawnInRoom)
+		{
+		Print( 1);
+		}
+	else
+		{
+		Print( 2);
+		}
+	}
+
+if (Said( look, bed))
+	{
+	Print( 55);
+	}
+
+if (Said( take, bucket))
+	{
+	Print( 56);
+	}
+
+
+if ((Said( sit) ||
+	Said( sit, down) ||
+	Said( sit, on, bed) ||
+	Said( sit, bed)))
+	{
+	Print( 43);
+	}
+
+if (Said( open, window))
+	{
+	Print( 44);
+	}
+
+if ((Said( look, window) ||
+	Said( look, out, window)))
+	{
+	Print( 47);
+	}
+
+if ((Said( break, window) ||
+	Said( hit, window)))
+	{
+	Print( 52);
+	}
+
+if ((Said( call, room$service) ||
+	Said( dial, phone) ||
+	Said( use, phone) ||
+	Said( call, phone) ||
+	Said( call, liquor) ||
+	Said( call, liquor, store) ||
+	Said( room$service) ||
+	Said( order, room$service) ||
+	Said( dial, room$service)))
+	{
+	Print( 35);
+	}
+
+
+if ((Said( look, wine, rol) ||
+	Said( look, bucket, rol)))
+	{
+	if (!orderedWine)
+		{
+		Print( 31);
+		}
+	else
+		{
+		Print( 49);
+		}
+	}
+
+
+if ((Said( serve, wine) ||
+	Said( get, wine, rol) ||
+	Said( open, wine, rol) ||
+	Said( fill, glasses) ||
+	Said( pour, wine, into, glasses) ||
+	Said( open, bottle, rol) ||
+	Said( pour, wine, glasses) ||
+	Said( give, fawn, wine) ||
+	Said( give, wine, fawn) ||
+	Said( drink, wine, rol) ||
+	Said( pour, wine)))
+	{
+	if (!orderedWine)
+		{
+		Print( 31);
+		}
+	else
+		{
+		if (currentStatus == TIED_TO_BED)
+			{
+			Print( 32);
+			}
+		else
+			{
+			if (!nearWine)
+				{
+				Set( notCloseEnough);
+				}
+			else
+				{
+				if (!fawnInRoom)
+					{
+					Print( 33);
+					}
+				else
+					{
+					Print( 34);
+					Set( pouredWine);
+					}
+				}
+			}
+		}
+	}
+
+
+if (fawnInRoom)
+	{
+	if (Said( look, fawn))
+		{
+		if (pouredWine)
+			{
+			Print( 20);
+			}
+		else
+			{
+			if (orderedWine)
+				{
+				Print( 30);
+				}
+			else
+				{
+				Print( 17);
+				}
+			}
+		}
+
+	if ((Said( talk, fawn) ||
+		Said( touch, fawn) ||
+		Said( lick, fawn) ||
+		Said( eat, fawn) ||
+		Said( kiss, fawn)))
+		{
+		if (!orderedWine)
+			{
+			Random( 18, 19, message);
+			PrintV( message);
+			}
+		else
+			{
+			if (!pouredWine)
+				{
+				Print( 28);
+				}
+			else
+				{
+				Print( 29);
+				}
+			}
+		}
+
+
+	if ((Said( hump, rol) ||
+		Said( get, naked) ||
+		Said( hump, pussy) ||
+		Said( sleep, fawn) ||
+		Said( go, sleep) ||
+		Said( sleep, with, fawn) ||
+		Said( remove, clothes, rol) ||
+		Said( strip, rol) ||
+		Said( go, bed) ||
+		Said( climb, bed) ||
+		Said( undress, rol) ||
+		Said( remove, clothes, rol) ||
+		Said( remove, girl, clothes, rol) ||
+		Said( get, on, bed) ||
+		Said( get, bed) ||
+		Said( lie, on, bed) ||
+		Said( lie, bed) ||
+		Said( lie, down) ||
+		Said( climb, on, rol)))
+		{
+		if (!orderedWine)
+			{
+			Print( 10);
+			}
+		else
+			{
+			if (!pouredWine)
+				{
+				Print( 28);
+				}
+			else
+				{
+				if (!nearBed)
+					{
+					Set( notCloseEnough);
+					}
+				else
+					{
+					script = 0;
+					Set( scriptDone);
+					}
+				}
+			}
+		}
+	}
+
+
+if (Said( look, radio))
+	{
+	Print( 36);
+	}
+
+if (Said( take, radio))
+	{
+	Print( 50);
+	Print( 51);
+	}
+
+if ((Said( turn, channel, rol) ||
+	Said( turn, dial, rol) ||
+	Said( change, channel, rol)))
+	{
+	if (radioOn)
+		{
+		Print( 45);
+		}
+	else
+		{
+		Print( 46);
+		}
+	}
+
+if ((Said( turn, on, radio) ||
+	Said( listen, radio) ||
+	Said( turn, knob, on, radio) ||
+	Said( turn, knob, on, radio, on) ||
+	Said( turn, knob, radio) ||
+	Said( turn, knob) ||
+	Said( turn, on, knob) ||
+	Said( turn, knob, on) ||
+	Said( turn, radio, knob) ||
+	Said( turn, radio, knob, on) ||
+	Said( turn, radio, on)))
+	{
+	if (!nearRadio)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		if (radioOn)
+			{
+			Print( 38);
+			}
+		else
+			{
+			Set( radioOn);
+			Print( 7);
+			if (!orderedWine)
+				{
+				Random( 5, 15, radioTimer);
+				}
+			}
+		}
+	}
+
+if ((Said( turn, off, radio) ||
+	Said( turn, knob, on, radio, off) ||
+	Said( turn, radio, knob, off) ||
+	Said( stop, listen, radio) ||
+	Said( turn, radio, off)))
+	{
+	if (!nearRadio)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		if (!radioOn)
+			{
+			Print( 37);
+			}
+		else
+			{
+			Reset( radioOn);
+			Print( 9);
+			radioTimer = 0;
+			}
+		}
+	}
+
+
+
+if (currentStatus == TIED_TO_BED)
+	{
+	if ((Said( untie, ropes) ||
+		Said( loosen, ropes)))
+		{
+		Print( 15);
+		}
+
+	if ((Said( use, knife) ||
+		Said( use, knife, cut, rope) ||
+		Said( open, knife, rol) ||
+		Said( get, knife, rol) ||
+		Said( cut, rope, rol)))
+		{
+		if (!Has( iPocketKnife))
+			{
+			Print( 11);
+			}
+		else
+			{
+			Print( 12);
+
+			ReleasePriority( ego);
+			Reset( handsOff);
+			Reset( programControl);
+			StartMotion( ego);
+			SetView( ego, vEgo);
+			SetLoop( ego, FACING_RIGHT);
+			RepositionTo( ego, 89, 130);
+			Reset( keepCycling);
+			currentStatus = NORMAL;
+			currentScore += 10;
+			egoTiedCycles = 0;
+
+			Draw( aRope);
+			StopUpdate( aRope);
+			Set( ropeOnBed);
+			Print( 24);
+			}
+		}
+
+	if (Said( yell))
+		{
+		Print( 57);
+		Print( 58);
+		}
+
+	if (!haveMatch)
+		{
+		Print( 16);
+		Set( haveMatch);
+		}
+	}
+
+
+if  (ropeOnBed &&
+    (Said( get, rope) ||
+	Said( take, rope, from, bed) ||
+	Said( take, rope, off, bed) ||
+	Said( take, rope, bed)))
+	{
+	if (!nearBed)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Reset( ropeOnBed);
+		currentScore += 3;
+		Get( iRope);
+		StartUpdate( aRope);
+		Erase( aRope);
+		Print( 13);
+		}
+	}
+
+
+if (Said( open, door))
+	{
+	if (!nearDoor)
+		{
+		Print( 54);
+		}
+	else
+		{
+		Set( OK);
+		StartUpdate( aDoor);
+		EndOfLoop( aDoor, doorDone);
+		StopMotion( ego);
+		Set( programControl);
+		}
+	}
+
+if (Said( break, bottle, rol))
+	{
+	Print( 53);
+	}
+
+
+
+[*****
+:noInput
+[*****
+
+if (aSecondPassed)
+	{
+	--radioTimer;
+	if (radioTimer == 1)
+		{
+		Print( 4);
+		Print( 5);
+		Print( 6);
+		Print( 8);
+		Random( 60, 120, radioTimer);
+		if (!heardLiquorStoreNumber)
+			{
+			Set( heardLiquorStoreNumber);
+			currentScore += 1;
+			}
+		}
+
+	--knifeTimer;
+	if (knifeTimer == 1)
+		{
+		Print( 14);
+		Set( certainDeath);
+		}
+	}
+
+
+if (scriptDone)
+	{
+	Reset( scriptDone);
+	++script;
+
+	if (script == 1)
+		{
+		Print( 21);
+		Print( 22);
+
+		Erase( aFawn);
+		SetView( aFawn, vFawn);
+		SetLoop( aFawn, FACING_RIGHT);
+		Position( aFawn, 89, 129);
+		IgnoreObjs( aFawn);
+		fawnCycles = 0;
+
+		StopMotion( ego);
+		SetPriority( ego, 15);
+		SetView( ego, vEgoWithFawnRm41);
+		SetCel( ego, 0);
+		Set( handsOff);
+		RepositionTo( ego, 62, 125);
+		Set( programControl);
+		Reset( keepCycling);
+		PreventInput();
+		currentStatus = TIED_TO_BED;
+
+		scriptTimer = 7;
+		}
+
+	if (script == 2)
+		{
+		Print( 23);
+		scriptTimer = 5;
+		}
+
+	if (script == 3)
+		{
+		Print( 39);
+		Print( 59);
+		scriptTimer = 5;
+		}
+
+	if (script == 4)
+		{
+		Print( 40);
+		scriptTimer = 4;
+		}
+
+	if (script == 5)
+		{
+		Print( 42);
+		SetCel( ego, 2);
+		scriptTimer = 6;
+		}
+
+	if (script == 6)
+		{
+		Print( 26);
+
+		if (dollars > 10)
+			{
+			dollars = 10;
+			}
+		else
+			{
+			dollars = 1;
+			}
+
+		SetView( ego, vEgoTiedOnBed);
+		Set( handsOff);
+		RepositionTo( ego, 64, 133);
+	 	egoTiedCycles = 2;
+
+		Draw( aFawn);
+		StartCycling( aFawn);
+		MoveObj( aFawn, 118, 129, 1, scriptDone);
+		}
+
+	if (script == 7)
+		{
+		StopCycling( aFawn);
+		StartUpdate( aDoor);
+		EndOfLoop( aDoor, scriptDone);
+		}
+
+	if (script == 8)
+		{
+		Print( 27);
+		StartCycling( aFawn);
+		MoveObj( aFawn, 129, 129, 1, scriptDone);
+		}
+
+	if (script == 9)
+		{
+		Erase( aFawn);
+		BeginningOfLoop( aDoor, scriptDone);
+		}
+
+	if (script == 10)
+		{
+		script = 0;
+
+		Print( 60);
+		Print( 61);
+		AcceptInput();
+		Reset( fawnInRoom);
+		StopUpdate( aDoor);
+		if (!Has( iPocketKnife))
+			{
+			knifeTimer = 30;
+			}
+		}
+	}
+
+
+
+--egoTiedCycles;
+if (egoTiedCycles == 1)
+	{
+	Toggle( egoCycling);
+	if (egoCycling)
+		{
+		Set( keepCycling);
+		Random( 5, 22, egoTiedCycles);
+		}
+	else
+		{
+		Reset( keepCycling);
+		Random( 22, 44, egoTiedCycles);
+		}
+	}
+
+
+--fawnCycles;
+if (fawnCycles == 1)
+	{
+	Toggle( fawnCycling);
+	if (fawnCycling)
+		{
+		StartCycling( aFawn);
+		Random( 5, 22, fawnCycles);
+		}
+	else
+		{
+		StopCycling( aFawn);
+		Random( 22, 44, fawnCycles);
+		}
+	}
+
+
+
+[*****
+:exit							[	test for leaving the room
+[*****
+
+if (doorDone)
+	{
+	Reset( programControl);
+	Reset( handsOff);
+	newRoom = rmElevators;
+	}

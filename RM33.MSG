@@ -1,0 +1,42 @@
+[messages for room 33 -- rmOutsideChapel
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"You are outside a romantic, quickie marriage parlor."
+
+%message	2
+"It's a door. Try opening it."
+
+%message	3
+"Funny. No one knocks back."
+
+%message	4
+"It's a guy wearing a trench coat."
+
+%message	5
+"It's obvious he doesn't have much to hide!"
+
+%message	6
+"You greet the stranger in the trench coat."
+
+%message	7
+"\"Hey, sonny! Come over here!!\" he replies."
+
+%message	8
+"\"Say,\" you ask him. \"By any chance, is your name Shorty?\""
+
+%message	9
+"You have better things to do than mess around with this pervert."
+
+%message	10
+"It's there to keep you from going that way!"
+
+%message	11
+"Strange, you think."
+
+%message	12
+"He doesn't reply."
+

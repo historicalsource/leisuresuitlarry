@@ -1,0 +1,1625 @@
+[logics for room 38 -- rmBlackjack
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm38.msg"
+%include	"gamedefs.h"
+%include	"bj.h"
+%include	"contrlrs.h"
+
+
+
+[	%view	vWinner			150	[	First, a little information.
+[	%view	vCardsShuffling	151
+[	%view	vClubs			152
+[	%view	vSpades			153
+[	%view	vHearts			154
+[	%view	vDiamonds			155
+[	%view	vBlackjack		156
+
+[	%define	cBACK			0  	[	Cell numbers of the card views.
+[	%define	c2				0
+[	%define	c3				1
+[	%define	c4				2
+[	%define	c5				3
+[	%define	c6				4
+[	%define	c7				5
+[	%define	c8				6
+[	%define	c9				7
+[	%define	c10				8
+[	%define	cJACK			9
+[	%define	cQUEEN			10
+[	%define	cKING			11
+[	%define	cACE				12
+							
+%define	CARD_DELAY			9	[	Cycles between card draws.
+
+%define	DEALER_BUST			22	[	Cycles WINNER! sign is drawn.
+%define	WINNER				33
+%define	AUTO_WIN				44
+%define	BLACKJACK				55
+
+%define	SECONDS_BEFORE_CLUE		45
+
+%define	SHUFFLE_CYCLES			28
+
+%define	cDeal				cF4
+%define	cHit					cF6
+%define	cStand				cF8
+
+
+
+if (initLog)
+	{
+	SetHorizon( 1);
+	Reset( xyOn);
+	
+	LoadLogics( lgcBlackjack);
+
+	LoadView( vWinner);
+	LoadView( vClubs);
+	LoadView( vSpades);
+	LoadView( vHearts);
+	LoadView( vDiamonds);
+	LoadView( vBlankCard);
+	LoadView( vCardBack);
+
+	LoadSound( sCard);
+	LoadSound( sBJWinner);
+	LoadSound( sCardsShuffling);
+
+	if (monitorType != MONO)
+		{
+		LoadView( vCardsShuffling);
+		}
+	else
+		{
+		LoadView( vMONOCardsShuffling);
+		}
+
+
+	LoadPic( currentRoom);
+	DrawPic( currentRoom);
+	[	Don't DiscardPic( currentRoom);
+
+	
+	AnimateObj( aCards);
+	IgnoreObjs( aCards);
+	Position( aCards, 61, 55);
+	if (monitorType != MONO)
+		{
+		SetView( aCards, vCardsShuffling);
+		}
+	else
+		{
+		SetView( aCards, vMONOCardsShuffling);
+		}
+
+	AnimateObj( aWinner);
+	IgnoreObjs( aWinner);
+	SetView( aWinner, vWinner);
+	Position( aWinner, 54, 82);
+
+	oldBet = 2;
+	insurance = 1;
+	clueTimer = SECONDS_BEFORE_CLUE;
+
+	ShowPic( );
+
+	function = UPDATE_STATUS;
+	Call( lgcBlackjack);
+
+	Print( 47);
+
+	Set( handsOff);
+
+	Set( noScript);
+	Return();
+
+	}							[	end initLOG
+
+
+
+Set( nearPerson);
+
+
+[*****
+:handleInput
+[*****
+
+if ((Controller( cHelp) ||
+	Said( help)))
+	{
+	Set( showHelpMessage);
+	}
+
+if ((Said( tip, dealer) ||
+	Said( give, dealer, money) ||
+	Said( give, money, dealer)))
+	{
+	Print( 23);
+	}
+
+
+if ((Controller( cDeal) ||
+	Said( deal, hand) ||
+	Said( deal, cards) ||
+	Said( deal)))
+	{
+	clueTimer = SECONDS_BEFORE_CLUE;
+	if (handInPlay)
+		{
+		Print( 28);
+		}
+	else
+		{
+		if (!oldBet)
+			{
+			Print( 7);			[	"Bet some money, dummy!
+			Print( 8);
+			}
+		else
+			{
+			if (oldBet > dollars)	[	"You don't have that much, dummy!
+				{
+				script = 0;
+				Print( 30);
+				}
+			else
+				{
+				Set( scriptDone);
+				script = 0;
+				}
+			}
+		}
+	}
+
+
+if ((Controller( cStand) ||
+	Said( stand)))
+	{
+	clueTimer = SECONDS_BEFORE_CLUE;
+	if (!waitingForInput)
+		{
+		Print( 44);
+		}
+	else
+		{
+		if (handInPlay == PLAYER)
+			{
+			script = 100;			[	Let's move on.
+			Set( scriptDone);
+			}
+		else
+			{
+			if (handInPlay == SPLIT)
+				{
+				script = 200;
+				Set( scriptDone);
+				}
+			else
+				{
+				Print( 44);
+				}
+			}
+		}
+	}
+
+
+if ((Controller( cHit) ||
+	Said( hit) ||
+	Said( hit, me) ||
+	Said( card) ||
+	Said( give, me, card)))
+	{
+	clueTimer = SECONDS_BEFORE_CLUE;
+	if (!waitingForInput)
+		{
+		Print( 44);
+		}
+	else
+		{
+		if (handInPlay == PLAYER)
+			{
+			++cardCount;
+			currentCard = pFirstCard;
+			currentCard += cardCount;
+			--currentCard;
+			function = DRAW_CARD;
+			Call( lgcBlackjack);
+			pTotal += value;
+			if (softAce)
+				{
+				Reset( softAce);
+				Set( pSoftAce);
+				}
+			}
+		else
+			{
+			if (handInPlay == SPLIT)
+				{
+				++cardCount;
+				currentCard = sFirstCard;
+				currentCard += cardCount;
+				--currentCard;
+				function = DRAW_CARD;
+				Call( lgcBlackjack);
+				sTotal += value;
+				if (softAce)
+					{
+					Reset( softAce);
+					Set( sSoftAce);
+					}
+				}
+			else
+				{
+				Print( 44);
+				}
+			}
+		}
+	}
+
+
+if (!haveInput)			{goto noInput;}
+
+
+if ((Said( double) ||
+	Said( double, up) ||
+	Said( double, down)))
+	{
+	clueTimer = SECONDS_BEFORE_CLUE;
+	if (!waitingForInput)
+		{
+		Print( 44);
+		}
+	else
+		{
+		if (handInPlay == PLAYER)
+			{
+			if ((pTotal < 10 ||
+				pTotal > 11))
+				{
+				Print( 24);
+				}
+			else
+				{
+				if (dollars < pBet)
+					{
+					Print( 27);
+					}
+				else
+					{
+					Set( scriptDone);
+					script = 20;
+					}
+				}
+			}
+		else
+			{
+			if (handInPlay != SPLIT)
+				{
+				Print( 44);		[	"You fuckup!"
+				}
+			else					[	It's not a player or split hand!
+				{
+				if ((sTotal < 10 ||
+					sTotal > 11))
+					{
+					Print( 24);
+					}
+				else
+					{
+					if (dollars < sBet)
+						{
+						Print( 27);
+						}
+					else
+						{
+						Set( scriptDone);
+						script = 120;
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+if ((Said( split) ||
+	Said( split, cards) ||
+	Said( split, hand)))
+	{
+	clueTimer = SECONDS_BEFORE_CLUE;
+	if (!waitingForInput)
+		{
+		Print( 44);
+		}
+	else
+		{
+		if (handInPlay != PLAYER)
+			{
+			Print( 44);
+			}
+		else
+			{
+			if (cardCount != 2)
+				{
+				Print( 25);
+				}
+			else
+				{
+				currentCard = pFirstCard;
+				card =@ currentCard;
+				function = GET_SUIT_VALUE;
+				Call( lgcBlackjack); [	Check to see if he has a pair.
+				work = cell;
+
+				++currentCard;
+				card =@ currentCard;
+				function = GET_SUIT_VALUE;
+				Call( lgcBlackjack);
+				if (cell != work)
+					{
+					Print( 22); 	[	Nope.
+					}
+				else
+					{
+					if (pBet > dollars)
+						{
+						Print( 27);
+						}
+					else
+						{
+						Set( scriptDone);
+						script = 10;
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+if ((Said( surrender) ||
+	Said( surrender, cards) ||
+	Said( surrender, hand)))
+	{
+	clueTimer = SECONDS_BEFORE_CLUE;
+	if (!waitingForInput)
+		{
+		Print( 44);
+		}
+	else
+		{
+		if (handInPlay != PLAYER)
+			{
+			Print( 44);
+			}
+		else
+			{
+			if (cardCount != 2)
+				{
+				Print( 26);
+				}
+			else
+				{
+				Print( 6);
+				winnings = insurance;
+				function = PAY_WINNER;
+				Call( lgcBlackjack);
+
+				handInPlay = HAND_DONE;
+				}
+			}
+		}
+	}
+
+
+if ((Said( change, bet, rol) ||
+	Said( new, bet, rol) ||
+	Said( raise, bet, rol) ||
+	Said( lower, bet, rol) ||
+	Said( bet, rol)))
+	{
+	clueTimer = SECONDS_BEFORE_CLUE;
+	if (handInPlay)
+		{
+		Print( 29);
+		}
+	else
+		{
+		:mrLooper2;
+		GetNum( 3, oldBet);
+		work = oldBet;
+		insurance = 0;
+		if (work > 20)
+			{
+			Print( 31);
+			goto mrLooper2;
+			}
+		
+		:mrLooper4;
+		if (work > 1)
+			{
+			work -= 2;
+			++insurance;
+			goto mrLooper4;
+			}
+		
+		if (work == 1)
+			{
+			Print( 4);
+			goto mrLooper2;
+			}
+
+		if (oldBet > dollars)
+			{
+			Print( 27);
+			goto mrLooper2;
+			}
+
+		function = UPDATE_STATUS;
+		Call( lgcBlackjack);
+		}
+	}
+
+
+if (debugging &&
+	Said( show, all))
+	{
+	currentCard = dFirstCard;
+	:mrLooper;
+	function = DRAW_CARD;
+	Call( lgcBlackjack);
+	++currentCard;
+	if (!currentCard > lastCard)
+		{
+		goto mrLooper;
+		}
+	}
+
+
+if ((Said( leave, rol) ||
+	Said( quit, rol) ||
+	Said( go, casino) ||
+	Said( look, room) ||
+	Said( look, casino) ||
+	Said( stand, up)))
+	{
+	Print( 15);
+	Set( readyToLeave);
+	}
+
+
+if ((Said( rules) ||
+	Said( read, table) ||
+	Said( read, sign) ||
+	Said( read, rules)))
+	{
+	Set( showHelpMessage);
+	}
+
+if ((Said( look) ||
+	Said( look, table)))
+	{
+	clueTimer = SECONDS_BEFORE_CLUE;
+	Print( 1);
+	}
+
+if ((Said( look, girl) ||
+	Said( look, dealer)))
+	{
+	Print( 13);
+	}
+
+if ((Said( talk, girl) ||
+	Said( talk, dealer)))
+	{
+	Print( 21);
+	}
+
+
+
+[*****
+:noInput
+[*****
+
+if (aSecondPassed)
+	{
+	--clueTimer;
+	if (clueTimer == 1)
+		{
+		Set( showHelpMessage);
+		}
+	}
+
+if (showHelpMessage)
+	{
+	Reset( showHelpMessage);
+	Print( 45);
+	Print( 46);
+	Print( 47);
+	clueTimer = SECONDS_BEFORE_CLUE;
+	}
+
+if (scriptDone)
+	{
+	Reset( scriptDone);
+	++script;
+	clueTimer = SECONDS_BEFORE_CLUE;
+
+	if (script == 1)
+		{
+		Reset( pBlackjack);
+		Reset( dBlackjack);
+		Reset( pDoubledDown);
+		Reset( sDoubledDown);
+		Reset( pSixCardWinner);
+		Reset( sSixCardWinner);
+		Reset( softAce);
+		Reset( pSoftAce);
+		Reset( dSoftAce);
+		Reset( sSoftAce);
+		Reset( insured);
+		dTotal = 0;
+		pTotal = 0;
+		sTotal = 0;
+		sBet = 0;
+		pBet = 0;
+		cardCount = 0;
+
+		pBet = oldBet;
+		dollars -= pBet;
+		handInPlay = PLAYER;
+		Set( preventSaveGame);
+
+		[	Here's where we deal all 18 cards.
+
+		currentCard = firstCard;
+		:dealLoop
+		Random( 0, 51, work);
+		[	This forces an ace into dealer's up card.
+		if (forceAtest &&
+			currentCard == firstCard)
+			{
+			work = 51;
+			}
+
+		if (currentCard != firstCard)	[	Don't need to check card1.
+			{
+			cardToTest = firstCard;
+			:testLoop
+			card =@ cardToTest;
+			if (card == work)		[	It's a match; pick another.
+				{
+				goto dealLoop;
+				}
+
+			++cardToTest;
+			if (cardToTest < currentCard)	[	Don't test against itself.
+				{
+				goto testLoop;
+				}
+			}
+
+		if (currentCard == sFirstCard) [	This prevents splitting splits.
+			{
+			card = work;
+			function = GET_SUIT_VALUE;
+			Call( lgcBlackjack);
+			work2 = value;
+			work3 = pFirstCard;
+			card =@ work3;
+			function = GET_SUIT_VALUE;
+			Call( lgcBlackjack);
+
+			if (work2 == value)
+				{
+				goto dealLoop;
+				}
+			}
+
+		currentCard @= work;		[	It's ok.  Save it.
+		++currentCard;
+		if (!currentCard > lastCard)
+			{
+			goto dealLoop;			[	Do another.
+			}
+
+
+
+		[	All cards are dealt.  Clean off the table.
+
+		DrawPic( currentRoom);
+		ShowPic( );
+		function = UPDATE_STATUS;
+		Call( lgcBlackjack);
+
+		SetCel( aCards, 0);
+		Draw( aCards);
+		scriptCycles = SHUFFLE_CYCLES;
+		Sound( sCardsShuffling, soundDone);
+		}
+
+
+	if (script == 2)
+		{
+		Erase( aCards);
+		scriptCycles = CARD_DELAY;
+		}
+
+	if (script == 3)
+		{
+		currentCard = pFirstCard;
+		function = DRAW_CARD;
+		Call( lgcBlackjack);
+		scriptCycles = CARD_DELAY;
+		pTotal = value;
+		if (softAce)
+			{
+			Reset( softAce);
+			Set( pSoftAce);
+			}
+		}
+
+	if (script == 4)
+		{
+		currentCard = dFirstCard;
+		function = DRAW_CARD;
+		Call( lgcBlackjack);
+		scriptCycles = CARD_DELAY;
+		dTotal = value;
+		if (softAce)
+			{
+			Reset( softAce);
+			Set( dSoftAce);
+			}
+		}
+
+	if (script == 5)
+		{
+		currentCard = pFirstCard;
+		++currentCard;
+		function = DRAW_CARD;
+		Call( lgcBlackjack);
+		scriptCycles = CARD_DELAY;
+		pTotal += value;
+		if (softAce)
+			{
+			Reset( softAce);
+			Set( pSoftAce);
+			}
+		}
+
+	if (script == 6)
+		{
+		currentCard = dFirstCard;
+		++currentCard;
+		function = DRAW_FACE_DOWN;
+		Call( lgcBlackjack);
+		dTotal += value;
+		if (softAce)
+			{
+			Reset( softAce);
+			Set( dSoftAce);
+			}
+
+
+		[	First, check player's hand for BJ.
+
+		cardCount = 2;				[	player's card count
+		currentCard = pFirstCard;
+		card =@ currentCard;
+		function = GET_SUIT_VALUE;
+		Call( lgcBlackjack);
+		if ((value == 1 || value == 10))
+			{
+			work = value;
+			++currentCard;
+			card =@ currentCard;
+			function = GET_SUIT_VALUE;
+			Call( lgcBlackjack);
+			
+			if (work == 1 && value == 10)	[	Either, an ace and a 10...
+				{
+				Set( pBlackjack);
+				}
+			if (work == 10 && value == 1)	[	...or, a 10 and an ace...
+				{
+				Set( pBlackjack);
+				}
+			}
+
+
+		[	Whether player had BJ or not, see if insurance is necessary.
+
+		currentCard = dFirstCard;
+		card =@ currentCard;
+		function = GET_SUIT_VALUE;
+		Call( lgcBlackjack);
+		if (value == 1)
+			{
+
+			[	Dealer has an ace showing.  Handle insurance dialogue.
+
+			CancelLine();
+			PreventInput();
+			if (monitorType == MONO)
+				{
+				ClearLines( 24, 24, BG_COLOR);
+				Display( 24, 0, 2);
+				}
+			else
+				{
+				ClearLines( 23, 23, BG_COLOR);
+				Display( 23, 0, 2);
+				}
+
+			lastChar = 0;
+
+			SetScanStart();
+			if (!lastChar)
+				{
+				Return();
+				}
+
+			if ((lastChar ==  89 ||	[	Y
+				lastChar == 121))	[	y
+				{
+				if (insurance > dollars)
+					{
+					Print( 27);
+					}
+				else
+					{
+					Set( insured);
+					dollars -= insurance;
+					function = UPDATE_STATUS;
+					Call( lgcBlackjack);
+					}
+				}
+			else
+				{
+				if  (lastChar !=  78 &&	[	N
+					lastChar != 110)	[	n
+					{
+					Print( 10);
+					lastChar = 0;
+					Return();
+					}
+				}
+
+			ResetScanStart();		[	We have a legal answer.
+			lastChar = 0;
+			if (monitorType == MONO)
+				{
+				ClearLines( 24, 24, BG_COLOR);
+				}
+			else
+				{
+				ClearLines( 23, 23, BG_COLOR);
+				}
+
+			AcceptInput();
+			}
+		
+		
+		[	Finally, check dealer's hand for BJ.
+
+		currentCard = dFirstCard;
+		card =@ currentCard;
+		function = GET_SUIT_VALUE;
+		Call( lgcBlackjack);
+		if ((value == 1 || value == 10))
+			{
+			work = value;
+			++currentCard;
+			card =@ currentCard;
+			function = GET_SUIT_VALUE;
+			Call( lgcBlackjack);
+			
+			if (work == 1 && value == 10)	[	Either, an ace and a 10...
+				{
+				Set( dBlackjack);
+				}
+			if (work == 10 && value == 1)	[	...or, a 10 and an ace...
+				{
+				Set( dBlackjack);
+				}
+			}
+
+
+		[	Now the flags are set, figure out what happens.
+
+		if (pBlackjack)
+			{
+			Print( 17);			[	You got BJ!
+
+			if (dBlackjack)		[	Him too?  It's a push!
+				{
+				handInPlay = HAND_DONE;
+
+				currentCard = dFirstCard;
+				++currentCard;		[	Turn over dealer's hole card.
+				function = DRAW_CARD;
+				Call( lgcBlackjack);
+
+				Print( 5);		[	Dealer got BJ!
+				Print( 14);		[	It's a push.
+				winnings = pBet;
+				function = PAY_WINNER;
+				Call( lgcBlackjack);
+
+				if (insured)
+					{
+					Print( 9);	[	Your insurance pays off.
+					winnings = insurance;
+					winnings += insurance;
+					function = PAY_WINNER;
+					Call( lgcBlackjack);
+					}
+				}
+			else
+				{
+				winnings = pBet;	[	It's all yours.  Pay him...
+				winnings += pBet;
+				winnings += insurance; [		...1 & 1/2 his original bet.
+				function = PAY_WINNER;
+				Call( lgcBlackjack);
+
+				scriptCycles = BLACKJACK;
+				Draw( aWinner);
+				Set( soundDone);
+				}
+			}
+		else
+			{
+
+			[	No player BJ. How about dealer?
+
+			if (!dBlackjack)
+				{
+
+				[	Continue on.  Nothing exciting this hand!
+
+				Set( waitingForInput);
+				script = 8;		[	Skip the Erase( aWinner); below.
+				}
+			else
+				{
+
+				[	Dealer got BJ!
+	
+				handInPlay = HAND_DONE;
+
+				currentCard = dFirstCard;
+				++currentCard;
+				function = DRAW_CARD; [	Turn over hole card.
+				Call( lgcBlackjack);
+
+				function = UPDATE_STATUS;
+				Call( lgcBlackjack);
+
+				Print( 5);		[	Dealer got BJ!
+
+				if (insured)
+					{
+					Print( 9);	[	Your insurance pays off.
+					winnings = insurance;
+					winnings += insurance;
+					function = PAY_WINNER;
+					Call( lgcBlackjack);
+					}
+				}
+			}
+		}
+
+
+	if (script == 7)				[	Get here if only player has BJ.
+		{
+		Erase( aWinner);
+		handInPlay = HAND_DONE;
+		}
+
+
+
+	[	This is what happens if he decides to legally split a pair.
+
+	if (script == 11)
+		{
+		Reset( waitingForInput);
+
+		sBet = oldBet;
+		dollars -= sBet;
+		function = UPDATE_STATUS;
+		Call( lgcBlackjack);
+
+		currentCard = sFirstCard;	[	Swap current pCard2...
+		work =@ currentCard;
+		work2 = pFirstCard;
+		++work2;
+		work3 =@ work2;
+		currentCard @= work3;
+		work2 @= work;				[				...with sCard1.
+
+		currentCard = pFirstCard;	[	Erase existing pCard2.
+		++currentCard;
+		function = ERASE_CARD;
+		Call( lgcBlackjack);
+		scriptCycles = CARD_DELAY;
+		}
+
+	if (script == 12)
+		{
+		currentCard = sFirstCard;	[	now draw sCard1 (old pCard2).
+		function = DRAW_CARD;
+		Call( lgcBlackjack);
+		scriptCycles = CARD_DELAY;
+		pTotal -= value;
+		if (softAce)
+			{
+			Reset( softAce);
+			Set( sSoftAce);
+			}
+		}
+
+	if (script == 13)
+		{
+		Set( waitingForInput);
+		currentCard = pFirstCard;
+		++currentCard;
+		function = DRAW_CARD;		[	Now draw NEW pCard2.
+		Call( lgcBlackjack);
+		pTotal += value;
+		if (softAce)
+			{
+			Reset( softAce);
+			Set( pSoftAce);
+			}
+		}
+
+
+
+	[	Here we handle if the player legally doubled down.
+
+	if (script == 21)
+		{
+		Reset( waitingForInput);
+		dollars -= pBet;
+		pBet += pBet;				[	Double his bet.
+		function = UPDATE_STATUS;
+		Call( lgcBlackjack);
+		scriptCycles = CARD_DELAY;
+		}
+
+	if (script == 22)
+		{
+		Set( waitingForInput);
+		Set( pDoubledDown);
+
+		++cardCount;
+		currentCard = pFirstCard;
+		currentCard += cardCount;
+		--currentCard;
+		function = DRAW_CARD;
+		Call( lgcBlackjack);
+		pTotal += value;
+		if (softAce)
+			{
+			Reset( softAce);
+			Set( pSoftAce);
+			}
+
+		script = 101;
+		}
+
+
+
+	[	Handle a player's six card winning hand.
+
+	if (script == 31)
+		{
+		Print( 18);				[	Six cards win!
+		script = 101;
+		Set( pSixCardWinner);
+		}
+
+
+
+	[	This wraps up the player's hand, and determines which hand comes
+	[next:  either the split or the dealer.
+
+	if (script == 101)				[	pHand is over.  Now what?
+		{
+		handInPlay = SPLIT;
+		Reset( waitingForInput);
+
+		if (pSoftAce && pTotal < 12)
+			{
+			Reset( pSoftAce);
+			pTotal += 10;
+			}
+
+		if (pTotal > 21)			[	If busted, tell him about it.
+			{
+			if (!sBet)
+				{
+				Print( 11);		[	You're busted.
+				}
+			else
+				{
+				Print( 38);		[	*First* hand busted.
+				}
+			}
+
+		if (!sBet)				[	We have no further business here.
+			{
+			script = 201;			[	So let's do the dealer.
+			}
+		else
+			{
+			Set( waitingForInput);
+			Reset( softAce);
+			cardCount = 2;
+
+			currentCard = sFirstCard; [	sCard1 is already drawn.
+			card =@ currentCard;
+			function = GET_SUIT_VALUE;
+			Call( lgcBlackjack);	[	Fix up sTotal.
+			sTotal = value;
+			if (softAce)
+				{
+				Reset( softAce);
+				Set( sSoftAce);
+				}
+
+			currentCard = sFirstCard;
+			++currentCard;
+			function = DRAW_CARD;	[	Draw sCard2.
+			Call( lgcBlackjack);
+			sTotal += value;
+			if (softAce)
+				{
+				Reset( softAce);
+				Set( sSoftAce);
+				}
+			}
+		}
+
+
+
+	if (script == 121)	  			[	Split hand doubled down.
+		{
+		Reset( waitingForInput);
+
+		dollars -= sBet;
+		sBet += sBet;				[	Double bet.
+		function = UPDATE_STATUS;
+		Call( lgcBlackjack);
+		scriptCycles = CARD_DELAY;
+		}
+
+	if (script == 122)
+		{
+		Set( waitingForInput);
+		Set( sDoubledDown);
+
+		++cardCount;
+		currentCard = sFirstCard;
+		currentCard += cardCount;
+		--currentCard;
+		function = DRAW_FACE_DOWN;
+		Call( lgcBlackjack);
+		sTotal += value;
+		if (softAce)
+			{
+			Reset( softAce);
+			Set( sSoftAce);
+			}
+
+		script = 201;
+		}
+
+
+
+	[	Handle the split hand's six card winner.
+
+	if (script == 131)
+		{
+		Print( 18);				[	Six cards win!
+		script = 201;
+		Set( sSixCardWinner);
+		}
+
+
+
+	if (script == 201)
+		{
+		Reset( waitingForInput);
+		handInPlay = DEALER;
+		scriptCycles = CARD_DELAY;
+
+		[	First, wrap up the split hand.
+
+		if (sBet && sSoftAce && sTotal < 12)
+			{
+			Reset( sSoftAce);
+			sTotal += 10;
+			}
+
+		if (sTotal > 21)
+			{
+			Print( 42);			[	*Split* hand busted.
+			}
+
+
+		[	Now, it's the dealer's turn.  Decide where to go from here.
+		[There are three branches we COULD take:
+		[
+		[		a. He's now a loser; script jumps to 220;
+		[		b. He's an auto-winner; script jumps to 230;
+		[		c. He's still in contention; script continues.
+		[
+		[	All are the real script -= 1, since we want a little 
+		[delay first.
+
+		if (pTotal < 22)					[	He's still good.
+			{
+			if (pSixCardWinner)
+				{
+				script = 230;				[	It's an auto-win.
+				}
+			}
+		else
+			{
+			if (!sBet)
+				{
+				script = 220;				[	He's a loser!
+				}
+			else
+				{
+				if (sTotal > 21)
+					{
+					script = 220;			[	He's a loser!
+					}
+				else
+					{
+					if (sSixCardWinner)
+						{
+						script = 230;		[	It's an auto-win.
+						}
+					}
+				}
+			}
+		}
+
+
+	[	Now the dealer will try for his best hand.  We only get
+	[here if at least one hand is < 22, and it wasn't a sixCardHand.
+
+	if (script == 202)
+		{
+		Reset( softAce);
+		scriptCycles = CARD_DELAY;
+		cardCount = 2;
+
+		currentCard = dFirstCard;	[	Get value of dealer's hand.
+		card =@ currentCard;
+		function = GET_SUIT_VALUE;
+		Call( lgcBlackjack);
+		dTotal = value;
+		if (softAce)
+			{
+			Reset( softAce);
+			Set( dSoftAce);
+			}
+
+		++currentCard;
+		function = DRAW_CARD;		[	Turn over his hole card.
+		Call( lgcBlackjack);
+		dTotal += value;
+		if (softAce)
+			{
+			Reset( softAce);
+			Set( dSoftAce);
+			}
+		}
+
+
+	if (script == 203)
+		{
+		scriptCycles = CARD_DELAY;
+
+		if  (dSoftAce &&
+			dTotal >  6 &&
+			dTotal < 12)
+			{
+			Reset( dSoftAce);
+			dTotal += 10;
+			}
+
+		if (dTotal < 17)
+			{
+			++cardCount;  			[	Dealer needs another card.
+			currentCard = dFirstCard;
+			currentCard += cardCount;
+			--currentCard;			[	currentCard is var# of next card.
+			function = DRAW_CARD;
+			Call( lgcBlackjack);
+			dTotal += value;
+			if (softAce)
+				{
+				Reset( softAce);
+				Set( dSoftAce);
+				}
+
+			if (cardCount < 6)
+				{
+				script -= 1;
+				}
+			}
+		}
+
+
+
+	[	Dealer is all done, whether he got to play any additional cards
+	[or not.  So, clean things up, and make handInPlay = HAND_DONE.
+
+	if (script == 204)
+		{
+		if (pDoubledDown)
+			{
+			currentCard = pFirstCard;
+			++currentCard;
+			++currentCard;
+			function = DRAW_CARD; 	[	Draw pCard3 (formerly face down).
+			Call( lgcBlackjack);
+			}
+
+		if (dTotal > 21)			[	Dealer went bust.
+			{
+			Print( 12);
+			if (pTotal > 21)
+			    	{
+				++script;			[	Go check the split hand!
+				}
+			else
+				{
+				winnings = pBet;
+				winnings += pBet;
+				function = PAY_WINNER;
+				Call( lgcBlackjack);
+
+				scriptCycles = DEALER_BUST;
+				Draw( aWinner);
+				Set( soundDone);
+				}
+			}
+		else						[	Dealer NOT bust.
+			{
+			if (pTotal > 21)		[	Handle the player's hand first.
+				{
+				++script;			[	Go check the split hand!
+				}
+			else
+				{
+				if (pTotal > dTotal) 	[	Player wins.
+					{
+					if (sBet)
+						{
+						Print( 36);
+						}
+					winnings = pBet;
+					winnings += pBet;
+					function = PAY_WINNER;
+					Call( lgcBlackjack);
+					
+					scriptCycles = WINNER;
+					Draw( aWinner);
+					Set( soundDone);
+					}
+
+				if (pTotal == dTotal) 	[	Player's hand's a push.
+					{
+					if (sBet)
+						{
+						Print( 35);
+						}
+					else
+						{
+						Print( 14);
+						}
+					winnings = pBet;
+					function = PAY_WINNER;
+					Call( lgcBlackjack);
+					
+					++script;
+					}
+
+				if (pTotal < dTotal) 	[	Player loses.
+					{
+					++script;
+					if (sBet)
+						{
+						Print( 37);
+						}
+					else
+						{
+						Print( 16);
+						}
+					}
+				}
+			}
+		}
+
+
+	[	After dealing with the player's hand, we now check the split hand.
+
+	if (script == 205)
+		{
+		if (!sBet)				[	No split hand?
+			{
+			++script;				[					...Leave.
+			}
+		else
+			{
+			if (sDoubledDown)
+				{
+				currentCard = sFirstCard;
+				++currentCard;
+				++currentCard;
+				function = DRAW_CARD;	[	Draw sCard3 face up.
+				Call( lgcBlackjack);
+				}
+
+			if (dTotal > 21)			[	Dealer went bust.
+				{
+				if (pTotal > 21)	[	He didn't see this before,
+					{
+					Print( 12);	[	so show him now.
+					}
+
+				if (sTotal > 21)
+				    	{
+					++script;			[	Go erase the winner?
+					}
+				else
+					{
+					winnings = sBet;
+					winnings += sBet;
+					function = PAY_WINNER;
+					Call( lgcBlackjack);
+
+					scriptCycles = DEALER_BUST;
+					if (pTotal > 21)		[	It wasn't drawn,
+						{
+						Draw( aWinner);	[			so draw it.
+						}
+					Set( soundDone);
+					}
+				}
+			else							[	Dealer NOT bust.
+				{
+				if (sTotal > 21)
+					{
+					++script;				[	Go erase the winner?
+					}
+				else
+					{
+					if (sTotal > dTotal)	[	Split wins.
+						{
+						Print( 40);
+						winnings = sBet;
+						winnings += sBet;
+						function = PAY_WINNER;
+						Call( lgcBlackjack);
+						
+						scriptCycles = WINNER;
+						if (pTotal > 21)	[	It wasn't drawn,
+							{
+							Draw( aWinner); [			so draw it.
+							}
+						Set( soundDone);
+						}
+
+					if (sTotal == dTotal) 	[	Split hand's a push.
+						{
+						Print( 39);
+						winnings = sBet;
+						function = PAY_WINNER;
+						Call( lgcBlackjack);
+						
+						++script;
+						}
+
+					if (sTotal < dTotal) 	[	Player loses.
+						{
+						Print( 41);
+						++script;
+						}
+					}
+				}
+			}
+		}
+
+
+	[	We only get here if the WINNER sign is drawn.  Erase it.
+
+	if (script == 206)
+		{
+		Erase( aWinner);
+		handInPlay = HAND_DONE;
+		}
+
+
+
+	[	He lost.  Turn over dealer's hole card and tell him the bad news.
+
+	if (script == 221)
+		{
+		currentCard = dFirstCard;
+		++currentCard;
+		function = DRAW_CARD;
+		Call( lgcBlackjack);
+
+		handInPlay = HAND_DONE;
+		}
+
+
+
+
+	[	He's a six-card automatic winner.  Pay off without showing
+	[dealer's hole card.  Tell him the good news.
+
+	if (script == 231)
+		{
+		if (!pSixCardWinner)
+			{
+			++script;
+			}
+		else
+			{
+			winnings = pBet;
+			winnings += pBet;
+			function = PAY_WINNER;
+			Call( lgcBlackjack);
+
+			scriptCycles = AUTO_WIN;
+			Draw( aWinner);
+			Set( soundDone);
+			}
+		}
+
+	if (script == 232)
+		{
+		if (!sSixCardWinner)
+			{
+			++script;
+			}
+		else
+			{
+			winnings = sBet;
+			winnings += sBet;
+			function = PAY_WINNER;
+			Call( lgcBlackjack);
+
+			scriptCycles = AUTO_WIN;
+			Draw( aWinner);
+			Set( soundDone);
+			}
+		}
+
+	if (script == 233)
+		{
+		Erase( aWinner);
+		handInPlay = HAND_DONE;
+		}
+	}
+
+
+if (handInPlay == HAND_DONE)
+	{
+	handInPlay = NONE;
+
+	Reset( waitingForInput);
+	Reset( preventSaveGame);
+	
+	script = 0;
+	scriptCycles = 0;
+	clueTimer = SECONDS_BEFORE_CLUE;
+
+	if (!dollars)					[	"You eat discarded fast food
+		{
+		script = 0;
+		function = UPDATE_STATUS;
+		Call( lgcBlackjack);
+		}
+	}
+
+
+if (handInPlay == PLAYER)
+	{
+	if (pTotal > 21)
+		{
+		Set( scriptDone);
+		script = 100;	  			[	Busted
+		}
+	else
+		{
+		if (cardCount > 5)
+			{
+			Set( scriptDone);
+			script = 30;			[	a Six Card Winner.
+			}
+		}
+	}
+	
+
+if (handInPlay == SPLIT)				[	Auto detection of busts & winners
+	{
+	if (sTotal > 21)
+		{
+		Set( scriptDone);
+		script = 200;	  			[	Busted
+		}
+	else
+		{
+		if (cardCount > 5)
+			{
+			Set( scriptDone);
+			script = 130;			[	A six card winner!
+			}
+		}
+	}
+
+
+if (soundDone)
+	{
+	Reset( soundDone);
+
+	if (script == 1)				[	It's the card shuffling sound.
+		{
+		Sound( sCardsShuffling, soundDone);
+		}
+
+	if ((script == 6 ||				[	It's the BJ sound!
+		script == 204 ||
+		script == 205 ||
+		script == 231 ||
+		script == 232))
+		{
+		Sound( sBJWinner, soundDone);
+		}
+	}
+
+
+if (restoreInProgress)
+    	{
+	function = UPDATE_STATUS;
+	Call( lgcBlackjack);
+	}
+
+
+[*****
+:exit							[	test for leaving the room
+[*****
+
+if (readyToLeave)
+	{
+	Reset( handsOff);
+	Reset( noScript);
+	Reset( preventSaveGame);
+	newRoom = rmInsideCasino;
+	}
+
+if (debugging && forceAtest)
+	{
+	if ((pTotal != oldPTotal ||
+		sTotal != oldSTotal ||
+		dTotal != oldDTotal))
+		{
+		function = SHOW_TOTALS;
+		Call( lgcBlackjack);
+		}
+	}
+

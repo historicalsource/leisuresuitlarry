@@ -1,0 +1,195 @@
+[messages for room 16 -- rmBackroom
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"The bar's storage room is almost empty.
+ Its most significant feature is a big, mean-looking dude."
+
+%message	2
+"\"Ya wanna go upstairs?\" he says in a scholarly voice, \"ya
+ gotta pays da price!\""							
+
+%message	3
+"\"$100.00, cash up front, no refunds.\""
+
+%message	4
+"He certainly has a pleasing manner about him."
+
+%message	5
+"\"Thanks,\" he growls. \"Remember, no refunds!\""
+
+%message	6
+"Evidently no one in the bar wants to play \"Knock, knock\" with you."
+
+%message	7
+"It's the door from the bar. Its far side looks better than this side."
+
+%message	8
+"You don't have enough money."
+
+%message	9
+"\"You like that stuff, eh, boy?\""
+
+%message	10
+"The pimp seems vaguely interested,
+ but not enough to leave his post by the stairs."
+
+%message	11
+"The pimp growls,
+ \"You got no business goin' up these stairs, little man!\""
+
+%message	12
+"It appears you've finally reached the pimp's cultural level."
+
+%message	13
+"He ignores you.
+ It looks like he's \"engrossed\" in something right now."
+
+%message	14
+"
+\"Oh, John.\"  \"Oh, Marsha.\"\n
+\"OH, John.\"  \"OH, Marsha.\"\n
+\"Oh, JOHN!\"  \"Oh, MARSHA!\"\n
+\"OH, JOHN!!\" \"OH, MARSHA!!\""
+
+%message	15
+"\"...I'm Al Fartles, and this is my partner, Fed Ames.
+ We just want to tell you how much we appreciate your support...\""
+
+%message	16
+"\"...and now, ALoHa Productions is proud to present
+ 'The Revenge of the Software Developers' in full color and stereo sound...\""
+
+%message	17
+"\"...while Jim is fighting for his life with the raging female rhinoceros
+ in heat, I'll slip into my tent with the native girl and
+ this pitcher of Mai Tais...\""
+
+%message	18
+"\"...it's a beautiful day in the neighbor...\""
+
+%message	19
+"\"...live from Malaga, California,
+ it's the Cable Sports Network presentation of the
+ Miniature Female Mud Wrestlers 500-kilometer Cross-Country
+ Nude Bicycle Race...\""
+
+%message	20
+"\"...And next, Master Piece Theatre presents a special 3-D broadcast of
+ 'Naugahyde Goddesses of Oakhurst!'\""
+
+%message	21
+"\"...oh, baby, yeah. Yeah, I love it when you do that! Ooooooooooh!!
+ That hurts so good, pull it out a little deeper!!!\""
+
+%message	22
+"The knob is broken off. There's no way to turn it."
+
+%message	23
+"It already is!"
+
+%message	24
+"You click the power switch on the remote control."
+
+%message	25
+"You click the channel selector on the remote control."
+
+%message	26
+"Nah. He's having a good time!"
+
+%message	27
+"They're boxes, all right."
+
+%message	28
+"The remote control seems ineffectual from this angle."
+
+%message	29
+"The TV is off."
+
+%message	30
+"\"Pretty good stuff, eh, boy?\" laughs the pimp."
+
+%message	34
+"%m56soap opera."
+
+%message	35
+"%m56commercial."
+
+%message	36
+"%m56musical comedy."
+
+%message	37
+"%m56documentary."
+
+%message	38
+"No, no!! Anything but that!"
+
+%message	39
+"%m56cable sports show."
+
+%message	40
+"%m56educational show."
+
+%message	41
+"Well, now. What's this??"
+
+%message	42
+"Slow down. You're gonna blow the punch line!"
+
+%message	43
+"\"Have a nice lay.\""
+
+%message	44
+"He's no rocket scientist!"
+
+%message	45
+"Its screen is blank; much like the pimp's mind."
+
+%message	46
+"%m56program."
+
+%message	47
+"Get your mind back on the game, Larry!"
+
+%message	48
+"What does this look like, the ship's hold in \"King's Quest III?\""
+
+%message	49
+"The walls do a good job of separating the floor from the ceiling."
+
+%message	50
+"It's just hanging around."
+
+%message	51
+"Wait 'til you get upstairs."
+
+%message	52
+"He's far too big, and you're far too wimpy."
+
+%message	53
+"\"Hey! Outta da way!!\""
+
+%message	54
+"There is no need to pay; he's pleasantly distracted. Help yourself!"
+
+%message	55
+"You wonder what palace of earthly delights resides above you."
+
+%message	56
+"Another boring "
+
+%message	57
+"Evidently the remote control's off button is broken."
+
+%message	58
+"Its operation is beyond his mental capacities."
+
+%message	59
+"He's unaffected by the remote control."
+
+%message	60
+"He's too strong for you, Larry."
+

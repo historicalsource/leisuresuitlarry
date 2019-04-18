@@ -1,0 +1,2300 @@
+[logics for room 0 -- executed before room logics
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm0.msg"
+%include	"gamedefs.h"
+%include	"iv_views.h"
+%include	"contrlrs.h"
+%include	"colors.h"
+
+
+
+if (errorNumber)
+	{
+	Call( lgcError);
+	}
+
+if (restoreInProgress)
+	{
+	Set( enableMenu);
+	DisableItem( cDummy);
+	}
+
+if (!currentRoom)
+	{
+[		Set( debugging);				[	REMOVE LATER
+	if (!restartInProgress)
+		{
+		ScriptSize( 144);
+
+		SetMenu(      60);					[	"Sierra"
+		SetMenuItem(  61, cAbout);			[	"About"
+		SetMenuItem(  62, cHelp);			[	"Help"
+		SetMenuItem(  63, cDummy);			[	"--------
+		SetMenuItem(  64, cCalculator);		[	"Calculator"
+		SetMenuItem(  65, cPuzzle); 			[	"Puzzle
+
+		SetMenu(      66);					[	"File
+		SetMenuItem(  67, cSave);			[	"Save"
+		SetMenuItem(  68, cRestore);			[	"Restore"
+		SetMenuItem(  69, cDummy);			[	"--------
+		SetMenuItem(  70, cRestart);			[	"Restart"
+		SetMenuItem(  69, cDummy);			[	"--------
+		SetMenuItem(  71, cQuit);			[	"Quit"
+
+		SetMenu(      72);					[	"Action
+		SetMenuItem(  73, cStatus);			[	"Inventory"
+		SetMenuItem(  74, cShowObj);			[	"Look at Object
+		SetMenuItem(  75, cBodilyFunction);	[	"Bodily
+
+		SetMenu(      76);					[	"Special
+		SetMenuItem(  77, cSoundToggle);		[	"Sound"
+		if  (machineType == PC &&
+			monitorType != MONO &&
+			monitorType != EGA)
+			{
+			SetMenuItem( 78, cToggleMonitor);	[	"RGB Monitor
+			}
+		if  (machineType == ST)
+			{
+			SetMenuItem(  97, cInitJoy);		[	"Joystick/Mouse"
+			}
+		else {
+			SetMenuItem(  79, cInitJoy);		[	"Joystick"
+			}
+		SetMenuItem(  80, cClock);			[	"Clock
+		SetMenuItem(  96, cBoss);			[	"Boss Key
+		SetMenuItem(  81, cPause);			[	"Pause"
+
+		if (machineType != AMIGA)
+			{
+			SetMenu(      82);				[	"Speed
+			SetMenuItem(  83, cSpeedNormal);	[	"Normal
+			SetMenuItem(  84, cSpeedSlow);	[	"Slow
+			SetMenuItem(  85, cSpeedFast);	[	"Fast
+			SetMenuItem(  86, cSpeedFastest);	[	"Fastest
+			SetMenuItem(  69, cDummy);		[	"--------
+			SetMenuItem(  87, cSpeed);		[	"Slower
+			}
+
+[			if (debugging)
+[				{
+[				SetMenu(      88);				[	"Debug
+[				SetMenuItem(  89, cShowEgo); 		[	"Ego Info
+[				SetMenuItem(  90, cShowPriority);	[	"Priority Screen
+[				SetMenuItem(  91, cShowMem); 		[	"Memory Usage
+[				SetMenuItem(  92, cObjInfo);		[	"Obj info
+[				SetMenuItem(  93, cXY); 			[	"X/Y Display
+[				SetMenuItem(  94, cGimme);		[	"Get All Objects
+[				SetMenuItem(  95, cInvNumbers);	[	"Object Numbers
+[				}
+
+		SubmitMenu();
+		}
+
+	Call( lgcStartup);
+
+	if (testRoom)
+		{
+		NewRoomV( testRoom);
+		}
+
+	if (restartInProgress)
+		{
+		NewRoom( rmRestart);
+		}
+
+	NewRoom( rmTitle);
+	}
+
+
+
+if  (clockOn &&
+    (updateClock || initLog))
+	{
+	Reset( updateClock);
+	SetTextAttribute( 0, 15);
+	Display( 0, 20, 30);
+	SetTextAttribute( TEXT_COLOR, BG_COLOR);
+	}
+
+
+if (initLog)
+	{
+	Call( lgcRm0InitLog);			[	call and toss initLog Resets
+
+	if (debugging)
+		{
+		LoadLogics( lgcDebug);
+		LoadLogics( lgcTrace);
+		Set( enableTrace);
+		}
+
+	LoadViewV( currentEgoView);
+	SetViewV( ego, currentEgoView);
+
+	CallV( currentRoom);
+
+
+	[	DO NOT Return(); here.
+
+	}							[	end initLogs
+
+
+
+[*****
+[	FIRST, A LITTLE HOUSEKEEPING
+[*****
+
+GetPosn( ego, egoX, egoY);
+CurrentView( ego, currentEgoView);
+Reset( nearPerson);
+
+if (ignoreSpecial)
+	{
+	Reset( hitSpecial);
+	}
+
+if (ignoreWater)
+	{
+	Reset( onWater);
+	}
+
+if (preventNewRoom)
+	{
+	edgeEgoHit = 0;
+	}
+
+
+
+[*****
+[	CONTROLLER STUFF
+[*****
+
+if (Controller( cMenu))				{MenuInput();}
+if (Controller( cSkipTest))			{Set( passedTest);}
+if (Controller( cToggleMonitor))		{ToggleMonitor();}
+if (Controller( cInitJoy))			{InitJoy();}
+
+if (Controller( cSoundToggle))
+	{
+	Toggle( soundOn);
+	Set( updateClock);
+	}
+
+if (machineType == TANDY)
+	{
+	if (attenuation < 15 &&
+	    Controller( cDecrescendo))		{++attenuation;}
+	if (Controller( cCrescendo))			{--attenuation;}
+	}
+
+
+if (passedTest)
+	{
+	if (Controller( cEchoLine))			{EchoLine();}
+	if (Controller( cCancelLine))			{CancelLine();}
+
+	if ((Said( pause) ||
+		controller( cPause)))
+		{
+		Pause();
+		}
+
+	if  (passedTest &&
+	    (Said( restart) ||
+		Said( restart, game) ||
+		Said( start, over) ||
+		Controller( cRestart)))
+		{
+		RestartGame();
+		}
+
+	if  (passedTest &&
+	    (Said( restore, game) ||
+		Said( restore) ||
+		Controller( cRestore)))
+		{
+		RestoreGame();
+		}
+
+	if (Controller( cVersion))
+		{
+		Print( 11);
+		Version();
+		}
+
+	if ((Said( quit) ||
+		Controller( cQuit)))
+		{
+		StopSound();
+		if (debugging)
+			{
+			Quit( 1);
+			}
+		else
+			{
+			Quit( 0);
+			}
+		}
+
+	if ((Said( status) ||
+		Said( inventory) ||
+		Controller( cStatus)))
+		{
+		Status();
+		}
+
+	if (Controller( cClock))
+		{
+		Toggle( clockOn);
+		if (clockOn)
+			{
+			Set( updateClock);
+			}
+		else
+			{
+			StatusLineOff();
+			StatusLineOn();
+			}
+		}
+
+	if (Controller( cDebug))
+		{
+		Toggle( debugging);
+		if (!debugging)
+			{
+			Reset( enableTrace);
+			}
+		else
+			{
+			LoadLogics( lgcDebug);
+			LoadLogics( lgcTrace);
+			Set( enableTrace);
+			Print( 11);
+			Version();
+			AcceptInput();
+			NormalMotion( ego);
+			Reset( programControl);
+			}
+		}
+
+	if (Controller( cHelp))
+		{
+		if (handsOff)
+			{
+			Print( 105);
+			}
+		else
+			{
+			Call( lgcHelp);
+			}
+		}
+	}
+
+
+
+if (Controller( cShowObj))
+	{
+	Set( enableObjectSelect);
+	Status();
+	if (selectedObject != ERROR)
+		{
+		work = selectedObject;
+		work += 100;
+		ShowObjV( work);
+		}
+	Reset( enableObjectSelect);
+	}
+
+if (Controller( cAbout))
+	{
+	if (gameHours)
+		{
+		Print( 18);
+		}
+	else
+		{
+		Print( 19);
+		}
+	}
+
+
+Reset( myHaveMatch);				[	speed stuff
+if (Controller( cSpeed))
+	{
+	Set( myHaveMatch);
+	++animationInterval;
+	if (animationInterval > SLOW_SPEED)
+		{
+		animationInterval = FASTEST_SPEED;
+		}
+	}
+
+if ((Controller( cSpeedSlow) ||
+	Said( slow)))
+	{
+	Set( myHaveMatch);
+	animationInterval = SLOW_SPEED;
+	}
+
+if ((Controller( cSpeedNormal) ||
+	Said( normal)))
+	{
+	Set( myHaveMatch);
+	animationInterval = NORMAL_SPEED;
+	}
+
+if ((Controller( cSpeedFast) ||
+	Said( fast)))
+	{
+	Set( myHaveMatch);
+	animationInterval = FAST_SPEED;
+	}
+
+if ((Controller( cSpeedFastest) ||
+	Said( fastest)))
+	{
+	Set( myHaveMatch);
+	animationInterval = FASTEST_SPEED;
+	}
+
+if (myHaveMatch)
+	{
+	Reset( myHaveMatch);
+	if (monitorType != MONO)
+		{
+		message = 32;
+		message += animationInterval;
+		ClearTextRect( 24, 0, 24, 15, BG_COLOR);
+		y = 24;
+		x = 0;
+		DisplayV( y, x, message);
+		clearStatusSeconds = 6;
+		}
+	}
+
+
+
+[*****
+[	DEAD EGO
+[*****
+
+if (certainDeath)
+	{
+	Reset( certainDeath);
+	Set( handsOff);
+	currentStatus = DEAD;
+	LoadSound( mWhoops);
+	StopMotion( ego);
+	StopCycling( ego);
+	ProgramControl();				[	keepCycling won't work here
+	AcceptInput();
+	deathTimer = CYCLES_BEFORE_DEATH;
+	DisableItem( cSave);
+	DisableItem( cBodilyFunction);
+	DisableItem( cBoss);
+	DisableItem( cCalculator);
+	DisableItem( cPuzzle);
+	DisableItem( cHelp);
+	}
+
+if (currentStatus == DEAD)
+	{
+	--deathTimer;
+	if (deathTimer == 1)
+		{
+		StopSound();
+		Sound( mWhoops,done);
+		Print( 13);
+		}
+
+	if (haveInput && !haveMatch)
+		{
+		Print( 14);
+		}
+
+	if (currentRoom == rmBoss)
+		{
+		CallV( currentRoom);
+		}
+
+	if (debugging)
+		{
+		Call( lgcDebug);
+		}
+
+	Return();
+ 	}
+
+
+if ((Said( save) ||
+	Said( save, game) ||
+	requestedASaveGame ||
+	Controller( cSave)))
+	{
+	if (preventSaveGame)
+		{
+		if (!requestedASaveGame)
+			{
+			Set( requestedASaveGame);
+			Print( 109);
+			}
+		}
+	else
+		{
+		Reset( requestedASaveGame);
+		SaveGame();
+		}
+	}
+
+
+if (Controller( cBoss))
+	{
+	if (handsOff)
+		{
+		Print( 105);
+		}
+	else
+		{
+		NewRoom( rmBoss);
+		}
+	}
+
+
+if (Controller( cBodilyFunction))
+	{
+	if (handsOff)
+		{
+		Print( 105);
+		}
+	else
+		{
+		CancelLine();
+		PreventInput();
+		SetString( 11, 185);			[	a NULL string.
+		SetString( 12, 185);
+		GetString( 11, 122, 23, 0, 23);	[string#, prompt, row, col, max length
+		if (CompareStrings( 11, 12))
+			{
+			SetString( 11, 125);
+			}
+		Print( 123);
+		SetString( 11, 185);
+		SetString( 12, 185);
+		AcceptInput();
+		}
+	}
+
+
+if ((Controller( cPuzzle) ||
+	Controller( cCalculator)))
+	{
+	if (handsOff)
+		{
+		Print( 105);
+		}
+	else
+		{
+		PreventInput();
+		StatusLineOff();
+		SetTextAttribute( BLACK, WHITE);
+		TextScreen();
+		lastChar = 0;
+		if (Controller( cPuzzle))
+			{
+			Display(  6,  9, 115);		[	display puzzle 
+			Display(  7,  9, 116);
+			Display(  8,  9, 120);
+			Display(  9,  9, 117);
+			Display( 10,  9, 120);
+			Display( 11,  9, 118);
+			Display( 12,  9, 120);
+			Display( 13,  9, 119);
+			Display( 14,  9, 115);
+			Display( 21,  1, 121);
+			}
+		else
+			{
+			Display(  8, 19, 110);		[	display calc screen
+			Display(  9, 17, 111);
+			Display( 10, 17, 112);
+			Display( 11, 17, 113);
+			Display( 21,  6, 114);
+			}
+		:check.kb.3
+		if (!HaveKey())
+			{
+			goto	check.kb.3;
+			}
+		AcceptInput();
+		StatusLineOn();
+		SetTextAttribute( TEXT_COLOR, BG_COLOR);
+		Graphics();
+		Set( haveMatch);
+		}
+	}
+
+
+[*****
+[	EGO CYCLING
+[*****
+
+if (egoDir == oldEgoDir &&
+	egoX == oldEgoX &&
+	egoY == oldEgoY)
+	{
+	StopCycling( ego);
+	}
+else
+	{
+	StartCycling( ego);
+	}
+
+if ((!egoDir || noCycling))
+	{
+	StopCycling( ego);
+	}
+
+if (keepCycling)
+	{
+	StartCycling( ego);
+	}
+
+
+[*****
+[	TIMERS
+[*****
+
+if (lastChar != oldLastChar)
+	{
+	Set( typing);
+	secondsSinceKeystroke = 0;
+	oldLastChar = lastChar;
+	}
+
+if (lastChar == 13)
+	{
+	Reset( typing);
+	}
+
+--scriptCycles;
+if (scriptCycles == 1)
+	{
+   	Set( scriptDone);
+	}
+
+if (elapsedSeconds != oldSeconds)
+	{
+	oldSeconds = elapsedSeconds;
+	Set( aSecondPassed);			[	inform all logics 
+	Set( updateClock);
+
+	--clearStatusSeconds;
+	--spraySeconds;
+	--breathSpraySeconds;
+	--scriptTimer;
+
+	++secondsInRoom;
+	++gameSeconds;
+
+	if (scriptTimer == 1)
+		{
+		Set( scriptDone);
+		}
+
+	if (clearStatusSeconds == 1)		[	Can't be, if MONO.
+		{
+		ClearTextRect( 24, 0, 24, 15, BG_COLOR);
+		}
+
+
+	if  (currentRoom != rmTitle &&
+		currentRoom != rmSunrise &&
+		currentRoom != rmAgeTest)
+		{
+		if (gameSeconds == 60)
+			{
+			gameSeconds = 0;
+			++gameMinutes;
+			if (gameMinutes == 60)
+				{
+				gameMinutes = 0;
+				++gameHours;
+[					if (gameHours == 25)
+[						{
+[						gameHours = 0;
+[						++gameDays;
+[						}
+
+				++watchHours;
+				if (watchHours == 13)
+					{
+					watchHours = 1;
+					}
+				}
+			}
+
+
+		if (breathSpraySeconds == 1)
+			{
+			Reset( handsOff);
+			Reset( keepCycling);
+			SetView( ego, vEgo);
+			StartMotion( ego);
+			Reset( programControl);
+			AcceptInput( );
+			Set( sprayDone);
+			}
+
+
+		if (sprayMinutes && !spraySeconds)
+			{
+			--sprayMinutes;
+			spraySeconds = 60;
+			}
+
+		if (spraySeconds == 1 && !sprayMinutes)
+			{
+			Reset( mouthOK);
+			Set( mouthSmellsBad);
+			PrintV( mouthMessage);
+			++mouthMessage;
+			if (mouthMessage > 160)
+				{
+				mouthMessage = 157;
+				}
+			}
+		}
+
+
+	if (typing)
+		{
+		++secondsSinceKeystroke;
+		if (secondsSinceKeystroke > 1)
+			{
+			Reset( typing);
+			}
+		}
+	}							[	end of "aSecondPassed"
+
+
+
+
+[****************************************************************************]
+[********************	PREPARE TO CALL LOCAL ROOMS	**********************]
+[****************************************************************************]
+
+
+if (!initLog)
+	{
+	CallV( currentRoom);
+	}
+
+if (debugging)
+	{
+	Call( lgcDebug);
+	}
+
+
+
+[****************************************************************************]
+[********************	AFTER CALLING LOCAL ROOMS	**********************]
+[****************************************************************************]
+
+
+[*****
+[	NO INPUT
+[*****
+
+if (OK)
+	{
+	Reset( OK);
+	Print( 57);
+	}
+
+if (notCloseEnough)
+	{
+	Reset( notCloseEnough);
+	Print( 55);
+	}
+
+if (alreadyGotIt)
+	{
+	Reset( alreadyGotIt);
+	Print( 56);
+	}
+
+if (dontHaveIt)
+	{
+	Reset( dontHaveIt);
+	Print( 16);
+	}
+
+if (sprayDone)
+	{
+	Reset( sprayDone);
+	Print( 102);
+	++sprayCount;
+	if (sprayCount > 9)
+		{
+		Print( 170);
+		Drop( iBreathSpray);
+		}
+
+	if (nearPerson)
+		{
+		Print( 168);
+		}
+	}
+
+if (nearPerson && !mouthOK && mouthSmellsBad)
+	{
+	Reset( mouthSmellsBad);
+	Print( 145);
+	}
+
+if (nearPerson && smellsLikeDogPiss)
+	{
+	Reset( smellsLikeDogPiss);
+	Print( 108);
+	}
+
+if (nearPerson && toiletPaperOnShoe)
+	{
+	Reset( toiletPaperOnShoe)
+	Print( 107);
+	Print( 128);
+	}
+
+if (!dollars && !preventSaveGame && !betInProgress)
+	{
+	Print( 129);
+	Print( 130);
+	Erase( ego);
+	Set( certainDeath);
+	}
+
+if (demo && HaveKey())
+	{
+	Reset( demo);
+	NewRoom( rmAgeTest);
+	}
+
+
+
+[*****
+[	HANDLE PREVIOUSLY UNHANDLED INPUT
+[*****
+
+if ((haveMatch ||
+    !haveInput ||
+	currentStatus == SLEEPING ||
+	currentStatus == DEAD))
+	{
+	goto exit;
+	}
+
+
+[	if (!unknownWord && debugging)
+[		{
+[		Log( 21);
+[		}
+
+if (Said( thanks, rol))
+	{
+	Print( 28);
+	}
+
+if ((Said( bye, rol) ||
+	Said( anyword, bye, rol)))
+	{
+	Print( 31);
+	}
+
+if (Said( hi, rol))
+	{
+	Print( 26);
+	}
+
+if (Said( laugh))
+	{
+	Print( 174);
+	}
+
+if ((Said( lie, rol) ||
+	Said( rest, rol)))
+	{
+	Print( 175);
+	}
+
+[*****
+[	HANDLE INVENTORY THINGS
+[*****
+
+if ((Said( look, money) ||
+	Said( count, dollars)))
+	{
+	Print( 15);
+	}
+
+if ((Said( drop, wallet, rol) ||
+	Said( drop, my, wallet, rol)))
+	{
+	Print( 25);
+	}
+
+if (Said( use, wallet, rol))
+	{
+	Print( 51);
+	}
+
+if ((Said( open, wallet) ||
+	Said( look$in, wallet) ||
+	Said( show, wallet)))
+	{
+	ShowObj( ivWallet);
+	}
+
+if ((Said( give, wallet, anyword) ||
+	Said( give, wallet) ||
+	Said( give, anyword, wallet)))
+	{
+	if (!nearPerson)
+		{
+		Print( 45);
+		}
+	else
+		{
+		Print( 178);
+		Print( 179);
+		Drop( iWallet);
+		dollars = 0;
+		}
+	}
+
+
+if (Said( drop, spray, rol))
+	{
+	Print( 25);
+	}
+
+if (Said( show, spray, rol))
+	{
+	ShowObj( ivBreathSpray);
+	}
+
+if ((Said( give, spray, anyword) ||
+	Said( give, spray) ||
+	Said( give, anyword, spray)))
+	{
+	if ((!nearPerson || !Has( iBreathSpray)))
+		{
+		Print( 45);
+		}
+	else
+		{
+		Print( 183);
+		Print( 184);
+		}
+	}
+
+if ((Said( spray, spray) ||
+	Said( spray, spray, mouth) ||
+	Said( spray, mouth) ||
+	Said( spray, breath) ||
+	Said( use, spray)))
+	{
+	if (!Has( iBreathSpray))
+		{
+		Print( 171);
+		}
+	else
+		{
+		sprayMinutes = SPRAY_INIT_MINUTES;
+		Set( mouthOK);
+		Print( 101);
+
+		if ((handsOff || currentEgoView != NORMAL))
+			{
+			Set( sprayDone);
+			}
+		else
+			{
+			LoadView( vEgoBreathSpray);
+			SetView( ego, vEgoBreathSpray);
+			ForceUpdate( ego);
+
+			breathSpraySeconds = 5;
+			Set( handsOff);
+			Set( keepCycling);
+			StopMotion( ego);
+			Set( programControl);
+			PreventInput();
+			}
+		}
+	}
+
+
+
+if (Said( drop, lint, rol))
+	{
+	Print( 25);
+	}
+
+if (Said( use, lint, rol))
+	{
+	Print( 132);
+	}
+
+if (Said( show, lint))
+	{
+	ShowObj( ivPocketLint);
+	}
+
+if ((Said( give, lint, anyword) ||
+	Said( give, lint) ||
+	Said( give, anyword, lint)))
+	{
+	if (!nearPerson)
+		{
+		Print( 45);
+		}
+	else
+		{
+		Print( 183);
+		Print( 184);
+		}
+	}
+
+
+
+if (Said( drop, watch, rol))
+	{
+	Print( 25);
+	}
+
+if (Said( use, watch, rol))
+	{
+	Print( 51);
+	}
+
+if (Said( show, watch))
+	{
+	ShowObj( ivWatch);
+	}
+
+if (Said( set, watch))
+	{
+	Print( 17);
+	}
+
+if ((Said( give, watch, anyword) ||
+	Said( give, watch) ||
+	Said( give, anyword, watch)))
+	{
+	if (!nearPerson)
+		{
+		Print( 45);
+		}
+	else
+		{
+		Print( 183);
+		Print( 184);
+		}
+	}
+
+
+
+if (Said( drop, apple, rol))
+	{
+	if (Has( iApple))
+		{
+		Print( 25);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if (Said( use, apple, rol))
+	{
+	if (Has( iApple))
+		{
+		Print( 51);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if ((Said( take, bite, apple, rol) ||
+	Said( eat, apple, rol)))
+	{
+	if (Has( iApple))
+		{
+		Print( 153);
+		Drop( iApple);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if (Said( show, apple))
+	{
+	if (Has( iApple))
+		{
+		ShowObj( ivApple);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if ((Said( give, apple, anyword) ||
+	Said( give, apple) ||
+	Said( give, anyword, apple)))
+	{
+	if ((!nearPerson || !Has( iApple)))
+		{
+		Print( 45);
+		}
+	else
+		{
+		Print( 178);
+		Print( 179);
+		Drop( iApple);
+		}
+	}
+
+
+
+if (Said( drop, ring, rol))
+	{
+	if (Has( iRing))
+		{
+		Print( 25);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if (Said( use, ring, rol))
+	{
+	if (Has( iRing))
+		{
+		Print( 51);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if ((Said( put, ring, me) ||
+	Said( put, ring, on, me) ||
+	Said( put, ring, finger) ||
+	Said( put, ring, on, finger) ||
+	Said( wear, ring, rol)))
+	{
+	if (Has( iRing))
+		{
+		Print( 57);
+		Print( 140);
+		Print( 141);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if (Said( show, ring))
+	{
+	if (Has( iRing))
+		{
+		ShowObj( ivRing);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if ((Said( give, ring, anyword) ||
+	Said( give, ring) ||
+	Said( give, anyword, ring)))
+	{
+	if ((!nearPerson || !Has( iRing)))
+		{
+		Print( 45);
+		}
+	else
+		{
+		Print( 178);
+		Print( 179);
+		Drop( iRing);
+		}
+	}
+
+
+
+if (Said( drop, whiskey, rol))
+	{
+	if (Has( iWhiskey))
+		{
+		Print( 25);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if (Said( use, whiskey, rol))
+	{
+	if (Has( iWhiskey))
+		{
+		Print( 51);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if (Said( drink, whiskey))
+	{
+	if (Has( iWhiskey))
+		{
+		Drop( iWhiskey);
+		sprayMinutes = 0;
+		spraySeconds = 4;
+		Print( 9);
+		Print( 142);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if (Said( show, whiskey))
+	{
+	if (Has( iWhiskey))
+		{
+		ShowObj( ivWhiskey);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if ((Said( give, whiskey, anyword) ||
+	Said( give, whiskey) ||
+	Said( give, anyword, whiskey)))
+	{
+	if ((!nearPerson || !Has( iWhiskey)))
+		{
+		Print( 45);
+		}
+	else
+		{
+		Print( 178);
+		Print( 179);
+		Drop( iWhiskey);
+		}
+	}
+
+
+
+if (Said( drop, remote, rol))
+	{
+	if (Has( iRemoteControl))
+		{
+		Print( 25);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if ((Said( use, remote, rol) ||
+	Said( press, button, remote, rol) ||
+	Said( press, button, on, remote, rol) ||
+	Said( press, remote, rol)))
+	{
+	if (Has( iRemoteControl))
+		{
+		Print( 138);
+		Print( 139);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if (Said( show, remote))
+	{
+	if (Has( iRemoteControl))
+		{
+		ShowObj( ivRemoteControl);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if ((Said( give, remote, anyword) ||
+	Said( give, remote) ||
+	Said( give, anyword, remote)))
+	{
+	if ((!nearPerson || !Has( iRemoteControl)))
+		{
+		Print( 45);
+		}
+	else
+		{
+		Print( 178);
+		Print( 179);
+		Drop( iRemoteControl);
+		}
+	}
+
+
+
+if (Said( drop, rose, rol))
+	{
+	if (Has( iRose))
+		{
+		Print( 25);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if (Said( use, rose, rol))
+	{
+	if (Has( iRose))
+		{
+		Print( 51);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if (Said( smell, rose, rol))
+	{
+	if (Has( iRose))
+		{
+		Print( 143);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if (Said( show, rose))
+	{
+	if (Has( iRose))
+		{
+		ShowObj( ivRose);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if ((Said( give, rose, anyword) ||
+	Said( give, rose) ||
+	Said( give, anyword, rose)))
+	{
+	if ((!nearPerson || !Has( iRose)))
+		{
+		Print( 45);
+		}
+	else
+		{
+		Print( 178);
+		Print( 179);
+		Drop( iRose);
+		}
+	}
+
+
+
+if (Said( drop, rubber, rol))
+	{
+	if ((Has( iUsedRubber) || Has( iRubber)))
+		{
+		Print( 25);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if ((Said( use, rubber, rol) ||
+	Said( use, used, rubber, rol) ||
+	Said( wear, used, rubber, rol) ||
+	Said( wear, rubber, rol)))
+	{
+	if ((Has( iUsedRubber) || Has( iRubber)))
+		{
+		Print( 105);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if (wearingRubber &&
+    (Said( remove, rubber, rol) ||
+	Said( remove, used, rubber, rol) ||
+	Said( take, used, rubber, off, rol) ||
+	Said( take, rubber, off, rol)))
+	{
+	Reset( wearingRubber);
+	Drop( iUsedRubber);
+	currentScore += 1;
+	Print( 127);
+	}
+
+if ((Said( show, used, rubber) ||
+	Said( show, rubber)))
+	{
+	if (Has( iRubber))
+		{
+		ShowObj( ivRubber);
+		}
+	else
+	 	{
+		if (Has( iUsedRubber))
+			{
+			ShowObj( ivUsedRubber);
+			}
+		else
+			{
+			Set( dontHaveIt);
+			}
+		}
+	}
+
+if ((Said( give, used, rubber, anyword) ||
+	Said( give, used, rubber) ||
+	Said( give, anyword, used, rubber)))
+	{
+	if ((!nearPerson || !Has( iUsedRubber)))
+		{
+		Print( 45);
+		}
+	else
+		{
+		Print( 183);
+		Print( 184);
+		}
+	}
+
+if ((Said( give, rubber, anyword) ||
+	Said( give, rubber) ||
+	Said( give, anyword, rubber)))
+	{
+	if ((!nearPerson || !Has( iRubber)))
+		{
+		Print( 45);
+		}
+	else
+		{
+		Print( 183);
+		Print( 184);
+		}
+	}
+
+
+
+if (Said( drop, candy, rol))
+	{
+	if (Has( iCandy))
+		{
+		Print( 25);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if ((Said( use, candy, rol) ||
+	Said( use, anyword, candy, rol) ||
+	Said( eat, anyword, candy, rol) ||
+	Said( eat, candy, rol)))
+	{
+	if (Has( iCandy))
+		{
+		Print( 162);
+		Drop( iCandy);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if (Said( show, candy))
+	{
+	if (Has( iCandy))
+		{
+		ShowObj( ivCandy);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if ((Said( give, candy, anyword) ||
+	Said( give, candy) ||
+	Said( give, anyword, candy)))
+	{
+	if ((!nearPerson || !Has( iCandy)))
+		{
+		Print( 45);
+		}
+	else
+		{
+		Print( 178);
+		Print( 179);
+		Drop( iCandy);
+		}
+	}
+
+
+[	Inflatable doll handled entirely in room 45
+
+
+if (Said( drop, pass, rol))
+	{
+	if (Has( iDiscoPass))
+		{
+		Print( 25);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if (Said( use, pass, rol))
+	{
+	if (Has( iDiscoPass))
+		{
+		Print( 51);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if ((Said( show, disco, pass) || Said( show, pass)))
+	{
+	if (Has( iDiscoPass))
+		{
+		ShowObj( ivDiscoPass);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if ((Said( give, card, anyword) ||
+	Said( give, card) ||
+	Said( give, anyword, card)))
+	{
+	if ((!nearPerson || !Has( iDiscoPass)))
+		{
+		Print( 45);
+		}
+	else
+		{
+		Print( 178);
+		Print( 179);
+		Drop( iDiscoPass);
+		}
+	}
+
+
+if (Said( drop, knife, rol))
+	{
+	if (Has( iPocketKnife))
+		{
+		Print( 25);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if (Said( use, knife, rol))
+	{
+	if (Has( iPocketKnife))
+		{
+		Print( 51);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if (Said( show, knife))
+	{
+	if (Has( iPocketKnife))
+		{
+		ShowObj( ivPocketKnife);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if ((Said( give, knife, anyword) ||
+	Said( give, knife) ||
+	Said( give, anyword, knife)))
+	{
+	if ((!nearPerson || !Has( iPocketKnife)))
+		{
+		Print( 45);
+		}
+	else
+		{
+		Print( 178);
+		Print( 179);
+		Drop( iPocketKnife);
+		}
+	}
+
+
+
+if (Said( drop, wine, rol))
+	{
+	if (Has( iWine))
+		{
+		Print( 25);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if ((Said( drink, wine) ||
+	Said( use, wine)))
+	{
+	if (Has( iWine))
+		{
+		Drop( iWine);
+		sprayMinutes = 0;
+		spraySeconds = 4;
+		Print( 106);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if (Said( show, wine))
+	{
+	if (Has( iWine))
+		{
+		ShowObj( ivWine);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if ((Said( give, wine, anyword) ||
+	Said( give, wine) ||
+	Said( give, anyword, wine)))
+	{
+	if ((!nearPerson || !Has( iWine)))
+		{
+		Print( 45);
+		}
+	else
+		{
+		Print( 178);
+		Print( 179);
+		Drop( iWine);
+		}
+	}
+
+
+
+if (Said( drop, magazine, rol))
+	{
+	if (Has( iMagazine))
+		{
+		Print( 25);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if (Said( use, magazine))
+	{
+	if (Has( iMagazine))
+		{
+		Print( 51);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if ((Said( open, magazine) ||
+	Said( show, magazine)))
+	{
+	if (Has( iMagazine))
+		{
+		Print( 169);
+		ShowObj( ivMagazine);
+		if (!readMagazine)
+			{
+			Set( readMagazine);
+			currentScore += 1;
+			}
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if ((Said( give, magazine, anyword) ||
+	Said( give, magazine) ||
+	Said( give, anyword, magazine)))
+	{
+	if ((!nearPerson || !Has( iMagazine)))
+		{
+		Print( 45);
+		}
+	else
+		{
+		Print( 178);
+		Print( 179);
+		Drop( iMagazine);
+		}
+	}
+
+
+
+if (Said( drop, hammer, rol))
+	{
+	if (Has( iHammer))
+		{
+		Print( 25);
+		}
+	else
+		{
+		Print( 181);
+		}
+	}
+
+if (Said( use, hammer))
+	{
+	if (Has( iHammer))
+		{
+		Print( 51);
+		}
+	else
+		{
+		Print( 181);
+		}
+	}
+
+if (Said( throw, hammer, rol))
+    	{
+	if (Has( iHammer))
+		{
+		Print( 177);
+		Drop( iHammer);
+		}
+	else
+		{
+		Print( 181);
+		}
+	}
+
+if ((Said( hit, anyword, with, hammer) ||
+	Said( use, hammer, hit, anyword)))
+	{
+	if (Has( iHammer))
+		{
+		Print( 176);
+		}
+	else
+		{
+		Print( 181);
+		}
+	}
+
+if (Said( show, hammer))
+	{
+	if (Has( iHammer))
+		{
+		ShowObj( ivHammer);
+		}
+	else
+		{
+		Print( 181);
+		}
+	}
+
+if ((Said( give, hammer, anyword) ||
+	Said( give, hammer) ||
+	Said( give, anyword, hammer)))
+	{
+	if ((!nearPerson || !Has( iHammer)))
+		{
+		Print( 45);
+		}
+	else
+		{
+		Print( 178);
+		Print( 179);
+		Drop( iHammer);
+		}
+	}
+
+if ((Said( tie, rope, hammer) ||
+	Said( tie, hammer, rope)))
+	{
+	if (Has( iHammer) && Has( iRope))
+		{
+		Print( 176);
+		}
+
+	if (!Has( iRope))
+		{
+		Print( 180);
+		}
+
+	if (!Has( iHammer))
+		{
+		Print( 181);
+		}
+	}
+
+
+
+if (Said( drop, pills, rol))
+	{
+	if (Has( iPills))
+		{
+		Print( 25);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if ((Said( use, pills) ||
+	Said( take, pills) ||
+	Said( open, pills) ||
+	Said( eat, pills)))
+	{
+	if (Has( iPills))
+		{
+		Print( 38);
+		Print( 27);
+		Erase( ego);
+		Set( certainDeath);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+if (Said( show, pills))
+	{
+	if (Has( iPills))
+		{
+		ShowObj( ivPills);
+		}
+	else
+		{
+		Set( dontHaveIt);
+		}
+	}
+
+
+if ((Said( give, pills, anyword) ||
+	Said( give, pills) ||
+	Said( give, anyword, pills)))
+	{
+	if ((!nearPerson || !Has( iPills)))
+		{
+		Print( 45);
+		}
+	else
+		{
+		Print( 178);
+		Print( 179);
+		Drop( iPills);
+		}
+	}
+
+
+
+if (Said( drop, rope, rol))
+	{
+	if (Has( iRope))
+		{
+		Print( 25);
+		}
+	else
+		{
+		Print( 180);
+		}
+	}
+
+if (Said( throw, rope, rol))
+	{
+	if (Has( iRope))
+		{
+		Print( 177);
+		Drop( iRope);
+		}
+	else
+		{
+		Print( 180);
+		}
+	}
+
+if (Said( use, rope, rol))
+	{
+	if (Has( iRope))
+		{
+		Print( 51);
+		}
+	else
+		{
+		Print( 180);
+		}
+	}
+
+if ((Said( tie, rope, rol) ||
+	Said( tie, anyword, rope)))
+	{
+	if (Has( iRope))
+		{
+		Print( 176);
+		}
+	else
+		{
+		Print( 180);
+		}
+	}
+
+if (Said( show, rope))
+	{
+	if (Has( iRope))
+		{
+		ShowObj( ivRope);
+		}
+	else
+		{
+		Print( 180);
+		}
+	}
+
+if ((Said( give, rope, anyword) ||
+	Said( give, rope) ||
+	Said( give, anyword, rope)))
+	{
+	if ((!nearPerson || !Has( iRope)))
+		{
+		Print( 45);
+		}
+	else
+		{
+		Print( 178);
+		Print( 179);
+		Drop( iRope);
+		}
+	}
+
+
+
+[*****
+[	HANDLE WHATEVER'S LEFT
+[*****
+
+if (!haveMatch && haveInput &&		[	First, discard unknown words.
+	unknownWord)
+	{
+	Set( haveMatch);
+	PrintV( unknownWord);		[	prints messages #1 - 9
+	}
+
+
+if ((Said( anyword, credit$card) ||
+	Said( anyword, credit$card, wallet) ||
+	Said( anyword, credit$card, from, wallet)))
+    	{
+	Print( 172);
+	}
+
+if ((Said( read, notes) ||
+	Said( read, notes, wallet)))
+    	{
+	Print( 147);
+	}
+
+if ((Said( anyword, business$card) ||
+	Said( anyword, business$card, wallet) ||
+	Said( anyword, business$card, from, wallet)))
+	{
+	Print( 152);
+	}
+
+if ((Said( anyword, notes) ||
+	Said( anyword, notes, wallet) ||
+	Said( anyword, notes, from, wallet)))
+	{
+	Print( 148);
+	}
+
+
+
+[	Handle potty-mouths.
+
+if ((Said( fuck$you, rol) ||
+	Said( anyword, fuck$you, rol)))
+	{
+	Print( 133);
+	}
+
+if ((Said( hump, rol) ||
+	Said( anyword, hump, rol) ||
+	Said( anyword, anyword, hump, rol) ||
+	Said( anyword, anyword, anyword, hump, rol)))
+	{
+	Print( 135);
+	}
+
+if (Said( masturbate, rol))
+	{
+	Print( 124);
+	}
+
+if ((Said( touch, pussy, rol) ||
+	Said( stroke, pussy, rol) ||
+	Said( kiss, pussy, rol) ||
+	Said( lick, pussy, rol) ||
+	Said( look, pussy, rol)))
+	{
+	Print( 173);
+	}
+
+
+
+[	Misc. looks.
+
+if ((Said( look, suit) ||
+	Said( look$in, suit) ||
+	Said( search, suit)))
+	{
+	Print( 20);
+	}
+
+if ((Said( look, man) ||
+	Said( look, girl)))
+	{
+	Print( 24);
+	}
+
+if ((Said( look, wall) ||
+	Said( look, building)))
+	{
+	Print( 149);
+	}
+
+if ((Said( look, ground) ||
+	Said( look, down)))
+	{
+	Print( 151);
+	}
+
+if (Said( look, door))
+	{
+	Print( 103);
+	}
+
+if ((Said( look, sky) ||
+	Said( look, ceiling)))
+	{
+	Print( 161);
+	}
+
+if (Said( look, rol))
+	{
+	Random( 42, 44, work);
+	PrintV( work);
+	}
+
+
+if (Said( jump))
+	{
+	Print( 163);
+	}
+
+if (Said( talk))
+	{
+	Print( 126);
+	}
+
+if (Said( talk, rol))
+	{
+	Print( 41);
+	}
+
+if (Said( yell))
+	{
+	Print( 167);
+	}
+
+if ((Said( climb, wall) ||
+	Said( climb, building)))
+	{
+	Print( 150);
+	}
+
+if (Said( smell, anyword, rol))
+	{
+	Print( 131);
+	}
+
+if (Said( take, anyword, rol))
+	{
+	Random( 46, 48, work);
+	PrintV( work);
+	}
+
+if (Said( go, anyword, rol))
+	{
+	Print( 49);
+	}
+
+if (Said( use, anyword, rol))
+	{
+	Print( 54);
+	}
+
+if (Said( get, anyword, rol))
+	{
+	Print( 23);
+	}
+
+if (Said( lick, girl, rol))
+	{
+	Print( 59);
+	}
+
+if (Said( eat, anyword, rol))
+	{
+	Print( 37);
+	}
+
+if (Said( kiss, anyword, rol))
+	{
+	Print( 39);
+	}
+
+if (Said( laugh, anyword, rol))
+	{
+	Print( 165);
+	}
+
+if ((Said( kill, anyword, rol) ||
+	Said( hit, anyword, rol)))
+	{
+	Print( 50);
+	}
+
+if ((Said( look$in, man, rol) ||
+	Said( look$in, person, rol) ||
+	Said( look$in, woman, rol) ||
+	Said( look$in, clothes, rol) ||
+	Said( search, clothes, rol) ||
+	Said( search, man, rol) ||
+	Said( search, person, rol) ||
+	Said( search, woman, rol)))
+	{
+	if (!nearPerson)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 155);
+		}
+	}
+
+if (Said( search, rol))
+	{
+	Print( 166);
+	}
+
+if (Said( drop, anyword, rol))
+	{
+	Print( 156);
+	}
+
+if ((Said( unlock, door, rol) ||
+	Said( use, key, rol)))
+	{
+	Print( 144);
+	}
+
+if ((Said( knock, door) ||
+	Said( knock, on, door)))
+	{
+	Print( 164);
+	}
+
+if ((Said( help, man, rol) ||
+	Said( help, woman, rol) ||
+	Said( help, person, rol)))
+	{
+	Print( 154);
+	}
+
+if (Said( help, rol))
+	{
+	Print( 40);
+	}
+
+if ((Said( crack, rol) ||
+	Said( crap, rol) ||
+	Said( pee, rol) ||
+	Said( lay, rol) ||
+	Said( cut$one, rol) ||
+	Said( asshole, rol) ||
+	Said( boob, rol) ||
+	Said( butt, rol) ||
+	Said( cunnilingus, rol) ||
+	Said( suck$me, rol)))
+	{
+	Print( 136);
+	}
+
+if ((Said( anyword, crack, rol) ||
+	Said( anyword, crap, rol) ||
+	Said( anyword, pee, rol) ||
+	Said( anyword, lay, rol) ||
+	Said( anyword, cut$one, rol) ||
+	Said( anyword, asshole, rol) ||
+	Said( anyword, boob, rol) ||
+	Said( anyword, butt, rol) ||
+	Said( anyword, cunnilingus, rol) ||
+	Said( anyword, suck$me, rol)))
+	{
+	Print( 137);
+	}
+
+if ((Said( anyword, lady) ||
+	Said( anyword, anyword, lady) ||
+	Said( anyword, lady, anyword)))
+	{
+	Print( 104);
+	}
+
+if (Said( sierra, rol))
+	{
+	Print( 186);
+	}
+
+
+if (!haveMatch && haveInput)
+	{
+	Print( 45);
+[		if (debugging)
+[			{
+[			Log( 146);
+[			}
+	}
+
+
+
+[*****
+:exit
+[*****
+
+
+GetPosn( ego, oldEgoX, oldEgoY);		[	Clean up, fix up for next pass.
+oldEgoDir = egoDir;
+Reset( aSecondPassed);
+++passInRoom;
+
+if (oldCurrentScore != currentScore)
+	{
+	oldCurrentScore = currentScore;
+	Set( updateClock);
+	}
+
+if (programControl)
+	{
+	ProgramControl();
+	}
+else
+	{
+	PlayerControl();
+	}
+
+
+if (newRoom)
+	{
+	if (handsOff)
+		{
+		newRoom = 0;
+		}
+	else
+		{
+		oldEdgeEgoHit = edgeEgoHit;
+		Reset( noScript);
+		NewRoomV( newRoom);
+		}
+	}

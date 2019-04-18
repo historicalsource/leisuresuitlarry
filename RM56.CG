@@ -1,0 +1,234 @@
+[logics for room 56 -- lgcBlackjack
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm56.msg"
+%include	"gamedefs.h"
+%include	"bj.h"
+
+
+
+[	Structure:
+[		cards are numbered from 0 through 51.
+[		cells are numbered 0 through 12.
+[		a card's value is 2 more than its number.
+[		a card's cell  is   equal to  its number.
+
+
+
+if ((function == DRAW_CARD ||
+	function == DRAW_FACE_DOWN ||
+	function == ERASE_CARD))
+	{
+
+	[	Requires for input the pointer "currentCard" which points to a var
+	[that contains a card.  Leaves "currentCard" unaffected, but does muck
+	[up "card" as a local "work", and by calling "getSuitValue."
+	[Correctly sets "value" too.
+
+	#define	CARD_1_X				28
+	#define	CARD_2_X				46
+	#define	CARD_3_X				64
+	#define	CARD_4_X				82
+	#define	CARD_5_X				100
+	#define	CARD_6_X				118
+
+	#define	DEALER_Y				45
+	#define	PLAYER_Y				152
+	#define	SPLIT_HAND_Y			106
+
+
+	if (!currentCard < sFirstCard)		[	is it a split?
+		{
+		y = SPLIT_HAND_Y;
+		card = currentCard;
+		card -= sFirstCard;
+		}
+	else
+		{
+		if (!currentCard < pFirstCard)	[	is it a player card?
+			{
+			y = PLAYER_Y;
+			card = currentCard;
+			card -= pFirstCard;
+			}
+		else							[	Nope, it's the dealer's.
+			{
+			y = DEALER_Y;
+			card = currentCard;
+			card -= dFirstCard;
+			}
+		}
+
+
+	if (card == 0)				{x = CARD_1_X;}
+	if (card == 1)				{x = CARD_2_X;}
+	if (card == 2)				{x = CARD_3_X;}
+	if (card == 3)				{x = CARD_4_X;}
+	if (card == 4)				{x = CARD_5_X;}
+	if (card == 5)				{x = CARD_6_X;}
+							
+	card =@ currentCard;
+
+	goto getSuitValue;					[	This
+	:returnToHere;						[		is ugly!!
+
+	if (function == ERASE_CARD)
+		{
+		view = BLANK_CARD;
+		cell = 0;
+		}
+	else
+		{
+		if (function == DRAW_FACE_DOWN)
+			{
+			view = CARD_BACK;
+			cell = 0;
+			}
+		else
+			{
+			view = suit;
+			}
+		}
+
+	loop = 0;
+	priority = 4;
+	AddToPicV( view, loop, cell, x, y, priority, priority);
+	Sound( sCard, done);
+	}
+
+
+
+if (function == GET_SUIT_VALUE)
+	{
+
+	[	Takes "card" as input, leaves "card" unaffected, and adjusts
+	["cell," "value," and "suit."
+
+	:getSuitValue;
+
+	cell = card;
+	if (card < 13)
+		{
+		suit = HEARTS;
+		}
+	else
+		{
+		if (card < 26)
+			{
+			suit = CLUBS;
+			cell -= 13;
+			}
+		else
+			{
+			if (card < 39)
+				{
+				suit = SPADES;
+				cell -= 26;
+				}
+			else
+				{
+				suit = DIAMONDS;
+				cell -= 39;
+				}
+			}
+		}
+
+	value = cell;
+	value += 2;
+	if (value > 13)
+		{
+		value = 1;
+		Set( softAce);
+		}
+
+	if (value > 10)
+		{
+		value = 10;
+		}
+
+	if (function != GET_SUIT_VALUE)	[	This
+		{						[		 is
+		goto returnToHere;			[			uglier!
+		}
+	}
+
+
+
+if (function == PAY_WINNER)
+	{
+	work = 250;
+	work -= winnings;
+
+	if (work > dollars)
+		{
+		dollars += winnings;
+		}
+	else
+		{
+		winnings = 250;
+		winnings -= dollars;
+		dollars = 250;
+		Print( 4);
+		Set( readyToLeave);
+		}
+
+	winnings = 0;
+	function = UPDATE_STATUS;
+	}
+
+
+if (function == UPDATE_STATUS)
+	{
+	if (monitorType == MONO)
+		{
+		ClearLines( 24, 24, BG_COLOR);
+		y = 24;
+		}
+	else
+		{
+		ClearLines( 21, 21, BG_COLOR);
+		y = 21;
+		}
+
+	if (handInPlay == PLAYER)
+		{
+		message = 1;
+		}
+	else
+		{
+		if (handInPlay == SPLIT)
+			{
+			message = 2;
+			}
+		else
+			{
+			message = 3;
+			}
+		}
+	x = 0;
+	DisplayV( y, x, message);
+	function = SHOW_TOTALS;
+	}
+
+
+if (function == SHOW_TOTALS)
+	{
+	if (debugging && forceAtest)
+		{
+		oldPTotal = pTotal;
+		oldSTotal = sTotal;
+		oldDTotal = dTotal;
+		SetTextAttribute( 6, 0);
+		Display( 24, 0, 5);
+		SetTextAttribute( 15, 0);
+		}
+	}
+
+
+[*****
+:exit
+[*****
+
+function = 0;
+

@@ -1,0 +1,45 @@
+[logics for room 54 -- disk-based error handling
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+#include	"sysdefs.h"
+
+
+%message	1	"DiscardView(%v18):%m30";
+%message	2	"SetView(%v18,_):%m26";
+%message	3	"SetView(_,%v18):%m30";
+%message	4	"SetLoop(%v18,_):%m26";
+%message	5	"SetLoop(%v18,_):\nBad loop #.%m25";
+%message	6	"SetLoop(%v18,_):%m31";
+%message	7	"SetCel(%v18,_):%m26";
+%message	8	"SetCel(%v18,_):\nBad cel #.%m25";
+%message	9	"Sound(%v18):\nSound not loaded.%m25";
+%message	10	"SetCel(%v18,_):%m31";
+%message	11	"Script buffer overflow.\nMaximum size = %v18%m25";
+%message	12	"Erase(%v18):%m26";
+%message	13	"AnimateObj(%v18):%m26";
+%message	14	"Print(%v18): no message%m25";
+%message	15	"Bad test: %v18%m25";
+%message	16	"Bad action: %v18%m25";
+%message	17	"StartUpdate(%v18):%m28";
+%message	18	"DrawPic(%v18):%m32";
+%message	19	"Draw(%v18):%m26";
+%message	20	"Draw(%v18):%m31";
+%message	21	"DiscardPic(%v18):%m32";
+%message	22	"SetScanStart() already active\nin logic %v18.%m25";
+%message	23	"Get(%v18) or Put(%v18):%m26";
+
+%message	24	""
+
+%message	25	"\nPress ESC to quit.";
+%message	26	"%m27.%m25";					[Bad object number
+%message	27	"\nBad object number";
+%message	28	"%m27 or object not drawn.%m25"	[ " " " or object not drawn
+%message	29	"\nView not ";
+%message	30	"%m29loaded.%m25";				[View not loaded
+%message	31	"%m29set.%m25";				[View not set
+%message	32	"Picture not loaded.%m25";
+
+
+PrintV( errorNumber);
+Quit(1);

@@ -1,0 +1,72 @@
+[messages for room 6 -- rmAgeTest
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"Warning:\n\n\"Leisure Suit Larry in the Land of the Lounge Lizards\"
+ contains some elements of plot which may not be 
+ considered appropriate for some children."
+
+%message	2
+"How old are you?  "
+
+%message	3
+"To verify you are really %v209,
+ please answer five simple questions."
+
+%message	4
+"Sorry.\n\n
+This game can only be played by adults, or with an adult.\n\n
+Please find an adult, come back, and try again."
+
+%message	5
+"Oops. You blew that one!\n\n
+If you miss another, you can't possibly be %v209."
+
+%message	6
+"You're a kid!!\n\n
+Shame on you for trying to deceive a friendly game like this!\n\n
+Please play again when you're older."
+
+%message	7
+"Please answer a, b, c, or d: "
+
+%message	8
+"Correct."
+
+%message	9
+"So far, so good.\n\n
+Now for the final question."
+
+%message	10
+"         Thank you.\n\n
+And now, slip into your leisure suit and prepare to enter the
+ \"Land of the Lounge Lizards\" with \"Leisure Suit Larry!\""
+
+%message	11
+"         Warning!\n\n
+This game may be hazardous to those with heart conditions!"
+
+%message	12
+"No, you're not!"
+
+%message	13
+"Question #%v208. Correct answer is %v211."
+
+%message	14
+"a"
+
+%message	15
+"b"
+
+%message	16
+"c"
+
+%message	17
+"d"
+
+%message	18
+"%v62 cycles in %v63 seconds"
+

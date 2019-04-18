@@ -1,0 +1,425 @@
+[logics for room 44 -- rmLivingRoom
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm44.msg"
+%include	"gamedefs.h"
+
+
+
+%define	FIRST_QUESTION			1
+%define	LAST_QUESTION			43
+
+%define	nearElevator			lf0
+%define	insideElevator			lf1
+%define	inWayOfDoors			lf2
+%define	doorsOpen				lf3
+%define	dollDone				lf4
+%define	egoDone				lf5
+%define	dollSoundDone			lf6
+%define	dollOnScreen			lf9
+
+%define	dollScript			lv0
+
+
+%object	aDoor				1
+%object	aEve					2
+%object	aDoll				3
+
+
+
+if (initLog)
+	{
+	LoadPic( currentRoom);
+	DrawPic( currentRoom);
+	DiscardPic( currentRoom);
+
+	LoadView( vRm44ElevatorDoors);
+[	LoadView( v);
+
+
+	AnimateObj( aDoor);
+	IgnoreBlocks( aDoor);
+	IgnoreObjs( aDoor);
+	SetView( aDoor, vRm44ElevatorDoors);
+	SetCel( aDoor, 0);
+	SetPriority( aDoor, 10);
+	Position( aDoor, 130, 129);
+	work = DOOR_CYCLE_TIME;
+	CycleTime( aDoor, work);
+	Draw( aDoor);
+	StopUpdate( aDoor);
+
+
+	if (currentStatus == CHASING_DOLL)
+		{
+		PreventInput();
+		Set( handsOff);
+		Set( programControl);
+
+		LoadView( vDollDeflating);
+		LoadSound( sDollDeflating);
+
+		AnimateObj( aDoll);
+		IgnoreHorizon( aDoll);
+		IgnoreBlocks( aDoll);
+		IgnoreObjs( aDoll);
+		SetView( aDoll, vDollDeflating);
+		Position( aDoll, 55, 95);
+		Draw( aDoll);
+		MoveObj( aDoll, 27, 123, 2, dollDone);
+		Set( dollOnScreen);
+		Set( dollSoundDone);
+		}
+
+	if (currentStatus == FOLLOWING_EVE)
+		{
+		Set( programControl);		[	Even though still set!
+		script = 250;
+		Set( scriptDone);
+		
+		LoadView( vEve);
+		LoadView( vEgoWearingTowel);
+
+		[	SetView( ego, vEve);	[	Done automatically by rm0.
+
+		AnimateObj( aEve);
+		SetView( aEve, vEgoWearingTowel);
+		Position( aEve, 0, 125);
+		Draw( aEve);
+		}
+
+	
+	if (previousRoom == rmHotTub)
+		{
+		egoX = 8;
+		egoY = 125;
+		}
+	else
+		{
+		if (previousRoom == rmBedroom)
+			{
+			egoX = 98;
+			egoY = 100;
+			}
+		else
+			{
+			egoX = 138;			[	in elevator
+			egoY = 127;
+			SetLoop( ego, FACING_LEFT);
+			StopUpdate( ego);
+			StartMotion( ego);
+	
+			script = 0;
+			Set( scriptDone);		[	Let's open up the doors.
+			}
+		}
+	PositionV( ego, egoX, egoY);
+	Draw( ego);
+
+	ShowPic( );
+
+	if (currentStatus == CHASING_DOLL)
+		{
+		script = 150;
+		MoveObj( ego, 60, 100, 1, scriptDone);
+		}
+
+	Return( );
+
+	}							[	end initLOG
+
+
+
+if (doorsOpen)
+	{
+	IgnoreBlocks( ego);
+	}
+else
+	{
+	ObserveBlocks( ego);
+	}
+
+
+Reset( nearElevator);
+if (Posn( ego, 120, 113, 135, 143))
+	{
+	Set( nearElevator);
+	}
+
+Reset( inWayOfDoors);
+if (Posn( ego, 123, 119, 138, 131))
+	{
+	Set( inWayOfDoors);
+	}
+
+Reset( insideElevator);
+if (Posn( ego, 139, 119, 155, 131))
+	{
+	Set( insideElevator);
+	}
+
+if  (doorsOpen &&
+	!insideElevator &&
+	!inWayOfDoors)
+	{
+	Set( scriptDone);
+	}
+
+if (doorsOpen && insideElevator)
+	{
+	script = 100;
+	Set( scriptDone);				[	Let's go downstairs.
+	}
+
+
+[*****
+:handleInput
+[*****
+
+if (!haveInput)				{goto noInput;}
+
+if ((Said( look) ||
+	Said( look, penthouse) ||
+	Said( look, room)))				[	To catch "look living room"
+	{
+	Print( 1);
+	}
+
+if ((Said( look, elevator) ||
+	Said( look, door) ||
+	Said( look, button) ||
+	Said( look, wall)))
+	{
+	Print( 3);
+	}
+
+if (Said( look, fireplace))
+	{
+	Print( 2);
+	}
+
+if ((Said( look, floor) ||
+	Said( look, rug)))
+	{
+	Print( 4);
+	}
+
+if ((Said( lift, rug) ||
+	Said( move, rug) ||
+	Said( pull, rug) ||
+	Said( look, under, rug)))
+	{
+	Print( 12);
+	}
+
+if (Said( look, painting))
+	{
+	Print( 5);
+	}
+
+if (Said( look, behind, painting))
+	{
+	Print( 14);
+	}
+
+if (Said( look, sofa))
+	{
+	Print( 6);
+	}
+
+if ((Said( sit) ||
+	Said( sit, down) ||
+	Said( use, sofa)))
+	{
+	Print( 9);
+	}
+
+if ((Said( lie, down) ||
+	Said( sleep)))
+	{
+	Print( 13);
+	}
+
+if (Said( listen, rol))
+	{
+	Print( 10);
+	}
+
+if (Said( open, door))
+	{
+	Print( 11);
+	}
+
+if ((Said( look, outside) ||
+	Said( look, terrace) ||
+	Said( look, window) ||
+	Said( look, out, window)))
+	{
+	Print( 7);
+	}
+
+if ((Said( open, elevator) ||
+	Said( push, button)))
+	{
+	if (!nearElevator)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		if (doorsOpen)
+			{
+			Print( 8);
+			}
+		else
+			{
+			Set( OK);
+			script = 0;
+			Set( scriptDone);		[	Let's open up the doors.
+			}
+		}
+	}
+
+
+[*****
+:noInput
+[*****
+
+if (scriptDone)
+	{
+	Reset( scriptDone);
+	++script;
+
+	if (script == 1)				[	open doors
+		{
+		StartUpdate( aDoor);
+		EndOfLoop( aDoor, scriptDone);
+		}
+
+	if (script == 2)
+		{
+		StopUpdate( aDoor);
+		Set( doorsOpen);
+		}
+
+	if (script == 3)				[	He's clear; close the doors.
+		{
+		Reset( doorsOpen);
+		StartUpdate( aDoor);
+		BeginningOfLoop( aDoor, scriptDone);
+		}
+
+	if (script == 4)
+		{
+		script = 0;
+		}
+
+
+
+	if (script == 101)				[	Close the doors. Go downstairs.
+		{
+		Reset( doorsOpen);
+		StopUpdate( ego);
+		StartUpdate( aDoor);
+		BeginningOfLoop( aDoor, scriptDone);
+		}
+
+	if (script == 102)
+		{
+		newRoom = rmSecurityDesk;
+		}
+
+
+
+	[	Chasing the elusive latex muff...
+
+	if (script == 151)
+		{
+		MoveObj( ego, 40, 120, 1, scriptDone);
+		}
+
+	if (script == 152)
+		{
+		MoveObj( ego, 1, 120, 1, scriptDone);
+		}
+
+	if (script == 153)
+		{
+		Reset( handsOff);
+		newRoom = rmHotTub;
+		}
+
+
+
+	if (script == 251)	 			[	Walking egoTransvestite to bed.
+		{
+		MoveObj( ego, 35, 125, 1, scriptDone);
+		}
+
+	if (script == 252)
+		{
+		MoveObj( ego, 60, 103, 1, scriptDone);
+		}
+
+	if (script == 253)
+		{
+		MoveObj( ego, 114, 103, 1, scriptDone);
+		}
+
+	if (script == 254)
+		{
+		}
+
+
+	if (!script)
+		{
+		StopUpdate( aDoor);
+		}
+	}
+
+
+if (script > 250)
+	{
+	Distance( ego, aEve, work);
+	if (work > 10)
+		{
+		FollowEgo( aEve, 2, done);
+		}
+	}
+
+
+if (dollDone)
+	{
+	Reset( dollDone);
+	++dollScript;
+
+	if (dollScript == 1)
+		{
+		MoveObj( aDoll, 0, 123, 2, dollDone);
+		}
+
+	if (dollScript == 2)
+		{
+		MoveObj( aDoll, 0, 97, 2, dollDone);
+		}
+
+	if (dollScript == 3)
+		{
+		Erase( aDoll);
+		}
+	}
+
+if (dollSoundDone && dollOnScreen)
+	{
+	Sound( sDollDeflating, dollSoundDone);
+	}
+
+
+[*****
+:exit							[	test for leaving the room
+[*****
+
+if (edgeEgoHit == LEFT)				{newRoom = rmHotTub;}
+if (Posn( ego, 113, 93, 114, 106))		{newRoom = rmBedroom;}
+

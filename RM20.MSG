@@ -1,0 +1,9 @@
+[messages for room 20 -- rmBoss
+[	"Leisure-Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+%message	1
+"Sorry, but you'll have to restore your game;
+ when you panic, I forget everything!"
+

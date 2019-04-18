@@ -1,0 +1,281 @@
+[Logics for room 1 -- title, credits
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm1.msg"
+%include	"gamedefs.h"
+
+
+
+[	This loops through the title screen, and the credits screens, until a
+[key is pressed.  It then starts the game, at room 11.
+
+[	Note:  using the standard "frame" pic, first line to print on is y = 3,
+[lowest is y = 19.  X = 4 leaves 1 character blank at LEFT edge.
+
+[   View#		Name	   Loop  Cell	Size		 X	 Y	 Contents
+[---------------------------------------------------------------------
+[	39	vCreditNames1	0	0	65x23	41	94	programmed by
+[	39	vCreditNames1	0	1	69x60	41	114	designed by
+[	40	vCreditNames2	0	0	62x23	53	80	graphics by
+[	40	vCreditNames2	0	1	44x23	65	84	written by
+[	41	vCreditNames3	0	0	38x23	68	59	music by
+[	41	vCreditNames3	0	1	82x56	25	155	AGI by
+
+
+
+
+%define	designPic				lv2
+%define	creditsPic			lv3
+%define	agdsPic				lv4
+%define	framePic				lv5
+
+
+%object	aDoll				1
+%object	aName				2
+
+
+
+if (initLog)
+	{
+	SetHorizon( 1);
+	StatusLineOff();
+	Set( demo);
+	Set( handsOff);
+	Set( programControl);
+	PreventInput();
+	lastChar = 0;
+	animationInterval = NORMAL_SPEED;
+
+	LoadSound( mTitle);
+
+	LoadView( vTitles);
+	LoadView( vTitleDoll);
+	LoadView( vTitleEgo);
+	LoadView( vCreditNames1);
+	LoadView( vCreditNames2);
+	LoadView( vCreditNames3);
+	LoadView( vCreditNames4);
+
+
+	 designPic = picCredits1;
+	creditsPic = picCredits2;
+	   agdsPic = picCredits3;
+
+
+	LoadPic( designPic);
+	LoadPic( creditsPic);
+	LoadPic( agdsPic);
+
+	LoadPic( currentRoom);
+	DrawPic( currentRoom);
+	DiscardPic( currentRoom);
+
+	
+	AnimateObj( aDoll);
+	IgnoreObjs( aDoll);
+	SetView( aDoll, vTitleDoll);
+	SetLoop( aDoll, FACING_RIGHT);
+	Position( aDoll, 0, 130);
+
+	AnimateObj( aName);
+	SetView( aName, vCreditNames1);
+	SetCel( aName, 0);
+	SetPriority( aName, 4);
+	StopCycling( aName);
+
+	StepSize( ego, three);
+	Position( ego, 0, 160);
+	SetView( ego, vTitleEgo);
+	SetLoop( ego, FACING_RIGHT);
+
+	Sound( mTitle, musicDone);
+	script = 0;
+
+	AddToPic( vTitles, 0, 0,  4, 18, 4, 4);
+	AddToPic( vTitles, 0, 1,  4, 36, 4, 4);
+	AddToPic( vTitles, 0, 2, 46, 36, 4, 4);
+	AddToPic( vTitles, 0, 3, 11, 87, 4, 4);
+		   [view, loop, cel, x, y, obj priority, box priority
+
+
+	scriptTimer = 8;
+	ShowPic();
+	
+	Return();
+
+	}							[	end initLOG
+
+
+[*****
+:noInput
+[*****
+
+if (scriptDone)
+	{
+	Reset( scriptDone);
+	++script;
+
+	if (script == 1)
+		{
+		Draw( aDoll);
+		MoveObj( aDoll, 36, 94, 2, scriptDone);
+		}
+
+
+	if (script == 2)
+		{
+		MoveObj( aDoll, 136, 94, 2, scriptDone);
+
+		Draw( ego);
+		MoveObj( ego, 80, 160, 3, scriptDone);
+		}
+
+
+	if (script == 3)
+		{
+		if (monitorType != MONO)
+			{
+			Display( 23, 3, 2);
+			Display( 24, 4, 3);
+			}
+
+		SetLoop( ego, 2);
+		FixLoop( ego);
+		MoveObj( ego, 149, 160, 2, scriptDone);
+		}
+
+
+	if (script == 4)
+		{
+		Erase( aDoll);
+		}
+
+
+	if (script == 5)
+		{
+		Erase( ego);
+
+		if (monitorType != MONO)
+			{
+			ClearLines( 23, 24, BG_COLOR);
+			}
+
+		DrawPic( designPic);		[	draw new picture (pic.2)
+
+		Position( aName, 41, 94);
+		Draw( aName);				[	programmed by
+
+		ShowPic();
+
+		scriptTimer = 8;
+		}
+
+
+	if (script == 6)
+		{
+		SetCel( aName, 1);			[	designed by 
+		RepositionTo( aName, 41, 114);
+		
+		SetLoop( aDoll, FACING_LEFT);
+		Draw( aDoll);
+		MoveObj( aDoll, 100, 94, 2, scriptDone);
+		}
+
+
+	if (script == 7)
+		{
+		MoveObj( aDoll, 0, 94, 2, scriptDone);
+		
+		SetLoop( ego, FACING_LEFT);
+		Draw( ego);
+		MoveObj( ego, 50, 160, 3, scriptDone);
+		}
+
+
+	if (script == 8)
+		{
+		SetLoop( ego, 3);
+		FixLoop( ego);
+		MoveObj( ego, 0, 160, 2, scriptDone);
+		}
+
+	
+	if (script == 9)
+		{
+		Erase( aDoll);
+		}
+
+
+	if (script == 10)
+		{
+		Erase( ego);
+		SetView( ego, vEgo);
+		Erase( aName);
+
+		DrawPic( creditsPic);		[	Draw pic.3
+		SetView( aName, vCreditNames2);
+		SetCel( aName, 0);			[	graphics by 
+		Position( aName, 53, 80);
+		Draw( aName);
+		ShowPic();
+		
+		scriptTimer = 9;
+		}
+
+
+	if (script == 11)
+		{
+		SetCel( aName, 1);			[	written by
+		RepositionTo( aName, 65, 84);
+		scriptTimer = 8;
+		}
+
+
+	if (script == 12)
+		{
+		Erase( aName);
+
+		DrawPic( agdsPic);			[	draw pic.4
+		AddToPic( vCreditNames3, 0, 0, 68, 59, 4, 4);  [	Music by
+		AddToPic( vCreditNames3, 0, 1, 25, 155, 4, 4); [	AGDS by
+				[view, loop, cel, x, y, obj priority, box priority
+
+		ShowPic();
+
+		scriptTimer = 8;
+		}
+
+
+	if (script == 13)
+		{
+		DrawPic( creditsPic);		[	Draw pic.3
+		AddToPic( vCreditNames4, 0, 0, 64, 84, 4, 4); [	Kenny
+		ShowPic();
+
+		scriptTimer = 3;
+		}				
+
+
+	if (script == 14 && !soundOn)
+		{
+		NewRoom( rmTitle);			[	Let's do it again, and real soon.
+		}
+	}
+
+
+[*****
+:exit
+[*****
+
+if (musicDone)
+	{
+	if (script > 13)
+		{
+		NewRoom( rmTitle);			[	Let's do it again, and real soon.
+		}
+	else
+		{
+		Sound( mTitle, musicDone);	[	Play it again, Samantha.
+		}
+	}

@@ -1,0 +1,554 @@
+[messages for room 0
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+[	The following messages are null:
+[
+[		][	12	22	58
+[
+
+
+%message	1	"%m10%w1?"
+%message	2	"%m10%w2?"
+%message	3	"%m10%w3?"
+%message	4	"%m10%w4?"
+%message	5	"%m10%w5?"
+%message	6	"%m10%w6?"
+%message	7	"%m10%w7?"
+%message	8	"%m10%w8?"
+
+%message	9
+"Ok.\n\n
+You toss back the shot of cheap booze,
+ then dramatically break the glass on the floor!"
+
+%message	10
+"What's a "
+
+%message	11	"\n
+    Leisure Suit Larry\n
+          in the\n
+Land of the Lounge Lizards\n\n
+        by Al Lowe\n\n
+   Ver 1.05    6/26/87\n"
+
+%message	12
+""
+
+%message	13
+"Thanks for playing
+ \"Leisure Suit Larry in the Land of the Lounge Lizards.\"\n\n
+You screwed up this game, but you can probably do better.\n\n
+Come on, let's do it just one more time!"
+
+%message	14
+"Since you're dead...\n\n
+all you can do is restore a saved game or start over."
+
+%message	15
+"You have $%v90.00."
+
+%message	16
+"You don't have it."
+
+%message	17
+"Sorry, this is a real-time game!"
+
+%message	18
+"%m11%m100%v117 hours, %v116 minutes and %v115 seconds.\n"
+
+%message	19
+"%m11%m100%v116 minutes and %v115 seconds.\n"
+
+%message	20
+"You find your leisure suit very stylish, but empty."
+
+%message	21						[	logfile message
+""								[	No local."
+
+%message	22
+""
+
+%message	23
+"You have no need to take it."
+
+%message	24
+"Where!?"
+
+%message	25
+"You might need it."
+
+%message	26
+"\"Hi.\""
+
+%message	27
+"Following your conviction for bestiality,
+ you spend the rest of your life in prison,
+ turning big rocks into little ones!"
+
+%message	28
+"\"You're welcome.\""
+
+%message	29
+"\"Same to you!\""
+
+%message	30
+"%v119:%v116|2:%v115|2 "
+
+%message	31
+"\"'Bye.\""
+
+%message	32
+"Fastest%m36"
+
+%message	33
+"Fast%m36"
+
+%message	34
+"Normal%m36"
+
+%message	35
+"Slow%m36"
+
+%message	36
+" speed."
+
+%message	37
+"Once you tasted it, you wouldn't want it!"
+
+%message	38
+"Without thinking, you down the entire bottle.
+ Hey, this stuff is ok!
+ Your breathing becomes heavy, and you're suddenly extremely horny!
+ You've just got to do something, and right NOW!\n\n
+Hey, where's that cute, black dog?"
+
+%message	39
+"Wouldn't you rather just remain friends?"
+
+%message	40
+"Don't whine!"
+
+%message	41
+"Funny, no response."
+
+%message	42
+"It doesn't look interesting."
+
+%message	43
+"You see nothing special."
+
+%message	44
+"It's just as it appears."
+
+%message	45
+"How can you do that?"
+
+%message	46
+"It's of no use."
+
+%message	47
+"You don't need it."
+
+%message	48
+"There's no reason to take it."
+
+%message	49
+"Just walk there."
+
+%message	50
+"Oh, %w1, %w1, %w1! Doesn't anybody _____ anymore?"
+
+%message	51
+"%m53?"
+
+%message	52
+"%m53 %w3?"
+
+%message	53
+"What would you do with the %w2"
+
+%message	54
+"How can you use that which you do not have?"
+
+%message	55
+"You're not close enough."
+
+%message	56
+"You already have it."
+
+%message	57
+"Ok."
+
+%message	58
+""
+
+%message	59
+"That comes later."
+
+
+[	Menu functions are assigned to messages #60 - 99.
+
+%message	60		"Sierra "			[	
+%message	61	"About Larry"			[	
+%message	62	"Help   <F1>"			[	
+%message	63	"-----------"			[	
+%message	64	"Calculator "			[	
+%message	65	"Puzzle     "			[	
+								[	
+%message	66		"File "			[	
+%message	67	"Save     <F5>"		[	
+%message	68	"Restore  <F7>"		[	
+%message	69	"-------------"		[	
+%message	70	"Restart  <F9>"		[	
+[%message	69	"-------------"		[	
+%message	71	"Quit  <Alt-Z>"		[	
+
+%message	72		"Action "			[	
+%message	73	"Inventory  <Tab>"		[	
+%message	74	"See Object      "		[	
+%message	75	"Bodily Function "		[	
+								[	
+%message	76		"Special "			[	
+%message	96	"Boss Key       <Ctrl-B>"	[	
+%message	77	"Sound On/Off       <F2>"	[	
+%message	78	"Graphics Mode  <Ctrl-R>"	[	
+%message	79	"Joystick       <Ctrl-J>"	[	
+%message	97	"Joystick/Mouse <Ctrl-J>"	[	
+%message	80	"Clock On/Off           "	[	
+%message	81	"Pause Game             "	[	
+								[	
+%message	82		"Speed "			[	
+%message	83	"Normal       "		[	
+%message	84	"Slow         "		[	
+%message	85	"Fast         "		[	
+%message	86	"Fastest      "		[	
+[%message	69	"-------------"		[	
+%message	87	"Change  <F10>"		[	
+								[	
+[	%message	88		"Debug"			[	
+[	%message	89	"Ego Info  <Alt-E>"		[	
+[	%message	90	"P-Screen  <Alt-P>"		[	
+[	%message	91	"Memory    <Alt-M>"		[	
+[	%message	92	"Obj Info  <Alt-I>"		[	
+[	%message	93	"X/Y Display      "		[	
+[	%message	94	"Get All Inventory"		[	
+[	%message	95	"Inventory Numbers"		[	
+								[	
+%message	98	""					[	
+%message	99	""					[	
+
+
+
+%message	100
+"\n\nYou've been playing for\n"
+
+%message	101
+"Psssft. Psssft."
+
+%message	102
+"Ahhh."
+
+%message	103
+"Yep, it's a door!"
+
+%message	104
+"Watch it, Larry. You're going to get your face slapped!"
+
+%message	105
+"Now?!"
+
+%message	106
+"Ok.\n\n
+Your thirst is gone, the bottle is empty, and your breath is revolting."
+
+%message	107
+"\"Hey, dork! You've got toilet paper stuck to your shoe!\""
+
+%message	108
+"\"Phew! You smell like a used fire hydrant!\""
+
+%message	109
+"Just a moment, please..."
+
+%message	110
+"2"
+
+%message	111
+"+ 2"
+
+%message	112
+"---"
+
+%message	113
+"  4"
+
+%message	114
+"   This is about the extent of\n
+    your mathematical abilities."
+
+%message	115
+"---------------------"
+
+%message	116
+"|  1 |  2 |  3 |  4 |"
+
+%message	117
+"|  5 |  6 |  7 |  8 |"
+
+%message	118
+"|  9 | 10 | 11 | 12 |"
+
+%message	119
+"| 13 | 14 | 15 | 16 |"
+
+%message	120
+"|----|----|----|----|"
+
+%message	121
+"How's this thing work, anyway?"
+
+%message	122
+"Enter function: "
+
+%message	123
+"You quickly turn around, %s11, and feel much better.
+ A hint of a smile crosses your lips."
+
+%message	124
+"Larry, the whole idea was to stop doing that!"
+
+%message	125
+"do nothing"
+
+%message	126	
+"You talk to yourself, and find you already know what you're going to say."
+
+%message	127	
+"Good idea. You carefully remove and dispose of it properly."
+
+%message	128	
+"You nonchalantly scrape it off."
+
+%message	129	
+"Oh, no! You are now penniless.
+ You hock your leisure suit,
+ and spend the rest of your life on skid row eating discarded fast food."
+
+%message	130
+"The rest of your story is too sad to tell.
+ Time for a little \"R & R,\" Larry -- Restart or Restore!"
+
+%message	131
+"It smells as bad as you imagined."
+
+%message	132
+"It's not for using; IT'S A JOKE!!"
+
+%message	133
+"Same to you, buddy!"
+
+%message	134
+"And %w1 %w2 you, too!"
+
+%message	135
+"Yeah, you probably would, too!"
+
+%message	136
+"Tsk, tsk."
+
+%message	137
+"Ok, but I don't usually do that!"
+
+%message	138
+"You press the button on the remote control and..."
+
+%message	139
+"...nothing happens."
+
+%message	140
+"Wearing the magic ring gives you powers far beyond those of..."
+
+%message	141
+"...Oops. Wrong game."
+
+%message	142
+"Pretty dramatic, eh?"
+
+%message	143
+"It smells good."
+
+%message	144
+"You can't. There's no key in this game!"
+
+%message	145
+"\"Eeeyow! Do something about that breath of yours!\""
+
+%message	146
+""								[	No lastLog."
+
+%message	147
+"\"Remember to buy more Sierra three-dimensional, graphic, adventure games!\""
+
+%message	148
+"You might want to read them."
+
+%message	149
+"Staring at the walls?"
+
+%message	150
+"Climbing the walls already?"
+
+%message	151
+"It just lies there, under your feet."
+
+%message	152
+"
+Sierra On-Line, Inc.
+  (209) 683-6858"
+
+%message	153
+"It tastes delicious. But nothing happens."
+
+%message	154
+"Exactly how would you help?"
+
+%message	155
+"You'd better not. You might get your face slapped!"
+
+%message	156
+"You don't have one."
+
+%message	157
+"Your mouth tastes like the inside of a motorman's glove!"
+
+%message	158
+"Your breath smells like floor sweepings from a rendering plant."
+
+%message	159
+"Your breath is enough to take your breath away."
+
+%message	160
+"Your mouth tastes like the drippings from a marathon runner's sock."
+
+%message	161
+"It's still up there!"
+
+%message	162
+"It tastes delicious, but what about your acne?"
+
+%message	163
+"Whee!"
+
+%message	164
+"There's no answer. Try opening it."
+
+%message	165
+"Ha, ha."
+
+%message	166
+"You find nothing."
+
+%message	167
+"\"HELP!\""
+
+%message	168
+"\"It's about time!!\""
+
+%message	169
+"Well, well. It looks like this month's issue is filled with intelligent,
+ literary articles with redeeming social value."
+
+%message	170
+"Since your breath sprayer is empty, you toss it away."
+
+%message	171
+"You used it all, remember."
+
+%message	172
+"No place in Lost Wages accepts credit cards from the
+ First National Bank of Libya."
+
+%message	173
+"Obviously, restraint is no problem for you, Larry."
+
+%message	174
+"\"Ha, ha!\""
+
+%message	175
+"There's no time!"
+
+%message	176
+"That's an idea; it's just not a good idea!"
+
+%message	177
+"OK, but now it's gone forever!"
+
+%message	178
+"\"Hey, thanks a lot!\""
+
+%message	179
+"But, now you'll NEVER get it back!"
+
+%message	180
+"%m182rope."
+
+%message	181
+"%m182hammer."
+
+%message	182
+"You have no "
+
+%message	183
+"\"Yuck!\""
+
+%message	184
+"No one wants that!"
+
+%message	185
+				""				[	THIS ONE MUST STAY A NULL!!!!!
+
+%message	186
+"Pretty good company, eh?"
+
+[	%message	187
+[	""
+[	
+[	%message	188
+[	""
+[	
+[	%message	189
+[	""
+[	
+[	%message	190
+[	""
+[	
+[	%message	191
+[	""
+[	
+[	%message	192
+[	""
+[	
+[	%message	193
+[	""
+[	
+[	%message	194
+[	""
+[	
+[	%message	195
+[	""
+[	
+[	%message	196
+[	""
+[	
+[	%message	197
+[	""
+[	
+[	%message	198
+[	""
+[	
+[	%message	199
+[	""
+[	

@@ -1,0 +1,106 @@
+[messages for room 57 -- lgcStreet
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"You know, the traffic here is really a killer! You should forget about
+ crossing these streets!"
+
+%message	2
+"\"YO!!\n\nTAXI!!!\""
+
+%message	3
+"Vowing to hold your breath forever,
+ you enter this miserable excuse for public transportation."
+
+%message	4
+"It's not very clean."
+
+%message	5
+"It's not very new."
+
+%message	6
+"(And those are its good points!)"
+
+%message	7
+"Look out! Here he comes again!"
+
+%message	8
+"Obviously, he thinks you're a fire plug."
+
+%message	9
+"Dogs like that make you want to keep moving."
+
+%message	10
+"\"I can't wait all day, bub!\""
+
+%message	11
+"\"You'll not ride with me again!\""
+
+%message	12
+""
+
+%message	13
+""
+
+%message	14
+"Sick-o!"
+
+%message	15
+"After all he's done for you?"
+
+%message	16
+"He presently smells quite bad, although still better than you."
+
+%message	17
+"\"TAXI\n
+STAND\""
+
+%message	18
+"It's dark. Real dark."
+
+%message	19
+"You'd better get out of the street first."
+
+%message	20
+"\"BEEP\n
+BEEP!\""
+
+%message	21
+"Thousands of cars stream past, just below the edge of your screen."
+
+%message	22
+"Trust me, they're there!"
+
+%message	23
+"It smells like an old cab."
+
+%message	24
+"Isn't it funny how there's so little traffic?"
+
+%message	25
+"The glow of the city lights obliterate the stars."
+
+%message	26
+"As you bend over to do so, his bare teeth convince you otherwise."
+
+%message	27
+"You shinny up the pole, read the sign, and come right back down."
+
+%message	28
+"Who'd want him?"
+
+%message	29
+""
+
+%message	30
+"Where?"
+
+%message	31
+"There is a sign on the pole."
+
+%message	32
+""
+

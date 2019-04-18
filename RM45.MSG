@@ -1,0 +1,171 @@
+[messages for room 45 -- rmBedroom
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"The penthouse bedroom is quite deluxe."
+
+%message	2
+"Didn't your Mother tell you that doing that would make you go blind?"
+
+%message	3
+"Geez, Larry. Do we have to?"
+
+%message	4
+"Now?! When she's waiting for you on the bed??"
+
+%message	5
+"It is open."
+
+%message	6
+"It's not open."
+
+%message	7
+"There's no inflatable doll out here."
+
+%message	8
+"All right, you asked for it.\n\n
+In fact, you've asked for it twice! Here we go..."
+
+%message	9
+"Got her!"
+
+%message	10
+"Selecting your own personal favorite from the three available openings,
+ you shyly try out the doll.
+ This has to be the kinkiest thing you've done in a long time, Larry.\n\n
+You gradually increase your tempo as you lose your inhibitions
+ (not to mention your self-esteem).
+ Faster and faster you go, until suddenly, there's a loud, flatulent sound..."
+
+%message	11
+"You lost her, remember!"
+
+%message	12
+"You've found a closet full of uninteresting stuff, plus one inflatable doll."
+
+%message	13
+"The rest of the closet is rather dull compared to the inflatable doll."
+
+%message	14
+"Walking out of the closet, you clumsily catch your new friend on a
+ protruding nail!
+ There's a loud, flatulent sound, and..."
+
+%message	15
+"The closet is closed."
+
+%message	16
+"You huff, and you puff, and you blow your doll up.
+ Holding her out at arm's length, you pause to admire your handiwork..."
+
+%message	17
+"...somehow you expected more."
+
+%message	18
+"What more would you want to see?"
+
+%message	19
+"Move closer to the handle."
+
+%message	20
+"Move out of the way of the door first."
+
+%message	21
+"Go get her, Larry."
+
+%message	22
+"It's another one of those boring works of modern art;
+ this one is signed \"Mark Crowe.\""
+
+%message	23
+"The bedspread is made of genuine, 100 per cent, acrylic zebrahide."
+
+%message	24
+"Congratulations, Larry!!!\n\n
+You've done it!!\n\n
+You've successfully completed your evening in Sierra World,
+ lost your virginity, and emerged victorious!"
+
+%message	25
+"Of course, your feelings of success are short-lived,
+ since this is where Ken Williams has to tell you about our
+ soon-to-be-released sequel.\n\n
+Hey, Ken! Come here, and give 'em your pitch..."
+
+%message	26
+"\"Hi, folks! Remember, coming to this very computer Real Soon Now,
+ is the next installment in the saga of Larry Laffer,
+ traveling software salesman.
+ I'd tell you the name now, but we haven't made one up yet!\n\n
+(Be sure to pick up a few extra copies,
+ just in case our disk copier is screwed up again!)\""
+
+%message	27
+"Oh, wait. We almost forget to tell you how well you played."
+
+%message	28
+"You can't bear the thought of deflating your new friend, so you don't!"
+
+%message	29
+"What fun is an uninflated inflatable doll?"
+
+%message	30
+"...thanks for playing,
+ and be sure to tell each and every one of your friends
+ to buy their own personal copy of this game."
+
+%message	31
+"Move inside the closet."
+
+%message	32
+"You played ok, I guess!"
+
+%message	33
+"On behalf of Mark and Sandy, Al and Marg, Jeff and Chris,
+ Russ and Kim, Larry and Bob, Ken and Roberta, Bob and Marilyn and/or
+ Bob and Jeannine, John and Mary, Bob and Carol and Ted and Alice..."
+
+%message	34
+"Don't you find it difficult to have a meaningful relationship with latex?"
+
+%message	35
+"OK."
+
+%message	36
+"Love ya, baby!"
+
+%message	37
+"Sorry. One's your limit!"
+
+%message	38
+"You don't have time to rest!"
+
+%message	39
+"You are standing."
+
+%message	40
+"Perhaps if you first established mouth/latex contact..."
+
+%message	41
+"Picking up the corner of the expensive, vinyl, zebra-skin bedspread, you
+ discover..."
+
+%message	42
+"...nothing."
+
+%message	43
+"You can't. It's screwed to the wall."
+
+%message	44
+"That's not what she's for, Larry."
+
+%message	45
+"...and that's exactly the way she used to look!"
+
+%message	46
+"Ladies and gentlemen...\n\n
+Mr. Ken Williams!"
+

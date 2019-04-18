@@ -1,0 +1,261 @@
+[logics for room 9 -- rmDarkAlley
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm9.msg"
+%include	"gamedefs.h"
+
+
+%define	manOnScreen			lf0
+%define	manLeaving			lf1
+
+%object	aMan					1
+
+
+if (initLog)
+	{
+	LoadView( vEgoDead);
+	LoadView( vEgoCollapsing);
+	LoadView( vEgoGettingBeaten);
+	LoadView( vMugger);
+	LoadView( vMuggerAttacking);
+
+	LoadSound( mAlley);
+
+	LoadPic( currentRoom);
+	DrawPic( currentRoom);
+	DiscardPic( currentRoom);
+
+	AnimateObj( aMan);
+	IgnoreObjs( aMan);
+	SetView( aMan, vMugger);
+	SetLoop( aMan, FACING_LEFT);
+	SetCel( aMan, 1);
+	Position( aMan, 124, 131);
+	Draw( aMan);
+	StepSize( aMan, two);
+	Set( scriptDone);
+	Set( manOnScreen);
+
+	if ((oldEdgeEgoHit == LEFT ||
+		oldEdgeEgoHit == RIGHT))
+		{
+		if (egoY < 158)
+			{
+			egoY = 158;
+			}
+		}
+
+	if ((oldEdgeEgoHit == TOP ||
+		oldEdgeEgoHit == BOTTOM))
+		{
+		egoX = 77;
+		egoY = 167;
+		}
+
+	PositionV( ego, egoX, egoY);
+	Draw( ego);
+
+	ShowPic( );
+
+	Sound( mAlley, musicDone);
+
+	Return( );
+
+	}							[	end initLOG
+
+
+
+[*****
+:handleInput
+[*****
+
+if (haveInput)
+	{
+	Set( haveMatch);
+	if (script > 5)
+		{
+		Print( 4);
+		}
+	else
+		{
+		Print( 5)
+		}
+	}
+
+
+
+[*****
+:noInput
+[*****
+
+if (scriptDone)
+	{
+	Reset( scriptDone);
+	++script;
+
+	if (script == 1)
+		{
+		MoveObj( aMan, 112, 131, 2, scriptDone);
+		}
+
+	if (script == 2)
+		{
+		FollowEgo( aMan, 8, scriptDone);
+		}
+
+	if (script == 3)
+		{
+		Set( handsOff);
+		StopMotion( ego);
+		Set( programControl);
+		SetView( aMan, vMuggerAttacking);
+		GetPosn( aMan, x, y);
+
+		if (x < egoX)
+			{
+			SetLoop( aMan, 1);
+			if (egoX > 12)
+				{
+				x = egoX;
+				x -= 13;
+				}
+			else
+				{
+				x = 0;
+				}
+			}
+		else
+			{
+			SetLoop( aMan, 0);
+			if (egoX < 140)
+				{
+				x = egoX;
+				x += 5;
+				}
+			else
+				{
+				x = 145;
+				}
+			}
+
+		y = egoY;
+		SetCel( aMan, 0);
+		RepositionToV( aMan, x, y);
+		scriptCycles = 7;
+		}
+
+	if (script == 4)
+		{
+		Erase( aMan);
+		Reset( manOnScreen);
+
+		Set( keepCycling);
+		SetView( ego, vEgoGettingBeaten);
+		if (egoX > 5)
+			{
+			egoX -= 5;
+			}
+		else
+			{
+			egoX = 0;
+			}
+		if (egoY < 162)
+			{
+			egoY += 5;
+			}
+		else
+			{
+			egoY = 167;
+			}
+		RepositionToV( ego, egoX, egoY);
+		scriptTimer = 5;
+		}
+
+	if (script == 5)
+		{
+		SetView( aMan, vMugger);
+		Draw( aMan);
+		Wander( aMan);
+		Set( manLeaving);
+		scriptTimer = 3;
+		}
+
+	if (script == 6)
+		{
+		SetView( ego, vEgoCollapsing);
+		currentStatus = COLLAPSING;
+		CycleTime( ego, two);
+		EndOfLoop( ego, scriptDone);
+		}
+
+	if (script == 6)
+		{
+		Print( 1);
+		scriptTimer = 3;
+		}
+
+	if (script == 7)
+		{
+		Reset( keepCycling);
+		SetView( ego, vEgoDead);
+		currentStatus = RECYCLING;
+		SetCel( ego, 0);
+		if (egoX > 2)
+			{
+			egoX -= 3;
+			}
+		if (egoY < 160)
+			{
+			egoY += 7;
+			}
+		RepositionToV( ego, egoX, egoY);
+
+		scriptTimer = 5;
+		}
+
+	if (script == 8)
+		{
+		Print( 3);
+		Set( keepCycling);
+		CycleTime( ego, three);
+		EndOfLoop( ego, scriptDone);
+		}
+
+	if (script == 9)
+		{
+		Reset( handsOff);
+		newRoom = rmWorkshop;
+		}
+	}
+
+
+if (musicDone && manOnScreen)
+	{
+	Sound( mAlley, musicDone);
+	}
+
+
+[*****
+:exit							[	test for leaving the room
+[*****
+
+if (manLeaving &&
+	edgeObjHit &&
+	objHitEdge == aMan)
+	{
+	Reset( manLeaving);
+	Erase( aMan);
+	StopSound();
+	}
+
+if  (oldEdgeEgoHit == RIGHT &&
+	edgeEgoHit == LEFT)				{newRoom = previousRoom;}
+
+if  (oldEdgeEgoHit == LEFT &&
+	edgeEgoHit == RIGHT)			{newRoom = previousRoom;}
+
+if  (edgeEgoHit == BOTTOM &&
+    (oldEdgeEgoHit == TOP ||
+	oldEdgeEgoHit == BOTTOM))		{newRoom = previousRoom;}
+

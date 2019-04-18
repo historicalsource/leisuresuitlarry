@@ -1,0 +1,699 @@
+[logics for room 16 -- rmBackroom
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm16.msg"
+%include	"gamedefs.h"
+
+
+
+[	There is a pimp here, watching TV.  Player has to get
+[past pimp by paying him, or making him watch TV until he
+[doesn't notice him sneak past, and up stairs.  "use remote
+[control".  "pay pimp"  "turn tv on/off" "change channels"
+[channels give various messages.
+
+
+
+#define	L_PIMP_SITTING			2
+
+%define	PIMP_START_X			42	[	Pimpie co-ordinates
+%define	PIMP_BLOCK_X			116
+%define	PIMP_TV_X				70
+%define	PIMP_WAITING_X			100
+
+%define	PIMP_Y				135
+%define	PIMP_SITTING_Y			132
+
+
+%define	sitPimpDown			lf0
+%define	pimpAtStairs			lf1
+%define	nearTV				lf2
+%define	doorOpenDone			lf3
+%define	doorCloseDone			lf4
+%define	nearDoor				lf5
+%define	pimpBlockingStairs		lf6
+%define	nearStairs			lf7
+%define	gaveWarning			lf8
+%define	nearPimp				lf9
+%define	waitingToBlockStairs	lf10
+%define	pimpClear				lf11
+%define	blockingTV			lf12
+
+
+%define	TVMessageCycles		lv0
+%define	moveTimer				lv1
+%define	TVCycles				lv2
+
+
+%object	aPimp				1
+%object	aDoor				2
+%object	aTV					3
+
+
+
+if (initLog)
+	{
+	SetHorizon( 39);
+
+	LoadPic( currentRoom);
+	DrawPic( currentRoom);
+	DiscardPic( currentRoom);
+
+	LoadView( vRm16Door);
+	LoadView( vPimp);
+	LoadView( vPimpBlockingStairs);
+	LoadView( vTVOn);
+
+	AnimateObj( aDoor);
+	IgnoreBlocks( aDoor);
+	IgnoreObjs( aDoor);
+	Position( aDoor, 24, 132);
+	SetView( aDoor, vRm16Door);
+	SetPriority( aDoor, 10);
+	work = DOOR_CYCLE_TIME;
+	CycleTime( aDoor, work);
+
+	AnimateObj( aTV);
+	IgnoreBlocks( aTV);
+	IgnoreObjs( aTV);
+	Position( aTV, 70, 136);
+	SetView( aTV, vTVOn);
+	if (TVOn)
+		{
+		Draw( aTV);
+		Random( 3, 9, TVCycles);
+		}
+
+
+	AnimateObj( aPimp);
+	if (pimpWatchingTV)
+	    	{
+		SetView( aPimp, vPimp);
+		SetLoop( aPimp, L_PIMP_SITTING);
+		Position( aPimp, PIMP_TV_X, PIMP_SITTING_Y);
+		}
+	else
+		{
+		if (previousRoom == rmHooker)
+			{
+			SetView( aPimp, vPimpBlockingStairs);
+			Position( aPimp, PIMP_WAITING_X, PIMP_Y);
+			Set( waitingToBlockStairs);
+			}
+		else
+			{
+			SetView( aPimp, vPimp);
+			SetLoop( aPimp, FACING_RIGHT);
+			Position( aPimp, PIMP_START_X, PIMP_Y);
+			MoveObj( aPimp, PIMP_BLOCK_X, PIMP_Y, 1, pimpAtStairs);
+			}
+		}
+	Draw( aPimp);
+
+	SetLoop( ego, FACING_RIGHT);
+	if (previousRoom == rmHooker)
+		{
+		SetCel( aDoor, 0);
+		Draw( aDoor);
+		StopUpdate( aDoor);
+
+		egoX = 71;
+		egoY = 55;
+		}
+	else
+		{
+		LastCel( aDoor, work);
+		SetCelV( aDoor, work);
+		Draw( aDoor);
+		BeginningOfLoop( aDoor, doorCloseDone);
+
+		egoX = 26;
+		egoY = 136;
+		StopMotion( ego);
+		Set( programControl);
+	 	}
+	PositionV( ego, egoX, egoY);
+	Draw( ego);
+
+	ShowPic( );
+
+	Return( );
+
+	}							[	end initLOG
+
+
+Reset( nearPimp);
+Distance( ego, aPimp, work);
+if (work < 13)
+	{
+	Set( nearPimp);
+	Set( nearPerson);
+	}
+
+Reset( nearDoor);
+if (Posn( ego, 22, 123, 33, 137))
+	{
+	Set( nearDoor);
+	}
+
+Reset( nearTV);
+if (Posn( ego, 65, 137, 80, 143))
+	{
+	Set( nearTV);
+	}
+
+Reset( blockingTV);
+if (Posn( ego, 65, 133, 76, 143))
+	{
+	Set( blockingTV);
+	}
+
+
+Reset( nearStairs);
+if (Posn( ego, 105, 131, 133, 139))
+	{
+	Set( nearStairs);
+	}
+
+
+[*****
+:handleInput
+[*****
+
+if (!haveInput)				{goto noInput;}
+
+if ((Said( look) ||
+	Said( look, room)))
+	{
+	Print( 1);
+	}
+
+if ((Said( look, boxes) ||
+	Said( open, boxes) ||
+	Said( look$in, boxes)))
+	{
+	Print( 27);
+	}
+
+if ((Said( get, box) ||
+	Said( move, box) ||
+	Said( climb, box) ||
+	Said( climb, on, box) ||
+	Said( use, box)))
+	{
+	Print( 48);
+	}
+
+if (Said( look, door))
+	{
+	Print( 7);
+	}
+
+if ((Said( look, stairs, rol) ||
+	Said( look, up, rol)))
+	{
+	Print( 55);
+	}
+
+if (Said( look, man))
+	{
+	Print( 44);
+	}
+
+if ((Said( aim, control, man) ||
+	Said( use, control, on, man)))
+	{
+	Print( 59);
+	}
+
+
+if (Said( look, tv))
+	{
+	if (!TVOn)
+		{
+		Print( 45);
+		}
+	else
+		{
+		if (!pimpWatchingTV)
+			{
+			Print( 46);
+			}
+		else
+			{
+			Print( 47);
+			}
+		}
+	}
+
+
+if ((Said( pay, rol) ||
+	Said( buy, girl) ||
+	Said( buy, ass) ||
+	Said( buy, hump) ||
+	Said( buy, pussy) ||
+	Said( give, one, money) ||
+	Said( give, one, money, man) ||
+	Said( give, man, one, money) ||
+	Said( give, man, money) ||
+	Said( give, money, man) ||
+	Said( give, money)))
+	{
+	if (pimpWatchingTV)
+		{
+		Print( 54);
+		}
+	else
+		{
+		if (!nearPimp)
+			{
+			Set( notCloseEnough);
+			}
+		else
+			{
+			if (dollars < 100)
+				{
+				Print( 8);
+				}
+			else
+				{
+				Set( gaveWarning);	[	To prevent message later.
+				Reset( pimpBlockingStairs);
+				dollars -= 100;
+				Print( 5);
+				SetView( aPimp, vPimp);
+				MoveObj( aPimp, PIMP_WAITING_X, PIMP_Y, 1, pimpClear);
+				if (scoredHooker)
+					{
+					Print( 9);
+					}
+				}
+			}
+		}
+	}
+
+
+if ((Said( knock, anyword, door) ||
+	Said( knock, door, anyword) ||
+	Said( knock, door) ||
+	Said( knock)))
+	{
+	if (!nearDoor)
+		{
+		Set( notCloseEnough);				
+		}
+	else
+		{
+		Print( 6);
+		}
+	}
+
+if (Said( open, door))
+	{
+	if (!nearDoor)
+		{
+		Set( notCloseEnough);				
+		}
+	else
+		{
+		Set( OK);
+		StopMotion( ego);
+		Set( programControl);
+
+		StartUpdate( aDoor);
+		EndOfLoop( aDoor, doorOpenDone);
+		}
+	}
+
+if ((Said( turn, on, tv) ||
+	Said( turn, tv, on) ||
+	Said( tv, on)))
+	{
+	if (!nearTV)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		if (TVOn)
+			{
+			Print( 23);
+			}
+		else
+			{
+			Print( 22);
+			}
+		}
+	}
+
+if ((Said( turn, off, tv) ||
+	Said( turn, tv, off) ||
+	Said( tv, off)))
+	{
+	if (!nearTV)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		if (!TVOn)
+			{
+			Print( 23);
+			}
+		else
+			{
+			Print( 22);
+			}
+		}
+	}
+
+
+if ((Said( use, remote) ||
+	Said( use, remote, off) ||
+	Said( use, remote,  on) ||
+	Said( use, remote, turn, tv,  on) ||
+	Said( use, remote, turn, tv, off) ||
+	Said( use, remote, rol) ||
+	Said( press, button, remote, rol) ||
+	Said( press, button, on, remote, rol) ||
+	Said( press, remote, rol) ||
+	Said( press, remote,  on) ||
+	Said( press, remote, off) ||
+	Said( press, remote, tv,  on) ||
+	Said( press, remote, tv, off) ||
+	Said( press, remote, turn, tv,  on) ||
+	Said( press, remote, turn, tv, off) ||
+	Said( press, remote, turn,  on, tv) ||
+	Said( press, remote, turn, off, tv) ||
+	Said( turn,  on, tv, use, remote) ||
+	Said( turn, off, tv, use, remote) ||
+	Said( turn, tv,  on, use, remote) ||
+	Said( turn, tv, off, use, remote)))
+	{
+	if (!Has( iRemoteControl))
+		{
+		Set( dontHaveIt);
+		}
+	else
+		{
+		if (egoY > 144)
+			{
+			Print( 28);
+			}
+		else
+			{
+			if (TVOn)
+				{
+				Print( 57);
+				}
+			else
+				{
+				currentScore += 3;
+				Draw( aTV);
+				Print( 24);
+				Set( TVOn);
+				TVCycles = 5;
+				TVChannel = 14;
+				Random( 33, 77, TVMessageCycles);
+				}
+			}
+		}
+	}
+
+if ((Said( tie, man, with, rope) ||
+	Said( tie, up, man)))
+	{
+	if (!Has( iRope))
+		{
+		Set( dontHaveIt);
+		}
+	else
+		{
+		Print( 60);
+		}
+	}
+
+if ((Said( talk, man) ||
+	Said( deal, rol) ||
+	Said( say, hello)))
+	{
+	if (pimpWatchingTV)
+		{
+		Print( 13);
+		}
+	else
+		{
+		Print( 2);
+		Print( 3);
+		Print( 4);
+		}
+	}
+
+if ((Said( beat, up, man, rol) ||
+	Said( hit, man, rol) ||
+	Said( use, hammer, rol) ||
+	Said( tie, pimp) ||
+	Said( tie, up, pimp) ||
+	Said( tie, up, pimp, use, rope) ||
+	Said( use, rope, tie, up, pimp) ||
+	Said( use, rope, tie, pimp) ||
+	Said( tie, up, pimp, rope) ||
+	Said( tie, pimp, rope) ||
+	Said( kill, man, rol)))
+	{
+	Print( 52);
+	}
+
+if ((Said( move) ||
+	Said( move, out, way) ||
+	Said( move, away) ||
+	Said( get, away) ||
+	Said( move, man)))
+	{
+	Print( 2);
+	Print( 3);
+	Print( 4);
+	}
+
+
+if ((Said( give, man, remote, rol) ||
+	Said( give, remote, man, rol)))
+	{
+	Print( 58);
+	}
+
+if ((Said( turn, channel) ||
+	Said( use, remote, turn, channel) ||
+	Said( turn, tv, channel) ||
+	Said( turn, channel, tv) ||
+	Said( turn, tv, channel, use, remote) ||
+	Said( turn, channel, tv, use, remote) ||
+	Said( turn, channel, use, remote) ||
+	Said( turn, tv, channel, remote) ||
+	Said( turn, channel, remote) ||
+	Said( use, remote, turn, tv, channel) ||
+	Said( change, channel) ||
+	Said( use, remote, change, channel) ||
+	Said( change, tv, channel) ||
+	Said( change, channel, tv) ||
+	Said( change, tv, channel, use, remote) ||
+	Said( change, channel, tv, use, remote) ||
+	Said( change, channel, use, remote) ||
+	Said( change, tv, channel, remote) ||
+	Said( change, channel, remote) ||
+	Said( use, remote, change, tv, channel)))
+	{
+	if (!Has( iRemoteControl))
+		{
+		Print( 22);
+		}
+	else
+		{
+		if (!TVOn)
+			{
+			Print( 29);
+			}
+		else
+			{
+			if (egoY > 144)
+				{
+				Print( 28);
+				}
+			else
+				{
+				if (TVChannel == 21)
+					{
+					Print( 26);
+					}
+				else
+					{
+					if (TVMessageCycles)
+						{
+						Print( 42);
+						}
+					else
+						{
+						Print( 25);
+						++TVChannel;
+						Random( 23, 39, TVMessageCycles);
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+if (Said( look, walls))
+	{
+	Print( 49);
+	}
+
+if (Said( look, light))
+	{
+	Print( 50);
+	}
+
+if (Said( look, crack))
+	{
+	Print( 51);
+	}
+
+
+
+[*****
+:noInput
+[*****
+
+if ((!blockingTV || !pimpWatchingTV))
+	{
+	moveTimer = 0;
+	}
+else
+	{
+	if (!moveTimer)
+		{
+		moveTimer = 2;
+		}
+
+	--moveTimer;
+	if (moveTimer == 1)
+		{
+		Print( 53);
+		moveTimer = 22;
+		}
+	}
+
+
+--TVMessageCycles;
+if (TVMessageCycles == 20)
+	{
+	PrintV( TVChannel);
+	}
+
+if (TVMessageCycles == 10)
+	{
+	if (TVChannel != 21)
+		{
+		work = TVChannel;
+		work += 20;
+		PrintV( work);
+		}
+	else
+		{
+		Reset( pimpBlockingStairs);
+		Set( pimpWatchingTV);
+		SetView( aPimp, vPimp);
+		MoveObj( aPimp, PIMP_TV_X, PIMP_Y, 1, sitPimpDown);
+		}
+	}
+
+
+if (TVMessageCycles == 1)
+	{
+	if (TVChannel != 21)
+		{
+		Print( 10);
+		}
+	}
+
+
+if (pimpClear)
+	{
+	Reset( pimpClear);
+	SetView( aPimp, vPimpBlockingStairs);
+	Print( 43);
+	}
+
+if (sitPimpDown)
+	{
+	Reset( sitPimpDown);
+	SetLoop( aPimp, L_PIMP_SITTING);
+	RepositionTo( aPimp, PIMP_TV_X, PIMP_SITTING_Y);
+	ForceUpdate( aPimp);
+	if (!gotPimpToWatchTV)
+		{
+		Set( gotPimpToWatchTV);
+		currentScore += 8;
+		}
+	Print( 12);
+	}
+
+
+if (waitingToBlockStairs)
+	{
+	if (egoX < 90 && egoY > 110)
+		{
+		Reset( waitingToBlockStairs);
+		Print( 30);
+		SetView( aPimp, vPimp);
+		SetLoop( aPimp, FACING_RIGHT);
+		MoveObj( aPimp, PIMP_BLOCK_X, PIMP_Y, 1, pimpAtStairs);
+		}
+	}
+
+if (pimpAtStairs)
+	{
+	Reset( pimpAtStairs);
+	Set( pimpBlockingStairs);
+	SetView( aPimp, vPimpBlockingStairs);
+	}
+
+if (!gaveWarning &&
+	pimpBlockingStairs &&
+	nearStairs)
+	{
+	Set( gaveWarning);
+	Print( 11);
+	}
+
+--TVCycles;
+if (TVOn && TVCycles == 1)
+	{
+	Random( 4, 16, TVCycles);
+	Random( 1, 4, work);
+	CycleTime( aTV, work);
+	}
+
+if (doorCloseDone)
+	{
+	Reset( doorCloseDone);
+	StopUpdate( aDoor);
+	StartMotion( ego);
+	Reset( programControl);
+	}
+
+
+[*****
+:exit							[	test for leaving the room
+[*****
+
+if (doorOpenDone)
+	{
+	Reset( programControl);
+	newRoom = rmInsideBar;
+	}
+
+if ((egoY < 42 ||
+	edgeEgoHit == TOP))				{newRoom = rmHooker;}

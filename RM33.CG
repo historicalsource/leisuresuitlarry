@@ -1,0 +1,252 @@
+[logics for room 33 -- rmOutsideChapel
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm33.msg"
+%include	"gamedefs.h"
+
+
+
+[	%define	L_DOORS				2
+
+%define	nearDoor				lf0
+%define	doorOpenDone			lf1
+%define	nearFlasher			lf2
+%define	coatOpen				lf3
+
+%object	aDoor				1
+%object	aSign				2
+%object	aFlasher				3
+
+
+
+if (initLog)
+	{
+	if  (watchHours > 4 &&			[	Anything after 5 am.
+		watchHours < 10)
+		{
+		NewRoom( rmSunrise);
+		}
+
+	LoadPic( currentRoom);
+	DrawPic( currentRoom);
+	DiscardPic( currentRoom);
+
+	LoadLogics( lgcStreet);
+
+	LoadView( vChapelExterior);
+	LoadView( vFlasher);
+	 
+
+	AnimateObj( aFlasher);
+	SetView( aFlasher, vFlasher);
+	SetCel( aFlasher, 0);
+	Position( aFlasher, 129, 145);
+	Draw( aFlasher);
+	StopCycling( aFlasher);
+
+	AnimateObj( aDoor);
+	IgnoreHorizon( aDoor);
+	IgnoreBlocks( aDoor);
+	IgnoreObjs( aDoor);
+	SetView( aDoor, vChapelExterior);
+	SetLoop( aDoor, 2);
+	SetCel( aDoor, 0);
+	Position( aDoor, 83, 114);
+	Draw( aDoor);
+	work = DOOR_CYCLE_TIME;
+	CycleTime( aDoor, work);
+	StopUpdate( aDoor);
+
+	AddToPic( vChapelExterior, 1, 0, 63, 60, 4, 4);
+				[view, loop, cel, x, y, obj priority, box priority
+
+	AnimateObj( aSign);
+	IgnoreHorizon( aSign);
+	IgnoreBlocks( aSign);
+	IgnoreObjs( aSign);
+	SetView( aSign, vChapelExterior);
+	SetLoop( aSign, 0);
+	Position( aSign, 86, 42);
+	CycleTime( aSign, two);
+	Draw( aSign);
+
+
+	if (previousRoom == rmInsideChapel)
+		{
+		egoX = 93;
+		egoY = 116;
+		SetLoop( ego, FACING_FRONT);
+		Reset( programControl);
+		}
+	else
+		{
+		if (previousRoom == rmDarkAlley)
+			{
+			egoX = 153;
+			egoY = 138;
+			}
+		}
+	PositionV( ego, egoX, egoY);
+	Draw( ego);
+
+	Call( lgcStreet);
+
+	ShowPic( );
+
+	Return( );
+
+	}							[	end initLOG
+
+
+
+Reset( nearDoor);
+if (Posn( ego, 80, 115, 105, 120))
+	{
+	Set( nearDoor);
+	}
+
+Reset( nearFlasher);
+if (Posn( ego, 120, 129, 142, 144))
+	{
+	Set( nearFlasher);
+	Set( nearPerson);
+	}
+
+
+[*****
+:handleInput
+[*****
+
+if (!haveInput)			{goto noInput;}
+
+if ((Said( look) ||
+	Said( look, room) ||
+	Said( look, building) ||
+	Said( look, chapel)))
+	{
+	Print( 1);
+	}
+
+if (Said( look, man))
+	{
+	if (!coatOpen)
+		{
+		Print( 4);
+		}
+	else
+		{
+		Print( 5);
+		}
+	}
+
+if (Said( talk, man, anyword, rol))
+	{
+	Print( 12);
+	}
+
+if (Said( talk, man))
+	{
+	if (!coatOpen)
+		{
+		Print( 6);
+		Print( 7);
+		}
+	else
+		{
+		Print( 8);
+		if (!talkedToFlasher)
+			{
+			Set( talkedToFlasher);
+			currentScore += 1;
+			}
+		}
+	}
+
+if ((Said( get, coat, rol) ||
+	Said( anyword, man, rol)))
+	{
+	Print( 9);
+	}
+
+
+if (Said( look, door))
+	{
+	if (nearTaxi)
+		{
+		Reset( haveMatch);
+		}
+	else
+		{
+		Print( 2);
+		}
+	}
+
+if (Said( open, door))
+	{
+	if (nearTaxi)
+		{
+		Reset( haveMatch);
+		}
+	else
+		{
+		if (!nearDoor)
+			{
+			Set( notCloseEnough);
+			}
+		else
+			{
+			Set( OK);
+			StopMotion( ego);
+			Set( programControl);
+			StartUpdate( aDoor);
+			EndOfLoop( aDoor, doorOpenDone);
+			}
+		}
+	}
+
+if ((Said( look, fence) ||
+	Said( climb, fence) ||
+	Said( climb, over, fence) ||
+	Said( look, over, fence)))
+	{
+	Print( 10);
+	}
+
+
+[*****
+:noInput
+[*****
+
+if (nearFlasher)
+	{
+	if (!coatOpen)
+		{
+		Set( coatOpen);
+		EndOfLoop( aFlasher, done);
+		}
+	}
+else
+	{
+	if (coatOpen)
+		{
+		Reset( coatOpen);
+		BeginningOfLoop( aFlasher, done);
+		}
+	}
+
+
+[*****
+:exit							[	test for leaving the room
+[*****
+
+Call( lgcStreet);
+
+if (doorOpenDone)
+	{
+	Reset( programControl);
+	newRoom = rmInsideChapel;
+	}
+if (edgeEgoHit == LEFT)				{newRoom = rmOutsideCasino;}
+if (edgeEgoHit == RIGHT)				{newRoom = rmDarkAlley;}
+

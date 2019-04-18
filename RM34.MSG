@@ -1,0 +1,147 @@
+[messages for room 34 -- rmInsideChapel
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"You are in a quickie marriage parlor.
+ A flashing neon sign on the rear wall asks:
+ \"Why wait? Marry the girl of your dreams, today!
+ You provide the girl, we'll do the rest for only $100!!\""
+
+%message	2
+"Fawn is waiting for you at the altar. Go for it, Larry!"
+
+%message	3
+"The minister intones in his basso voice..."
+
+%message	4
+"\"Dearly beloved, we are gathered together today in the sight of,
+ er, ah, um... each other,
+ to enter these two people into the eternal bonds of marriage.\""
+
+%message	5
+"\"But before we really get rollin', I'd like to say a few words.\n\n
+Many's the marriage that I've performed here, in this little chapel,
+ wearing this cheap suit, before those shiny plastic-covered pews,
+ with these electric candles,
+ looking at those genuine plexiglas stained-glass windows,
+ for these measly few bucks...\""
+
+%message	6
+"(He pauses for another nip from his pocket flask.)"
+
+%message	7
+"\"Where was I?\" he hiccups."
+
+%message	8
+"\"Digressing,\" you answer."
+
+%message	9
+"\"Oh, well, have you got a ring?\" he asks."
+
+%message	10
+"\"Yep,\" you reply. \"She's wearing it.\""
+
+%message	11
+"\"Good enough for me! Have you got a hundred bucks?\""
+
+%message	12						[	Skip to message 21, if dollars > 100
+"\"Of course,\" you reply, forking over your dough."
+
+%message	13
+"\"Not me,\" you reply. \"I thought this was a temple of love!\""
+
+%message	14
+"\"Sorry, buddy, you two are SOL until you can come back here with
+ 100 cold, hard ones!\" he says indignantly, as he pushes between you
+ and heads for the door."
+
+%message	15
+"Well, Larry, it looks like you're going to have to leave your new bride
+ waiting at the altar, while you generate a little positive cash flow!"
+
+%message	16
+"As you leave, she says, \"Hurry back, Larry, I don't know how long I
+ can wait before I have you!\""
+
+%message	17
+"\"By the way, Larry,\" she asks. \"What does SOL stand for?\""
+
+%message	18
+"\"Why, Sierra On-Line, I presume!\" you respond."
+
+%message	19
+"(Drum fill)"
+
+%message	20
+"\"Wait here, Fawn baby! I'll be back in a flash!!\""
+
+%message	21
+"\"Ok, close enough.
+ I now pronounce you man and wife, till death do you part,
+ or until you get tired of each other,
+ per the currently acceptable social standards!\""
+
+%message	22
+"\"You may kiss the bride,\" he says,
+ scurrying out the door to refill his flask."
+
+%message	23
+"\"Not now; that can wait,\" Fawn says with a smile.
+ \"I'll meet you at the Casino Hotel's honeymoon suite,
+ and give you a lot more than kisses, my big, strong, handsome sweetheart!!\""
+
+%message	24
+"\"Hey!\" you shout, \"Wait for me!!\""
+
+%message	25
+"Somehow this entire ceremony was less than you expected.
+ The sacred bonds of marriage certainly get tied loosely in this joint!"
+
+%message	26
+"It's customary to position yourself to the bride's right."
+
+%message	27
+"\"So... shall we try again?\""
+
+%message	28
+"You can't see through the \"stained glass\" windows.
+ They're fake, like everything else about this place."
+
+%message	29
+"Seems like everything here is covered in plastic."
+
+%message	30
+"The plastic covers are so slick, you'd probably slide right off."
+
+%message	31
+"Perhaps you should find a mate, mate!"
+
+%message	32
+"You can barely tell they're made from pressed sawdust."
+
+%message	33
+"Who'd want them?"
+
+%message	34
+"He looks a lot like his brother,
+ the bad comedian in the Lizard Lounge."
+
+%message	35
+"\"Make up your mind, son. Time is money!\""
+
+%message	36
+"\"Don't stand around talking, Larry,\" says Fawn. \"Let's get married!!\""
+
+%message	37
+"What an old romantic!"
+
+%message	38
+"You wonder why Michelangelo didn't use dropped fluorescents on
+ his big ceiling job."
+
+%message	39
+"It's not your birthday!"
+

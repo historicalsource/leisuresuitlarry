@@ -1,0 +1,437 @@
+[messages for room 2 -- lgcQuestions1
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"Johnny Carson is\n\n
+  a. a singer.\n
+  b. David Letterman's\n
+       sidekick.\n
+  c. Ed McMahon's sidekick.\n
+  d. an actor."
+
+%message	2
+"VCR stands for\n\n
+  a. Very Confusing Record.\n
+  b. Visual Cartridge\n
+       Recording.\n
+  c. Very Complete Record.\n
+  d. Video Cassette Recorder."
+
+%message	3
+"The East Coast is\n\n
+  a. home of the Mets.\n
+  b. a country.\n
+  c. where people talk funny.\n
+  d. adjacent to Texas."
+
+%message	4
+"Is this software pirated?\n\n
+  a. Yes.\n
+  b. I'm not talking.\n
+  c. No. (How could you\n
+       even ask!)\n
+  d. No, just borrowed."
+
+%message	5
+"Pia Zadora is\n\n
+  a. sexy.\n
+  b. a singer.\n
+  c. short.\n
+  d. all of the above."
+
+%message	6
+"The world is\n\n
+  a. flat.\n
+  b. spherical.\n
+  c. a big place.\n
+  d. near Fresno."
+
+%message	7
+"\"Let It Be\" was recorded by\n\n
+  a. the Rolling Stones.\n
+  b. the Monkees.\n
+  c. Creedence Clearwater.\n
+  d. the Beatles."
+
+%message	8
+"All politicians are\n\n
+  a. hardworking.\n
+  b. honest.\n
+  c. ethical.\n
+  d. on the public payroll."
+
+%message	9
+"Lingerie is\n\n
+  a. sexy.\n
+  b. a kind of car.\n
+  c. a French food.\n
+  d. edible."
+
+%message	10
+"Paul, John, Ringo and\n\n
+  a. Fred.\n
+  b. George.\n
+  c. Harry.\n
+  d. me."
+
+%message	11
+"Do girls really have cooties?\n\n
+  a. Yes.\n
+  b. No.\n
+  c. Some do, some don't.\n
+  d. Maybe."
+
+%message	12
+"Which song was not recorded by Elvis?\n\n
+  a. \"Hound Dog\"\n
+  b. \"Love Me Tender\"\n
+  c. \"What'd I Say\"\n
+  d. \"Heartbreak Hotel\""
+
+%message	13
+"Edsel is a\n\n
+  a. girl's name.\n
+  b. plane.\n
+  c. car.\n
+  d. great investment."
+
+%message	14
+"Sex is\n\n
+  a. great.\n
+  b. ok.\n
+  c. a spectator sport.\n
+  d. a mystery to me."
+
+%message	15
+"Richard Nixon was the _____ President of the United States.\n\n
+  a. last\n
+  b. funniest\n
+  c. thirty-seventh\n
+  d. first Negro"
+
+%message	16
+"During the 70's, Carroll O'Connor portrayed a\n\n
+  a. kindly doctor.\n
+  b. lovable bigot.\n
+  c. handicapped lawyer.\n
+  d. Negro junk dealer."
+
+%message	17
+"The song \"American Pie\" was about\n\n
+  a. miscegenation.\n
+  b. Marilyn Chambers.\n
+  c. a dead rock star.\n
+  d. four minutes too long."
+
+%message	18
+"Thomas Eagleton was dropped from the 1972 Democratic National Ticket
+ when knowledge of his previous _____ treatments became known.\n\n
+  a. skin\n
+  b. screen\n
+  c. shock\n
+  d. scalp"
+
+%message	19
+"The 70's practice of running around naked was called\n\n
+  a. flashing.\n
+  b. streaking.\n
+  c. swinging.\n
+  d. on account of rain."
+
+%message	20
+"Peter Benchley's novel \"Jaws\" was about\n\n
+  a. Linda Lovelace.\n
+  b. dieting.\n
+  c. Joan Rivers.\n
+  d. sharks."
+
+%message	21
+"Who was not Vice-President of the United States in 1973-74?\n\n
+  a. Gerald Ford\n
+  b. Nelson Rockefeller\n
+  c. Thomas Hayden\n
+  d. Spiro Agnew"
+
+%message	22
+"The \"Chicago Seven\" was\n\n
+  a. some people who only\n
+       seem crazy in\n
+       retrospect.\n
+  b. the Bears' defensive\n
+       line.\n
+  c. burned for showing\n
+       \"Country\" in three\n
+       different theatres.\n
+  d. partially convicted."
+
+%message	23
+"President Ford prescribed _____ for dealing with economic problems.\n\n
+  a. tranquilizers\n
+  b. employment\n
+  c. that everyone wear a\n
+       WIN button\n
+  d. that everyone should\n
+       have a nice day"
+
+%message	24
+"The tackiest seventies fashion was\n\n
+  a. platform shoes.\n
+  b. midi-skirts.\n
+  c. short hair.\n
+  d. bisexuality."
+
+%message	25
+"O. J. Simpson is\n\n
+  a. an R & B singer.\n
+  b. under indictment.\n
+  c. embarrassed by his first\n
+       name (Olivia).\n
+  d. no one to fool with."
+
+%message	26
+"Angela Davis is\n\n
+  a. the middle Pointer\n
+       Sister.\n
+  b. a failed politician.\n
+  c. an example of split ends\n
+       gone wild.\n
+  d. Bette's daughter."
+
+%message	27
+"Detente is\n\n
+  a. prohibited by law in\n
+       41 states.\n
+  b. a feminine hygiene\n
+       spray.\n
+  c. the masculine form of\n
+       \"deteuse.\"\n
+  d. a policy to replace war."
+
+%message	28
+"Kwi-Chang-Caine became famous by saying\n\n
+  a. \"I am not a crook.\"\n
+  b. \"The barren fig tree\n
+        bears no plums.\"\n
+  c. \"Hi, sailor.\
+        New in town?\"\n
+  d. \"Aaaaaiiiyeeeaagggh!\""
+
+%message	29
+"Ted Kennedy is best remem- bered for his\n\n
+  a. driving.\n
+  b. underwater free-style.\n
+  c. brothers.\n
+  d. All of the above."
+
+%message	30
+"\"NORML\" is\n\n
+  a. not gay.\n
+  b. what Falwell wants you\n
+       to be.\n
+  c. trying to legalize\n
+       marijuana.\n
+  d. misspelled."
+
+%message	31
+"Tom Hayden is\n\n
+  a. one of the Chicago\n
+       Seven.\n
+  b. a U. S. Congressman.\n
+  c. Mr. Jane Fonda.\n
+  d. All of the above."
+
+%message	32
+"Spiro Agnew is\n\n
+  a. a form of social\n
+       disease.\n
+  b. a jazz-fusion rock band.\n
+  c. a former Vice President.\n
+  d. the first woman in\n
+       Congress."
+
+%message	33
+"The germ that transmits syphilis is\n\n
+  a. Spiro Agnew.\n
+  b. Spirochete.\n
+  c. Spirograph.\n
+  d. Barbarella."
+
+%message	34
+"Kookie's address was\n\n
+  a. 77 Sunset Strip.\n
+  b. on Wistful Vista Street.\n
+  c. 334 Elm Street.\n
+  d. 1313 Mockingbird Lane."
+
+%message	35
+"\"Who knows what evil lurks in the hearts of men?\"\n\n
+  a. The Psychiatrist\n
+  b. The Shadow\n
+  c. The Creeper\n
+  d. Ingmar Bergman"
+
+%message	36
+"Al Lowe is:\n\n
+  a. under 25.\n
+  b. pregnant.\n
+  c. never \"carded.\"\n
+  d. a Woody Allen\n
+       impersonator."
+
+%message	37
+"Frank Sinatra is a\n\n
+  a. female impersonator.\n
+  b. shy pacifist.\n
+  c. saloon singer.\n
+  d. distance runner."
+
+%message	38
+"Ralph Boysen invented\n\n
+  a. the boysenberry.\n
+  b. fins on 50's cars.\n
+  c. bell bottomed jeans.\n
+  d. the juke box."
+
+%message	39
+"The first man on the moon was\n\n
+  a. John Glenn.\n
+  b. Neil Diamond.\n
+  c. Neil Armstrong.\n
+  d. Jack Armstrong."
+
+%message	40	
+"\"Gone With The Wind\" is about\n\n
+  a. outer space.\n
+  b. a bank robbery.\n
+  c. four hours long.\n
+  d. dust."
+
+%message	41
+"Who is not a sportscaster?\n\n
+  a. Jayne Kennedy\n
+  b. Howard Cosell\n
+  c. Jayne Mansfield\n
+  d. Frank Gifford"
+
+%message	42
+"Which is not a wine?\n\n
+  a. Colombard\n
+  b. Bon Aire\n
+  c. Cabernet\n
+  d. Muscatel"
+
+%message	43
+"Which is not a mountain range?\n\n
+  a. Cayman\n
+  b. Appalachian\n
+  c. Rockies\n
+  d. Himalayas"
+
+%message	44
+"In the movie, \"Paint Your Wagon,\" Clint Eastwood sang\n\n
+  a. \"I Talk to the Trees\"\n
+  b. \"Go Ahead, Make My\n
+       Wagon\"\n
+  c. \"If I Had A Mayor\"\n
+  d. None of the above."
+
+%message	45
+"The drink \"Screwdriver\" contains\n\n
+  a. tomato juice.\n
+  b. orange juice.\n
+  c. grapefruit juice.\n
+  d. borax."
+
+%message	46
+"Ronald Reagan's co-star in \"Bedtime for Bonzo\" was\n\n
+  a. a monkey.\n
+  b. Peter O'Toole.\n
+  c. Bonzo the Clown.\n
+  d. Marilyn Monroe."
+
+%message	47
+"The slogan \"It takes two hands to handle a whopper\" refers to\n\n
+  a. John Holmes.\n
+  b. a hamburger.\n
+  c. overstuffed grocery\n
+       bags.\n
+  d. fishing."
+
+%message	48
+"If you arrived at a party wearing your birthday suit, you would\n\n
+  a. make many new friends.\n
+  b. be thrown out.\n
+  c. fit right in.\n
+  d. It depends on the party."
+
+%message	49
+"Cesar Chavez led a boycott of\n\n
+  a. grapes.\n
+  b. X-rated movies.\n
+  c. dirty magazines.\n
+  d. goods from South Africa."
+
+%message	50
+"James Brown is often referred to as\n\n
+  a. the Chairman of the\n
+       Board.\n
+  b. a great athlete.\n
+  c. the Velvet Fog.\n
+  d. the Godfather of Soul."
+
+%message	51
+"Who lost a daughter but gained a \"meathead?\"\n\n
+  a. George Jefferson\n
+  b. Ronald Reagan\n
+  c. Archie Bunker\n
+  d. Ted Knight"
+
+%message	52
+"Which U. S. Secretary of State was born in Germany?\n\n
+  a. Dean Rusk\n
+  b. William Rogers\n
+  c. George Schultz\n
+  d. Henry Kissinger"
+
+%message	53
+"Who was the inventive genius behind the Apple computer?\n\n
+  a. Bill Gates\n
+  b. Steve Wozniak\n
+  c. Ken Williams\n
+  d. Steve Russell"
+
+
+
+
+%message	60
+"Dynamic logic = 2."
+
+%message	61
+"a"
+
+%message	62
+"b"
+
+%message	63
+"c"
+
+%message	64
+"d"
+
+%message	65
+"So far, so good.\n\n
+Now for the final question."
+
+%message	66
+"Question #%v96. Correct answer is %v93."
+
+%message	67
+"Please answer a, b, c, or d: "
+
+%message	69
+"So far, so good.\n\n
+Now for the final question."
+

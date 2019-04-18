@@ -1,0 +1,952 @@
+[logics for room 45 -- rmBedroom
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm45.msg"
+%include	"gamedefs.h"
+%include	"iv_views.h"
+%include	"contrlrs.h"
+
+
+
+%define	doorDone				lf0
+%define	nearCloset			lf1
+%define	closetOpen			lf2
+%define	inCloset				lf3
+%define	burst1Done			lf4
+%define	burst2Done			lf5
+%define	burst3Done			lf6
+%define	burst4Done			lf7
+%define	eveHere				lf8
+%define	lookingAtCloseup		lf9
+%define	dollDone				lf10
+%define	burst1InPlace			lf11
+%define	burst2InPlace			lf12
+%define	burst3InPlace			lf13
+%define	burst4InPlace			lf14
+%define	readPreventionMessage	lf15
+%define	nearBed				lf16
+%define	dollInflated			lf17
+%define	cutToLongShot			lf18
+%define	dollOnScreen			lf19
+%define	dollSoundDone			lf20
+
+
+%define	closeupLineTimer		lv0
+%define	burst1Cycles			lv1
+%define	burst2Cycles			lv2
+%define	burst3Cycles			lv3
+%define	burst4Cycles			lv4
+%define	dollPicture			lv5
+%define	fireworksPicture		lv6
+%define	action				lv7
+
+
+%object	aBurst1				1
+%object	aBurst2				2
+%object	aBurst3				3
+%object	aBurst4				4
+%object	aDoor				5
+%object	aEve					6
+%object	aDoll				7
+%object	aKen					8
+
+
+
+if (initLog)
+	{
+	LoadPic( currentRoom);
+	DrawPic( currentRoom);
+	[	DON'T DiscardPic( currentRoom);, we'll need it either way.
+
+
+	if (currentStatus == FOLLOWING_EVE)
+		{
+		Set( eveHere);
+
+		fireworksPicture = picBlack;
+		LoadPic( fireworksPicture);
+
+		LoadView( vEve);
+		LoadView( vEgoWearingTowel);
+		LoadView( vEgo);
+		LoadView( vFireworks);
+		LoadView( vKen);
+		LoadSound( mWinner);
+
+
+		AnimateObj( aEve);
+		IgnoreBlocks( aEve);
+		SetView( aEve, vEve);
+		SetLoop( aEve, L_SITTING_ON_BED);
+		Position( aEve, 55, 116);
+		Draw( aEve);
+		CycleTime( aEve, three);
+
+		SetView( ego, vEgoWearingTowel);
+		MoveObj( ego, 48, 121, 1, scriptDone);
+		}
+	else
+		{
+		if (ObjInRoom( iDoll, currentRoom))
+			{
+			dollPicture = picDollCloseup;
+			LoadPic( dollPicture);
+
+			LoadView( vDollDeflating);
+			LoadSound( sDollDeflating);
+			}
+		}
+
+
+	LoadView( vBedroomDoors);
+	LoadView( vEgoSittingOnBed);
+
+
+	AnimateObj( aDoor);
+	IgnoreBlocks( aDoor);
+	IgnoreObjs( aDoor);
+	SetView( aDoor, vBedroomDoors);
+	SetCel( aDoor, 0);
+	SetPriority( aDoor, 10);
+	Position( aDoor, 117, 130);
+	Draw( aDoor);
+	work = DOOR_CYCLE_TIME;
+	CycleTime( aDoor, work);
+	StopUpdate( aDoor);
+
+	Position( ego, 20, 135);
+	Draw( ego);
+
+	ShowPic( );
+
+	Return( );
+
+	}							[	end initLOG
+
+
+
+Reset( nearCloset);
+if (Posn( ego, 105, 121, 117, 136))
+	{
+	Set( nearCloset);
+	}
+
+Reset( inCloset);
+if (Posn( ego, 117, 121, 129, 131))
+	{
+	Set( inCloset);
+	}
+
+Reset( nearBed);
+if (Posn( ego, 56, 123, 86, 138))		[	123 because he's above bed when
+	{							[	sitting on the bed
+	Set( nearBed);
+	}
+
+if (closetOpen && nearCloset)
+	{
+	IgnoreBlocks( ego);
+	}
+else
+	{
+	if (inCloset)
+		{
+		IgnoreBlocks( ego);
+		}
+	else
+		{
+		ObserveBlocks( ego);
+		}
+	}
+
+
+[*****
+:handleInput
+[*****
+
+if (!haveInput)				{goto noInput;}
+
+if (Said( look, painting))
+	{
+	Print( 22);
+	}
+
+if (Said( look, behind, painting))
+	{
+	Print( 43);
+	}
+
+if (Said( look, bed))
+	{
+	Print( 23);
+	}
+
+if (Said( look, under, bed))
+	{
+	Print( 41);
+	Print( 42);
+	}
+
+if ((Said( sit, on, bed) ||
+	Said( sit) ||
+	Said( sit, bed)))
+	{
+	Print( 38);
+	}
+
+if ((Said( look) ||
+	Said( look, room) ||
+	Said( look, closet) ||
+	Said( look, bedroom)))
+	{
+	if (!inCloset)
+		{
+		Print( 1);
+		}
+	else							[	He's in the closet.
+		{
+		if (ObjInRoom( iDoll, currentRoom))
+			{
+			Print( 12);
+			}
+		else
+			{
+			Print( 13);
+			}
+		}
+	}
+
+
+
+[	Ibsen was never like this:
+
+if  (readPreventionMessage &&
+	Said( yes))
+	{
+	goto patch1;
+	}
+
+if ((Said( use, doll) ||
+	Said( abuse, doll) ||
+	Said( put, dong, doll) ||
+	Said( put, dong, doll, mouth) ||
+	Said( put, dong, mouth) ||
+	Said( sixtynine, doll) ||
+	Said( make, doll, suck$me) ||
+	Said( make, doll, give, suck$me) ||
+	Said( butt, hump, rol) ||
+	Said( anyword, butt, hump, rol) ||
+	Said( anyword, butt, rol) ||
+	Said( butt, rol) ||
+	Said( anyword, blow$job, rol) ||
+	Said( anyword, pussy, rol) ||
+	Said( anyword, anyword, pussy, rol) ||
+	Said( blow$job, rol) ||
+	Said( anyword, hump, rol) ||
+	Said( hump, doll)))
+	{
+	if (!Has( iDoll))
+		{
+		Set( dontHaveIt);
+		}
+	else
+		{
+		if (!dollInflated)
+			{
+			Print( 29);
+			}
+		else
+			{
+			if (!readPreventionMessage)
+				{
+				Print( 3);
+				Set( readPreventionMessage);
+				}
+			else
+				{
+				:patch1;
+				Print( 8);
+				Print( 10);
+				action = 3;
+				currentScore += 8;
+				Set( cutToLongShot);
+				}
+			}
+		}
+	}
+
+if (Said( show, doll))
+	{
+	if (!Has( iDoll))
+		{
+		Set( dontHaveIt);
+		}
+	else
+		{
+		if (!dollInflated)
+			{
+			ShowObj( ivDoll);
+			}
+		else
+			{
+			if (lookingAtCloseup)
+				{
+				Print( 18);
+				}
+			else
+				{
+				action = 6;
+				}
+
+			}
+		}
+	}
+
+if (Said( inflate, doll))
+	{
+	if (!Has( iDoll))
+		{
+		Set( dontHaveIt);
+		}
+	else
+		{
+		action = 6;
+		}
+	}
+
+
+
+[	Handle the closet, and taking the doll.
+
+if ((Said( open, door) ||
+	Said( open, closet)))
+	{
+	if (closetOpen)
+		{
+		Print( 5);
+		}
+	else
+		{
+		if (!nearCloset)
+			{
+			Print( 19);
+			}
+		else
+			{
+			action = 4;
+			}
+		}
+	}
+
+if ((Said( close, door) ||
+	Said( close, closet)))
+	{
+	if (inCloset)
+		{
+		Print( 2);
+		}
+	else
+		{
+		if (!closetOpen)
+			{
+			Print( 6);
+			}
+		else
+			{
+			if (!nearCloset)
+				{
+				Set( notCloseEnough);
+				}
+			else
+				{
+				if (egoX > 111)
+					{
+					Print( 20);
+					}
+				else
+					{
+					action = 5;
+					}
+				}
+			}
+		}
+	}
+
+
+if ((Said( look, closet) ||
+	Said( look$in, closet)))
+	{
+	if (!closetOpen)
+		{
+		Print( 15);
+		}
+	else
+		{
+		if (!inCloset)
+			{
+			Print( 31);
+			}
+		else
+			{
+			if (ObjInRoom( iDoll, currentRoom))
+				{
+				Print( 12);
+				}
+			else
+				{
+				Print( 13);
+				}
+			}
+		}
+	}
+
+if (Said( get, doll))
+	{
+	if (Has( iDoll))
+		{
+		Print( 37);
+		}
+	else
+		{
+		if (!inCloset)
+			{
+			Print( 7);
+			}
+		else
+			{
+			if (!ObjInRoom( iDoll, currentRoom))
+				{
+				Print( 11);
+				}
+			else
+				{
+				Get( iDoll);
+				currentScore += 5;
+				Print( 9);
+				}
+			}
+		}
+	}
+
+
+
+if (lookingAtCloseup)
+	{
+	if ((Said( stop, looking, doll) ||
+		Said( look, room, rol) ||
+		Said( look, closet, rol)))
+		{
+		Print( 35);
+		Set( cutToLongShot);
+		}
+
+	if ((Said( masturbate, rol) ||
+		Said( anyword, masturbate, rol)))
+		{
+		Print( 44);
+		}
+
+	if ((Said( deflate, doll, rol) ||
+		Said( anyword, deflate, doll, rol) ||
+		Said( put, doll, away) ||
+		Said( damn)))
+		{
+		Print( 28);
+		Set( cutToLongShot);
+		}
+
+	if ((Said( look, doll) ||
+		Said( talk, doll) ||
+		Said( smile) ||
+		Said( smile, doll) ||
+		Said( hold, hand) ||
+		Said( take, her, hand) ||
+		Said( touch, doll) ||
+		Said( touch, her) ||
+		Said( ask, date) ||
+		Said( look, eyes) ||
+		Said( look$in, eyes) ||
+		Said( flirt, with, her) ||
+		Said( wink, doll) ||
+		Said( give, doll, kiss) ||
+		Said( kiss, doll) ||
+		Said( look, her, hair) ||
+		Said( look, hair) ||
+		Said( stroke, hair) ||
+		Said( rub, hair) ||
+		Said( rub, her, hair) ||
+		Said( ask, name) ||
+		Said( ask, her, name) ||
+		Said( ask, name, doll) ||
+		Said( larry) ||
+		Said( leisure$suit, larry) ||
+		Said( look, mouth) ||
+		Said( look, her, mouth) ||
+		Said( doll, marry, me) ||
+		Said( marry, me) ||
+		Said( marry, doll) ||
+		Said( ask, doll, get, married) ||
+		Said( ask, doll, marry, me) ||
+		Said( talk, about, marriage) ||
+		Said( put, ring, on, her, finger) ||
+		Said( propose, her) ||
+		Said( talk, her, love) ||
+		Said( love, you) ||
+		Said( take, her, hand) ||
+		Said( grab, doll) ||
+		Said( feel, doll) ||
+		Said( lick, doll) ||
+		Said( touch, doll, under, table) ||
+		Said( grab, leg) ||
+		Said( touch, leg) ||
+		Said( feel, her, leg) ||
+		Said( grab, her, leg) ||
+		Said( look, doll, boobs) ||
+		Said( look, boobs, rol) ||
+		Said( look, body) ||
+		Said( stare) ||
+		Said( stare, boobs) ||
+		Said( undress, her) ||
+		Said( ask, doll, for, sex) ||
+		Said( have, sex, with, me) ||
+		Said( hump, rol) ||
+		Said( make, doll) ||
+		Said( anyword, pussy, rol) ||
+		Said( lick, her, she, screams) ||
+		Said( anyword, boobs, rol) ||
+		Said( play, with, her, boobs) ||
+		Said( grab, boobs) ||
+		Said( fondle, breasts) ||
+		Said( come, with, me)))
+		{
+		Print( 34);
+		}
+	}
+
+
+
+[*****
+:noInput
+[*****
+
+if (Controller( cShowObj) &&
+	selectedObject == 113)
+	{
+	if (dollInflated)
+		{
+		Print( 45);
+		}
+	else
+		{
+		action = 6;
+		}
+	}
+
+if (!lookingAtCloseup &&
+	egoX < 122 &&
+	Has( iDoll))
+	{
+	Print( 14);
+	action = 3;
+	}
+
+if (aSecondPassed)
+	{
+	--closeupLineTimer;
+	if (closeupLineTimer == 1 &&
+		lookingAtCloseup)
+		{
+		Print( 17);
+		}
+	}
+
+
+if (scriptDone)
+	{
+	Reset( scriptDone);
+	++script;
+
+	if (script == 1)
+		{
+		scriptTimer = 3;
+		}
+
+	if (script == 2)
+		{
+		UnanimateAll();
+
+		DrawPic( fireworksPicture);
+		ShowPic();
+		Set( musicDone);
+
+
+		AnimateObj( aBurst1);
+		IgnoreObjs( aBurst1);
+		SetView( aBurst1, vFireworks);
+		FixLoop( aBurst1);
+
+		AnimateObj( aBurst2);
+		IgnoreObjs( aBurst2);
+		SetView( aBurst2, vFireworks);
+		FixLoop( aBurst2);
+
+		AnimateObj( aBurst3);
+		IgnoreObjs( aBurst3);
+		SetView( aBurst3, vFireworks);
+		FixLoop( aBurst3);
+
+		AnimateObj( aBurst4);
+		IgnoreObjs( aBurst4);
+		SetView( aBurst4, vFireworks);
+		FixLoop( aBurst4);
+
+		step = 12;
+		Random( 5, 9, burst1Cycles);
+		Random( 2, 5, burst2Cycles);
+		Random( 3, 6, burst3Cycles);
+		Random( 4, 11, burst4Cycles);
+
+		scriptTimer = 7;
+		currentScore += 25;
+		}
+
+
+	if (script == 3)
+		{
+		Print( 24);
+		scriptTimer = 4;
+		}
+
+	if (script == 4)
+		{
+		Print( 25);
+		scriptCycles = 11;
+		}
+
+	if (script == 5)
+		{
+		Print( 46);
+
+		AnimateObj( aKen);
+		IgnoreObjs( aKen);
+		SetView( aKen, vKen);
+		SetLoop( aKen, FACING_RIGHT);
+		Position( aKen, 0, 166);
+		Draw( aKen);
+		MoveObj( aKen, 66, 166, 1, scriptDone);
+		}
+
+	if (script == 6)
+		{
+		SetLoop( aKen, FACING_FRONT);
+		scriptTimer = 4;
+		}
+
+	if (script == 7)
+		{
+		Print( 26);
+		MoveObj( aKen, 151, 166, 1, scriptDone);
+		}
+
+	if (script == 8)
+		{
+		Erase( aKen);
+		Print( 27);
+		scriptTimer = 4;
+		}
+
+	if (script == 9)
+		{
+		Print( 32);
+		scriptTimer = 4;
+		}
+
+	if (script == 10)
+		{
+		Print( 33);
+		Print( 30);
+		Print( 36);
+		Quit( 1);
+		}
+
+
+	if (script == 101)
+		{
+		SetView( ego, vEgo);
+		StartCycling( ego);
+		MoveObj( ego, 110, 131, 1, scriptDone);
+		}
+
+	if (script == 102)
+		{
+		MoveObj( ego, 107, 134, 1, scriptDone);
+		}
+
+	if (script == 103)
+		{
+		MoveObj( ego, 17, 134, 1, scriptDone);
+		}
+
+	if (script == 104)
+		{
+		Reset( handsOff);
+		newRoom = rmLivingRoom;
+		}
+	}
+
+
+if (doorDone)
+	{
+	Reset( doorDone);
+	StopUpdate( aDoor);
+	}
+
+--burst1Cycles;
+if (burst1Cycles == 1)
+	{
+	Random( 0, 3, loop);
+	SetLoopV( aBurst1, loop);
+	SetCel( aBurst1, 0);
+	StopCycling( aBurst1);
+
+	Random( 0, 150, x);
+	Random( 120, 167, y);
+	PositionV( aBurst1, x, y);
+	Draw( aBurst1);
+
+	Random( 40, 110, y);
+	MoveObjV( aBurst1, x, y, step, burst1InPlace);
+	}
+
+if (burst1InPlace)
+	{
+	Reset(burst1InPlace);
+	EndOfLoop( aBurst1, burst1Done);
+	}
+
+if (burst1Done)
+	{
+	Reset( burst1Done);
+	Erase( aBurst1);
+	Random( 2, 7, burst1Cycles);
+	}
+
+
+--burst2Cycles;
+if (burst2Cycles == 1)
+	{
+	Random( 0, 3, loop);
+	SetLoopV( aBurst2, loop);
+	SetCel( aBurst2, 0);
+	StopCycling( aBurst2);
+
+	Random( 0, 150, x);
+	Random( 120, 167, y);
+	PositionV( aBurst2, x, y);
+	Draw( aBurst2);
+
+	Random( 40, 110, y);
+	MoveObjV( aBurst2, x, y, step, burst2InPlace);
+	}
+
+if (burst2InPlace)
+	{
+	Reset(burst2InPlace);
+	EndOfLoop( aBurst2, burst2Done);
+	}
+
+if (burst2Done)
+	{
+	Reset( burst2Done);
+	Erase( aBurst2);
+	Random( 2, 7, burst2Cycles);
+	}
+
+
+--burst3Cycles;
+if (burst3Cycles == 1)
+	{
+	Random( 0, 3, loop);
+	SetLoopV( aBurst3, loop);
+	SetCel( aBurst3, 0);
+	StopCycling( aBurst3);
+
+	Random( 0, 150, x);
+	Random( 120, 167, y);
+	PositionV( aBurst3, x, y);
+	Draw( aBurst3);
+
+	Random( 40, 110, y);
+	MoveObjV( aBurst3, x, y, step, burst3InPlace);
+	}
+
+if (burst3InPlace)
+	{
+	Reset(burst3InPlace);
+	EndOfLoop( aBurst3, burst3Done);
+	}
+
+if (burst3Done)
+	{
+	Reset( burst3Done);
+	Erase( aBurst3);
+	Random( 2, 7, burst3Cycles);
+	}
+
+
+--burst4Cycles;
+if (burst4Cycles == 1)
+	{
+	Random( 0, 3, loop);
+	SetLoopV( aBurst4, loop);
+	SetCel( aBurst4, 0);
+	StopCycling( aBurst4);
+
+	Random( 0, 150, x);
+	Random( 120, 167, y);
+	PositionV( aBurst4, x, y);
+	Draw( aBurst4);
+
+	Random( 40, 110, y);
+	MoveObjV( aBurst4, x, y, step, burst4InPlace);
+	}
+
+if (burst4InPlace)
+	{
+	Reset(burst4InPlace);
+	EndOfLoop( aBurst4, burst4Done);
+	}
+
+if (burst4Done)
+	{
+	Reset( burst4Done);
+	Erase( aBurst4);
+	Random( 2, 7, burst4Cycles);
+	}
+
+
+if (dollDone)
+	{
+	Reset( dollDone);
+	Erase( aDoll);
+	Reset( dollOnScreen);
+	Print( 21);
+	}
+
+
+if (cutToLongShot)
+	{
+	Reset( cutToLongShot);
+	Reset( lookingAtCloseup);
+	UnanimateAll();
+
+	DrawPic( currentRoom);
+
+	AnimateObj( ego);
+	Draw( ego);
+
+	AnimateObj( aDoor);
+	IgnoreBlocks( aDoor);
+	IgnoreObjs( aDoor);
+	SetPriority( aDoor, 10);
+	work = DOOR_CYCLE_TIME;
+	CycleTime( aDoor, work);
+	Draw( aDoor);
+	StopUpdate( aDoor);
+
+	ShowPic();
+	}
+
+
+if (action)
+	{
+	if (action == 3)
+		{
+		Drop( iDoll);
+
+		Set( programControl);
+		PreventInput();
+		StopMotion( ego);
+		Set( handsOff);
+		currentStatus = CHASING_DOLL;
+
+		Reset( keepCycling);
+		Reset( noCycling);
+		script = 100;
+		scriptCycles = 13;
+
+		AnimateObj( aDoll);
+		IgnoreHorizon( aDoll);
+		IgnoreBlocks( aDoll);
+		IgnoreObjs( aDoll);
+		SetView( aDoll, vDollDeflating);
+		SetPriority( aDoll, 11);
+		Position( aDoll, 116, 100);
+		Draw( aDoll);
+		Set( dollOnScreen);
+		MoveObj( aDoll, 0, 100, 2, dollDone);
+		Set( dollSoundDone);
+		}
+
+	if (action == 4)
+		{
+		Set( OK);
+		Set( closetOpen);
+		StartUpdate( aDoor);
+		EndOfLoop( aDoor, doorDone);
+		}
+
+	if (action == 5)
+		{
+		Set( OK);
+		Reset( closetOpen);
+		StartUpdate( aDoor);
+		BeginningOfLoop( aDoor, doorDone);
+		}
+
+	if (action == 6)
+		{
+		if (!dollInflated)
+			{
+			Set( dollInflated);
+			Print( 16);
+			closeupLineTimer = 6;
+			if (!inflatedDoll)
+				{
+				Set( inflatedDoll);
+				currentScore += 5;
+				}
+			}
+
+		UnanimateAll();
+
+		DrawPic( dollPicture);
+		ShowPic();
+		
+		Set( lookingAtCloseup);
+		}
+
+	action = 0;
+	}
+
+if (dollSoundDone && dollOnScreen)
+	{
+	Sound( sDollDeflating, dollSoundDone);
+	}
+
+if (musicDone)
+	{
+	Sound( mWinner, musicDone);
+	}
+
+
+
+[*****
+:exit							[	test for leaving the room
+[*****
+
+if (edgeEgoHit == LEFT)
+	{
+	newRoom = rmLivingRoom;
+	}

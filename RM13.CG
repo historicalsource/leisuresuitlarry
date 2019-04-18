@@ -1,0 +1,631 @@
+[logics for room 13 -- rmToilet
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm13.msg"
+%include	"gamedefs.h"
+
+
+
+%define	WATER_CYCLE			8
+
+%define	nearToilet			lf0
+%define	toiletOverflowing		lf2
+%define	doorOpenDone			lf4
+%define	doorCloseDone			lf7
+%define	nearDoor				lf8
+%define	nearSink				lf9
+%define	paperCycling			lf10
+
+%define	waterY				lv0
+%define	waterCycle			lv1
+%define	toiletTimer			lv2
+%define	pissTimer				lv3
+%define	graffitiCount			lv4
+%define	paperCycles			lv5
+
+%object	aDoor				1
+%object	aFountain				2
+%object	aRing				3
+
+
+
+if (initLog)
+	{
+	LoadView( vEgoOnToilet);
+	LoadView( vToiletOverflowing);
+	LoadView( vToiletFountain);
+	LoadView( vToiletDoor);
+	LoadView( vRing);
+	LoadView( vEgoDrowning);
+
+	LoadSound( sPissing);
+	LoadSound( sFart);
+
+
+	LoadPic( currentRoom);
+	DrawPic( currentRoom);
+	DiscardPic( currentRoom);
+
+	AnimateObj( aDoor);
+	IgnoreHorizon( aDoor);
+	IgnoreBlocks( aDoor);
+	IgnoreObjs( aDoor);
+	Position( aDoor, 52, 137);
+	SetView( aDoor, vToiletDoor);
+	LastCel( aDoor, work);
+	SetCelV( aDoor, work);
+	SetPriority( aDoor, 10);
+	work = DOOR_CYCLE_TIME;
+	CycleTime( aDoor, work);
+	Draw( aDoor);
+	BeginningOfLoop( aDoor, doorCloseDone);
+
+	AnimateObj( aFountain);
+	IgnoreHorizon( aFountain);
+	IgnoreBlocks( aFountain);
+	IgnoreObjs( aFountain);
+	Position( aFountain, 71, 123);
+	SetView( aFountain, vToiletFountain);
+	SetPriority( aFountain, 6);
+
+
+	if (ObjInRoom( iRing, currentRoom))
+		{
+		AnimateObj( aRing);
+		IgnoreBlocks( aRing);
+		IgnoreObjs( aRing);
+		SetView( aRing, vRing);
+		SetPriority( aRing, 12);
+		Position( aRing, 101, 116);
+		Draw( aRing);
+		StopUpdate( aRing);
+		}
+
+	Set( programControl);
+	StopMotion( ego);
+	Position( ego, 56, 136);
+	Draw( ego);
+
+	ShowPic( );
+
+	Return( );
+
+	}							[	end initLOG
+
+
+
+Reset( nearDoor);
+if (Posn( ego, 50, 132, 60, 140))
+	{
+	Set( nearDoor);
+	}
+
+Reset( nearSink);
+if (Posn( ego, 89, 129, 110, 160))
+	{
+	Set( nearSink);
+	}
+
+Reset( nearToilet);
+if (Posn( ego, 65, 125, 84, 131))
+	{
+	Set( nearToilet);
+	}
+
+
+[*****
+:handleInput
+[*****
+
+if (!haveInput)			{goto noInput;}
+
+if ((Said( look) ||
+	Said( look, room)))
+	{
+	Print( 1);
+	}
+
+if ((Said( take, ring) ||
+	Said( take, ring, from, sink) ||
+	Said( take, ring, sink)))
+	{
+	if (!nearSink)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		if (!ObjInRoom( iRing, currentRoom))
+			{
+			Set( alreadyGotIt);
+			}
+		else
+			{
+			StartUpdate( aRing);
+			Erase( aRing);
+			Get( iRing);
+			currentScore += 3;
+			Print( 13);
+			}
+		}
+	}
+
+
+if ((Said( look$in, sink) ||
+	Said( look, sink)))
+	{
+	if (!nearSink)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		if (!ObjInRoom( iRing, currentRoom))
+			{
+			Print( 14);
+			Print( 15);
+			}
+		else
+			{
+			Print( 12);
+			}
+		}
+	}
+
+[	Handle finding the ring and the graffiti.
+
+if (Said( look, wall))
+	{
+	++graffitiCount;
+	if (graffitiCount == 1)
+		{
+		Print( 2);
+		}
+
+	if (graffitiCount == 2)
+		{
+		Print( 4);
+		}
+
+	if (graffitiCount == 3)
+		{
+		Print( 5);
+		}
+
+	if (graffitiCount > 3)
+		{
+		Print( 17);
+		if (!knowsPassword)
+			{
+			Set( knowsPassword);
+			currentScore += 2;
+			}
+		}
+	}
+
+if (Said( smell, rol))
+	{
+	Print( 39);
+	}
+
+[	Handle ego dumping.
+
+if ((Said( get, up) ||
+	Said( leave) ||
+	Said( stop, crap) ||
+	Said( get, paper) ||
+	Said( use, paper) ||
+	Said( get, toilet, paper) ||
+	Said( use, toilet, paper) ||
+	Said( wipe) ||
+	Said( wipe, ass) ||
+	Said( stand, up) ||
+	Said( stand)))
+	{
+	if (currentStatus != ON_TOILET)
+		{
+		Print( 7);
+		}
+	else
+		{
+		Print( 29);
+		Set( toiletPaperOnShoe);
+		currentStatus = NORMAL;
+		SetView( ego, vEgo);
+		CycleTime( ego, one);
+		ForceUpdate( ego);
+		StartMotion( ego);
+		Reset( programControl);
+		Reset( keepCycling);
+		toiletTimer = 0;
+		paperCycles = 0;
+		Return();
+		}
+	}
+
+if (currentStatus == ON_TOILET &&
+	!haveMatch)
+	{
+	Set( haveMatch);
+	Print( 7);
+	}
+
+if ((Said( take, crap) ||
+	Said( sit, toilet) ||
+	Said( sit, stool) ||
+	Said( sit, on, toilet) ||
+	Said( sit, on, stool) ||
+	Said( go, toilet) ||
+	Said( use, toilet) ||
+	Said( sit) ||
+	Said( crap)))
+	{
+	if (currentStatus != NORMAL)
+		{
+		Print( 7);
+		}
+	else
+		{
+		if (!nearToilet)
+			{
+			Set( notCloseEnough);				
+			}
+		else
+			{
+			currentStatus = ON_TOILET;
+			SetView( ego, vEgoOnToilet);
+			RepositionTo( ego, 72, 126);
+			Set( programControl);
+			Set( keepCycling);
+			StopMotion( ego);
+			ForceUpdate( ego);
+			Print( 10);
+			toiletTimer = 14;
+			paperCycles = 3;
+			if (!poopedInCan)
+				{
+				Set( poopedInCan);
+				currentScore += 1;
+				}
+
+			Return();
+			}
+		}
+	}
+
+
+if ((Said( drink, water, rol) ||
+	Said( get, drink, rol)))
+	{
+	Print( 36);
+	}
+
+if ((Said( turn, on, water) ||
+	Said( turn, water, on, sink) ||
+	Said( turn, on, sink) ||
+	Said( turn, on, water, sink) ||
+	Said( wash, hands, rol)))
+	{
+	if (!nearSink)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 22);
+		Print( 24);
+		Print( 25);
+		Print( 27);
+		}
+	}
+
+if (Said( wash, face, rol))
+	{
+	if (!nearSink)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 22);
+		Print( 24);
+		Print( 25);
+		Print( 31);
+		}
+	}
+
+if ((Said( dry, rol) ||
+	Said( shake, rol) ||
+	Said( wipe, face, rol) ||
+	Said( wipe, hands, rol) ||
+	Said( wipe, my, face, rol) ||
+	Said( wipe, my, hands, rol)))
+	{
+	Print( 32);
+	}
+
+if ((Said( rinse, sink) ||
+	Said( rinse, out, sink)))
+	{
+	Print( 35);
+	}
+
+
+if ((Said( piss, rol) ||
+	Said( go, bathroom, rol) ||
+	Said( take, piss, rol)))
+	{
+	if (currentStatus != NORMAL)
+		{
+		Print( 7);
+		}
+	else
+		{
+		if (!nearToilet)
+			{
+			Set( notCloseEnough);				
+			}
+		else
+			{
+			Set( OK);							
+			currentStatus = PISSING;
+			SetLoop( ego, FACING_BACK);
+			RepositionTo( ego, 74, 127);
+			ForceUpdate( ego);
+			Set( programControl);
+			StopMotion( ego);
+			pissTimer = 5;
+			Sound( sPissing, done);
+			}
+		}
+	}
+
+if (Said( throw, up))
+	{
+	Print( 41);
+	}
+
+if ((Said( knock, anyword, door) ||
+	Said( knock, door, anyword) ||
+	Said( knock, door) ||
+	Said( knock)))
+	{
+	if (!nearDoor)
+		{
+		Set( notCloseEnough);				
+		}
+	else
+		{
+		Print( 6);
+		}
+	}
+
+if (Said( open, door))
+	{
+	if (!nearDoor)
+		{
+		Print( 26);
+		}
+	else
+		{
+		StopMotion( ego);
+		Set( programControl);
+
+		StartUpdate( aDoor);
+		EndOfLoop( aDoor, doorOpenDone);
+		}
+	}
+
+
+if ((Said( look, mirror) ||
+	Said( look$in, mirror)))
+	{
+	if (!nearSink)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 9);
+		}
+	}
+
+if ((Said( look, behind, mirror) ||
+	Said( open, mirror) ||
+	Said( move, mirror) ||
+	Said( open, cabinet)))
+	{
+	if (!nearSink)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 37);
+		}
+	}
+
+if ((Said( open, toilet, rol) ||
+	Said( look$in, toilet, tank)))
+	{
+	Print( 38);
+	}
+
+
+if ((Said( look, toilet, paper) ||
+	Said( get, toilet, paper) ||
+	Said( use, toilet, paper)))
+	{
+	if (!nearToilet)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 28);
+		}
+	}
+
+if ((Said( look$in, toilet) ||
+	Said( look, toilet)))
+	{
+	if (!nearToilet)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 23);
+		}
+	}
+
+
+[	Do the water filling stunt.
+
+if ((Said( flush, toilet) ||
+	Said( flush)))
+	{
+	if (!nearToilet)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		PreventInput();
+		Set( programControl);
+		StopMotion( ego);
+		Set( toiletOverflowing);
+		waterY = 148;
+		Draw( aFountain);
+		waterCycle = WATER_CYCLE;
+		Print( 33);
+		Print( 34);
+		}
+	}
+
+if ((Said( get, paper) ||
+	Said( read, paper)))
+	{
+	Print( 30);
+	}
+
+if (Has( iMagazine) &&
+	Said( look, magazine, rol))
+	{
+	Print( 40);
+	}
+
+if (Said( wipe, hand, on, pants))
+	{
+	Set( OK);
+	}
+
+if (Said( anyword, toilet, rol))
+	{
+	Print( 16);
+	}
+
+
+
+[*****
+:noInput
+[*****
+
+if (aSecondPassed)
+	{
+	--toiletTimer;
+	if (toiletTimer == 6)
+		{
+		Print( 11);
+		}
+
+	if (toiletTimer == 1)
+		{
+		Sound( sFart, done);
+		Print( 21);
+		}
+
+	--pissTimer;
+	if (pissTimer == 1)
+		{
+		Print( 3);
+		currentStatus = NORMAL;
+		StartMotion( ego);
+		Reset( programControl);
+		}	    
+	}
+
+
+--paperCycles;
+if (paperCycles == 1)
+	{
+	Toggle( paperCycling);
+	if (paperCycling)
+		{
+		SetLoop( ego, 1);			[	Turn the page.
+		CycleTime( ego, one);
+		Random( 7, 12, paperCycles);
+		}
+	else
+		{
+		SetLoop( ego, 0);			[	Look at the pages.
+		CycleTime( ego, five);
+		Random( 19, 33, paperCycles);
+		}
+	}
+
+
+if (doorCloseDone)
+	{
+	Reset( doorCloseDone);
+	StopUpdate( aDoor);
+	Reset( programControl);
+	StartMotion( ego);
+	}
+
+--waterCycle;
+if (waterCycle == 1)
+	{
+	if (toiletOverflowing && waterY == 100)
+		{
+		Print( 19);
+		Print( 20);
+		SetView( ego, vEgoDrowning);
+		Set( keepCycling);
+		}
+
+	if (toiletOverflowing && waterY == 40)
+		{
+		Print( 18);
+		Set( certainDeath);
+		}
+
+	if (toiletOverflowing && waterY > 36)
+		{
+		view = 59;
+		loop = 0;
+		cell = 0;
+		x = 47;
+		priority = 15;
+		AddToPicV( view, loop, cell, x, waterY, priority, four);
+		[view, loop, cel,  x,   y, obj priority, box priority
+
+		waterY -= 4;
+		waterCycle = WATER_CYCLE;
+		}
+	}
+
+
+
+[*****
+:exit							[	test for leaving the room
+[*****
+
+if (doorOpenDone)
+	{
+	Reset( programControl);
+	newRoom = rmHallway;
+	}
+
+

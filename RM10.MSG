@@ -1,0 +1,110 @@
+[messages for room 10 -- rmTaxi
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"The cabbie snarls a \"Where to, buddy?\" as he swings the meter flag down."
+
+%message	2
+"\"Lookin' for action, eh? Dis town is full of it.
+ We gotta disco that's usually full of foxes this time of night.
+ Den dere's the casino, next to the all-night weddin' chapel.
+ And we gotta lovely bar, but you've been dere.
+ Me, I like da convenience store next to da disco,
+ but of course, that's just personal preference.\""
+
+%message	3
+"\"It won't take us long to get back dere,
+ but I'll have to circle 'round da block.\""
+
+%message	4
+"\"Well, here we are, buddy. That'll be $%v200.00.\""
+
+%message	5
+"\"So, wadda we gonna do, buddy?
+ Ya just gonna sit here all night?
+ I gotta earn a livin' too, ya know!\""
+
+%message	6
+"\"Why don'cha wait'll we git there, buddy?\""
+
+%message	7
+"\"Sorry, but the meter's runnin'. Where ja wanna go?\""
+
+%message	8
+"\"Thanks, buddy. Maybe I'll see ya again sometime!\""
+
+%message	9
+"\"Waddaya tryin' to do, peahead!
+ You're not gonna stiff me, and get away with it!\""
+
+%message	10
+"You wish you hadn't.
+ Mr. America, he ain't.
+ His strongest feature seems to be his odor!"
+
+%message	11
+"He wonders why you keep looking at him,
+ and flashes a coy little smile back at you in the mirror.
+ Your stomach turns, and not from the ride!"
+
+%message	12
+"The driver looks at you and says,
+ \"Hey! What's that you got? Wine?\"
+ He grabs your bottle of wine, and guzzles it down!"
+
+%message	13
+"\"Ok, but it'll cost ja extra!\""
+
+%message	14
+"\"Waddaya mean, 'no money!!'\" snarls the driver.
+ \"Step outside my office, chump!\""
+
+%message	15
+"\"Ok. You got it, Mac!\""
+
+%message	16
+"Hang on, Larry. He's swerving all over the road!"
+
+%message	17
+"Whew! You're glad to get out of here."
+
+%message	18
+"It seems a bridge abutment has brought your game to a sudden stop!
+ Remember, Larry: \"Friends don't let cabbies drive drunk!\""
+
+%message	19
+"\"I'm sorry, but it's against my personal philosophy to accept a gratuity!\""
+
+%message	20
+"Sheepishly, you apologize to the cabbie for not carrying enough money
+ to pay for the ride."
+
+%message	21
+"\"So? Are ya gonna get outta my cab, or not??
+ Thanks for da business, but I didn't want ta make no career outta this!\""
+
+%message	22
+"\"So? Are ya gonna pay up, or do I have ta get rough with cha??\""
+
+%message	23
+"It seems to be running a little fast, but then, this is an expensive town!"
+
+%message	24
+"You wonder if cab companies have full-time employees to make these floors
+ sticky."
+
+%message	25
+"Even the ceiling's grungy."
+
+%message	26
+"\"Ok, buddy,\" says the cabbie. \"But why would cha wanna go there?\""
+
+%message	27
+"He sure drives fast, doesn't he?"
+
+%message	28
+"\"Nope. Next time, make up your mind before ya gets in da cab!\""
+

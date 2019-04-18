@@ -1,0 +1,414 @@
+[logics for room 37 -- rmSlots
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm37.msg"
+%include	"gamedefs.h"
+%include	"contrlrs.h"
+%include	"slots.h"
+
+[	           RESULTS           PAYS\n
+[	|--------------------------------|\n
+[	| Cherry |        |        |  1  |\n
+[	| Cherry | Cherry |        |  2  |\n
+[	| Cherry | Cherry | Cherry |  4  |\n
+[	|--------|--------|--------|-----|\n
+[	| Orange | Orange |        |  2  |\n
+[	| Orange | Orange | Orange |  4  |\n
+[	|--------|--------|--------|-----|\n
+[	| Seven  | Seven  |        |  3  |\n
+[	| Seven  | Seven  | Seven  |  5  |\n
+[	|--------|--------|--------|-----|\n
+[	| Bar    | Bar    | Bar    |  7  |\n
+[	|--------------------------------|\n
+
+
+
+%define	MIN_CYCLES			8	[	These must be 3 apart since
+%define	MAX_CYCLES			11	[		we have 4 cells / wheel.
+
+%define	C_CHERRY				0
+%define	C_ORANGE				1
+%define	C_SEVEN				2
+%define	C_BAR				3
+
+%define	cDecreaseBet			cF4
+%define	cIncreaseBet			cF6
+%define	cPullHandle			cF8
+
+
+
+if (initLog)
+	{
+	Reset( xyOn);
+
+	LoadView( vSlots);
+	LoadView( vWinner);
+	LoadLogics( lgcSlots);
+
+	LoadSound( sSlots);
+	LoadSound( sSlotsWinner);
+
+	LoadPic( currentRoom);
+	DrawPic( currentRoom);
+	DiscardPic( currentRoom);
+
+	AnimateObj( aWinner);
+	SetPriority( aWinner, 15);
+	SetView( aWinner, vSlots);
+	SetLoop( aWinner, 2);
+	Position( aWinner, 56, 106);
+
+	AnimateObj( aWheel1);
+	SetView( aWheel1, vSlots);
+	SetLoop( aWheel1, 0);
+	SetCel( aWheel1, C_BAR);
+	Position( aWheel1, 46, 87);
+	Draw( aWheel1);
+	StopCycling( aWheel1);
+
+	AnimateObj( aWheel2);
+	SetView( aWheel2, vSlots);
+	SetLoop( aWheel2, 0);
+	SetCel( aWheel2, C_BAR);
+	Position( aWheel2, 69, 87);
+	Draw( aWheel2);
+	StopCycling( aWheel2);
+
+	AnimateObj( aWheel3);
+	SetView( aWheel3, vSlots);
+	SetLoop( aWheel3, 0);
+	SetCel( aWheel3, C_BAR);
+	Position( aWheel3, 93, 87);
+	Draw( aWheel3);
+	StopCycling( aWheel3);
+
+	AnimateObj( aLights);
+	IgnoreHorizon( aLights);
+	SetView( aLights, vSlots);
+	SetLoop( aLights, 1);
+	Position( aLights, 50, 10);
+
+	ShowPic( );
+
+	bet = 1;
+	Set( readyToPlay);
+	Set( handsOff);
+
+	function = UPDATE_STATUS;
+	Call( lgcSlots);
+
+	PrintAt( 2, 2, 2, 36);
+		[msg #, row, col, width
+	Print( 1);
+
+	Set( noScript);
+	Return( );
+
+	}							[	end initLOG
+
+
+Set( nearPerson);
+
+
+if (readyToPlay &&
+	Controller( cDecreaseBet))
+	{
+	--bet;
+	function = UPDATE_STATUS;
+	Call( lgcSlots);
+	}
+
+if (readyToPlay &&
+	Controller( cIncreaseBet))
+	{
+	if (bet < 20)
+		{
+		++bet;
+		}
+	else
+		{
+		Print( 6);
+		}
+	function = UPDATE_STATUS;
+	Call( lgcSlots);
+	}
+
+if (readyToPlay &&
+	Controller( cPullHandle))
+	{
+	Set( pulledHandle);
+	}
+
+
+
+[*****
+:handleInput
+[*****
+
+if (!haveInput)			{goto noInput;}
+
+if ((Said( play) ||
+	Said( pull, handle) ||
+	Said( play, slots)))
+	{
+	Set( pulledHandle);
+	}
+
+if (Said( odds))
+	{
+	function = UPDATE_STATUS;
+	Call( lgcSlots);
+	PrintAt( 2, 2, 2, 36);
+	}
+
+
+if ((Said( look) ||
+	Said( look, slot)))
+	{
+	Print( 8);
+	}
+
+if ((Said( leave) ||
+	Said( look, room) ||
+	Said( leave, slots) ||
+	Said( stand) ||
+	Said( walk, away) ||
+	Said( walk) ||
+	Said( quit, playing) ||
+	Said( quit, game) ||
+	Said( quit) ||
+	Said( quit, playing, slots) ||
+	Said( go, casino) ||
+	Said( look, casino)))
+	{
+	Set( OK);
+	Set( readyToLeave);
+	}
+
+
+
+[*****
+:noInput
+[*****
+
+if (pulledHandle)
+	{
+	Reset( pulledHandle);
+
+	if (!readyToPlay)
+		{
+		Random( 11, 13, work);
+		PrintV( work);
+		}
+	else
+		{
+		if (!bet)
+			{
+			Print( 3);
+			Print( 4);
+			Print( 5);
+			}
+		else
+			{
+			if (bet > dollars)
+				{
+				Print( 7);
+				}
+			else
+				{
+				script = 0;
+				Set( scriptDone);
+				}
+			}
+		}
+	}
+
+
+if (scriptDone)
+	{
+	Reset( scriptDone);
+	++script;
+
+	if (script == 1)
+		{
+		Reset( readyToPlay);
+		Set( preventSaveGame);
+		Set( betInProgress);
+		StopSound( );
+		Reset( soundDone);
+		Sound( sSlots, done);
+		dollars -= bet;
+		function = UPDATE_STATUS;
+		Call( lgcSlots);
+
+		StartCycling( aWheel1);
+		StartCycling( aWheel2);
+		StartCycling( aWheel3);
+		Random( MIN_CYCLES, MAX_CYCLES, scriptCycles);
+		}
+
+	if (script == 2)
+		{
+		StopCycling( aWheel1);
+		CurrentCel( aWheel1, wheel1);
+		Random( MIN_CYCLES, MAX_CYCLES, scriptCycles);
+		}
+
+	if (script == 3)
+		{
+		StopCycling( aWheel2);
+		CurrentCel( aWheel2, wheel2);
+		Random( MIN_CYCLES, MAX_CYCLES, scriptCycles);
+		}
+
+	if (script == 4)
+		{
+		StopCycling( aWheel3);
+		CurrentCel( aWheel3, wheel3);
+
+
+		[	Determine if we hit anything.
+
+		multiple = 0;
+		if (wheel1 == C_CHERRY)
+			{
+			multiple = 1;
+			if (wheel2 == wheel1)
+				{
+				multiple = 2;
+				if (wheel3 == wheel1)
+					{
+					multiple = 4;
+					}
+				}
+			}
+
+		if  (wheel1 == C_ORANGE &&
+			wheel2 == wheel1)
+			{
+			multiple = 2;
+			if (wheel3 == wheel1)
+				{
+				multiple = 4;
+				}
+			}
+
+		if  (wheel1 == C_SEVEN &&
+			wheel2 == wheel1)
+			{
+			multiple = 3;
+			if (wheel3 == wheel1)
+				{
+				multiple = 5;
+				}
+			}
+
+		if  (wheel1 == C_BAR &&
+			wheel2 == wheel1 &&
+			wheel3 == wheel1)
+			{
+			multiple = 7;
+			}
+
+
+		[	Now, are we gonna flash lights, and pay off?
+
+		if (!multiple)
+			{
+			Set( readyToPlay);		[	Nope, this guy's a loser.
+			}
+		else
+			{
+			function = PAY_WINNER;
+			Call( lgcSlots);
+
+			if (multiple == 1)
+				{
+				Set( readyToPlay); [   A small win, not worth mentioning.
+				}
+			else
+				{
+				Draw( aWinner);	[	Ok, maybe a little.
+				Set( soundDone);
+				if  (multiple > 1 &&
+					multiple < 4)
+					{
+					scriptCycles = 22;
+					}
+				else
+					{
+					Draw( aLights); [	Let's go all out for this guy!
+					if (multiple < 7)
+						{
+						scriptCycles = 22;
+						}
+					else
+						{
+						scriptCycles = 44;
+						}
+					}
+				}
+			}
+		}
+
+
+	[	We only get here if the "WINNER" object is drawn.
+
+	if (script == 5)
+		{
+		Erase( aLights);
+		Erase( aWinner);
+		Set( readyToPlay);
+		}
+
+
+	if (readyToPlay)
+		{
+		script = 0;
+		Reset( preventSaveGame);
+		Reset( betInProgress);
+
+		if (!dollars)
+			{
+			Reset( readyToPlay);
+			}
+		}
+	}
+
+
+if (soundDone && !readyToPlay)
+	{
+	Sound( sSlotsWinner, soundDone);
+	}
+
+
+if ((Controller( cHelp) ||
+	showOdds))
+	{
+	Reset( showOdds);
+	function = UPDATE_STATUS;
+	Call( lgcSlots);
+	PrintAt( 2, 2, 2, 36);
+	Print( 1);
+	}
+
+if (restoreInProgress)
+    	{
+	function = UPDATE_STATUS;
+	Call( lgcSlots);
+	}
+
+
+[*****
+:exit							[	test for leaving the room
+[*****
+
+if (readyToLeave)
+	{
+	Reset( handsOff);
+	Reset( noScript);
+	Reset( preventSaveGame);
+	Reset( betInProgress);
+	newRoom = rmInsideCasino;
+	}

@@ -1,0 +1,195 @@
+[messages for room 12 -- rmAlley
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1														
+"Try moving to the east end of the fire escape."
+
+%message	2
+"Try moving to the west end of the fire escape."
+
+%message	3
+"%m7 and a fence."
+
+%message	4
+"Nah. That room needs the fresh air!"
+
+%message	5
+"You are on a fire escape.
+ A rusty ladder is at one end.
+ East of the fire escape is another window, just out of your reach."
+
+%message	6
+"%m7, a fence, and something sitting in the east window."
+
+%message	7
+"It's a nice little alley, with a trash bin, two windows, a fire escape"
+
+%message	8
+"Move closer to the ladder."
+
+%message	9
+"(Of course, you can't play the violin now, but you get the idea.)"
+
+%message	10
+"Unlock it? From the outside?"
+
+%message	11
+"You can't. It's locked from the inside."
+
+%message	12
+"Looking inside the west window, you see the room you just left."
+
+%message	13
+"Looking at the east window,
+ you notice a bottle of pills sitting on the window ledge."
+
+%message	14
+"There are two windows high above you.
+ The west window by the fire escape has a dim, reddish glow;
+ the east window is dark.
+ There may be something on the sill of the east window,
+ but you can't make it out from down here."
+
+%message	15
+"You broke it, didn't you?"
+
+%message	16
+"You lean far out over the railing before remembering that
+ agility is yet another of your short suits."
+
+%message	17
+"With the rope securely holding you to the railing,
+ you can reach all the way over to the window.
+ NOW, of all times, you notice the window's locked!"
+
+%message	18
+"Subtly, you smash the window with your hammer.
+ Your future as a second-story man seems quite plausible!"
+
+%message	19
+"You got 'em! But what are they?"
+
+%message	20
+"You might try reaching over to the window first."
+
+%message	21
+"You consider sticking your hand through a solid glass window,
+ but realize that if you did, you wouldn't be able to play the violin."
+
+%message	22
+"It already is."
+
+%message	23
+"What is this; a death wish?"
+
+%message	24
+"You already took them. Why do this again?"
+
+%message	25
+"Amidst assorted, odoriferous refuse from Lefty's clientel, you discover
+ Lefty's old, left-handed hammer."
+
+%message	26
+"There's nothing else here worth describing, let alone taking."
+
+%message	27
+"\"YUCK!!\""
+
+%message	28
+"Unfortunately, you can't see much from out here."
+
+%message	29
+"Wow! Does your head hurt!!"
+
+%message	30
+"Hey! Where are you?"
+
+%message	31
+"After a careful analysis of your surroundings,
+ you conclude you are at the bottom of a pile of garbage!"
+
+%message	32
+"Move to the front of the trash bin."
+
+%message	33
+"There's no way to reach the ladder from down here.
+ It's only accessible from above."
+
+%message	34
+"You see alleys stretching off to infinity."
+
+%message	35
+"The fence is much too tall for you to climb over."
+
+%message	36
+"It's not long enough to reach from here."
+
+%message	37
+"It's not long enough to reach anywhere,
+ but you might want to use it for safety purposes."
+
+%message	38
+"Be more specific."
+
+%message	39
+"You untie the rope."
+
+%message	40
+"How can you do that?"
+
+%message	41
+"Using the dull pocket knife, you cut the rope free."
+
+%message	42
+"%g176"							[	That's AN idea...
+
+%message	43
+"A rickety fire escape, complete with safety ladder,
+ is loosely attached to the building.
+ A mild, reddish glow comes from the window behind it."
+
+%message	44
+"Unfortunately the lid on the trash bin just will not close."
+
+%message	45
+"Try as you might, it is impossible to move the trash bin."
+
+%message	46
+"The solution is closer to you than that."
+
+%message	47
+"There is an old neon sign hanging on the wall that says \"Hotel\"..."
+
+%message	48
+"...approximately."
+
+%message	49
+"You can't. Even its rusty bolts are too tough for you!"
+
+%message	50
+"Not now!"
+
+%message	51
+"There may be something in the east window, but from here, you're not sure."
+
+%message	52
+"It's a long way to the ground!"
+
+%message	53
+"Whee!"
+
+%message	54
+"Move closer to the window, if you want to go back in the hooker's room."
+
+%message	55
+"You reconsider after noticing the trash bin is behind where you would fall!"
+
+%message	56
+"You ain't got no knife!!"
+
+%message	57
+"You're currently all tied up!"
+

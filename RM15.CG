@@ -1,0 +1,1267 @@
+[logics for room 15 -- rmInsideBar
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm15.msg"
+%include	"gamedefs.h"
+
+
+
+#define	L_PEEPHOLE			0
+#define	L_CEILING_FAN			1
+#define	L_JUKEBOX				2
+#define	L_MEN_ON_STOOL			0
+#define	L_GIRL_ON_STOOL		1
+#define	L_EGO_ON_STOOL			2
+%define	BAR_Y				136
+%define	WAITING_FOR_PASSWORD 	3
+
+
+%define	legCycling			lf0
+%define	bartenderWandering		lf1
+%define	boreCycling			lf2
+%define	nearJukeBox			lf3
+%define	nearGirl				lf4
+%define	nearBore				lf5
+%define	nearEmptyStool			lf6
+%define	nearMen				lf7
+%define	nearDoor				lf8
+%define	doorScriptDone			lf9
+%define	startJukeBox			lf10
+%define	orderedAWhiskey		lf11
+%define	orderedABeer			lf12
+%define	orderedAWine			lf13
+%define	staggering			lf14	
+%define	tookADrink			lf15
+%define	beenToldPrice			lf16
+
+%define	heardJoke1			lf21
+%define	heardJoke2			lf22
+%define	heardJoke3			lf23
+%define	heardJoke4			lf24
+%define	heardJoke5			lf25
+%define	heardJoke6			lf26
+%define	heardJoke7			lf27
+%define	heardJoke8			lf28
+%define	heardJoke9			lf29
+
+
+%define	jukeBoxTimer			lv0
+%define	bartenderTimer			lv1
+%define	legCycles				lv2
+%define	boreTalkCycles			lv3
+%define	jokeSeconds			lv4
+%define	doorTimer				lv5
+%define	doorScript			lv6
+%define	drinkCount			lv7
+%define	staggerCycles			lv8
+%define	drunkSeconds			lv9
+%define	joke					lv10
+%define	tipCount				lv11
+
+
+%object	aDoor				1
+%object	aPeepHole				2
+%object	aFan					3
+%object	aJukeBox				4
+%object	aGirl				5
+%object	aBore				6
+%object	aBartender			7
+
+
+
+if (initLog)
+	{
+	SetHorizon( 99);
+
+	LoadPic( currentRoom);
+	DrawPic( currentRoom);
+	DiscardPic( currentRoom);
+
+	LoadSound( mTitle);
+
+	LoadView( vPimpDoor);
+	LoadView( vBarInterior);
+	LoadView( vBarGreaser);
+	LoadView( vBarFlys);
+	LoadView( vBarDoor);
+	LoadView( vBartender);
+
+
+	LoadView( vPainting);
+	AddToPic( vPainting, 0, 0, 81, 69, 4, 4);
+		[view, loop, cel,  x,   y, obj priority, box priority
+	DiscardView( vPainting);
+
+	AddToPic( vBarFlys, 0, 0, 112, 128, 11, 0);
+	AddToPic( vBarFlys, 0, 1, 101, 128, 11, 0);
+
+
+	AnimateObj( aDoor);
+	IgnoreBlocks( aDoor);
+	IgnoreObjs( aDoor);
+	Position( aDoor, 142, 150);
+	SetView( aDoor, vPimpDoor);
+	SetCel( aDoor, 0);
+	SetPriority( aDoor, 11);
+	Draw( aDoor);
+	work = DOOR_CYCLE_TIME;
+	CycleTime( aDoor, work);
+	StopUpdate( aDoor);
+
+	AnimateObj( aPeepHole);
+	SetView( aPeepHole, vBarInterior);
+	SetLoop( aPeepHole, L_PEEPHOLE);
+	FixLoop( aPeepHole);
+	SetCel( aPeepHole, 0);
+	SetPriority( aPeepHole, 12);
+	Position( aPeepHole, 143, 110);
+
+	AnimateObj( aFan);
+	IgnoreHorizon( aFan);
+	Position( aFan, 66, 66);
+	SetView( aFan, vBarInterior);
+	SetLoop( aFan, L_CEILING_FAN);
+	FixLoop( aFan);
+	SetCel( aFan, 0);
+	Draw( aFan);
+	CycleTime( aFan, two);
+
+	AnimateObj( aJukeBox);
+	IgnoreBlocks( aJukeBox);
+	IgnoreObjs( aJukeBox);
+	SetView( aJukeBox, vBarInterior);
+	SetLoop( aJukeBox, L_JUKEBOX);
+	FixLoop( aJukeBox);
+	SetCel( aJukeBox, 1);
+	Position( aJukeBox, 16, 128);
+	SetPriority( aJukeBox, 11);
+	Draw( aJukeBox);
+	StopUpdate( aJukeBox);
+
+	AnimateObj( aGirl);
+	IgnoreBlocks( aGirl);
+	IgnoreObjs( aGirl);
+	SetView( aGirl, vBarFlys);
+	SetLoop( aGirl, L_GIRL_ON_STOOL);
+	SetCel( aGirl, 0);
+	SetPriority( aGirl, 11);
+	Position( aGirl, 65, 128);
+	Draw( aGirl);
+	CycleTime( aGirl, two);
+
+	AnimateObj( aBore);
+	IgnoreBlocks( aBore);
+	SetView( aBore, vBarGreaser);
+	SetLoop( aBore, FACING_LEFT);
+	SetPriority( aBore, 11);
+	Position( aBore, 77, 128);
+	Draw( aBore);
+
+	AnimateObj( aBartender);
+	SetView( aBartender, vBartender);
+	SetLoop( aBartender, 0);
+	SetCel( aBartender, 0);
+	Position( aBartender, 106, 101);
+	Draw( aBartender);
+	StopUpdate( aBartender);
+
+	if (previousRoom == rmBackroom)
+		{
+		egoX = 141;
+		egoY = 148;
+	 	}
+	else
+		{
+		if (previousRoom == rmHallway)
+			{
+			egoX = 39;
+			egoY = 108;
+			}
+		else
+			{
+			egoX = 76;
+			egoY = 167;
+			}
+	 	}
+	PositionV( ego, egoX, egoY);
+	Draw( ego);
+
+	Random( 15, 32, bartenderTimer);
+	Random( 4, 32, legCycles);
+	Random( 15, 32, boreTalkCycles);
+
+	ShowPic( );
+
+	Return( );
+
+	}							[	end initLOG
+
+
+
+if (Posn( ego, 45, 120, 133, 159))		[	near bar
+	{
+	SetPriority( ego, 12);
+	}
+else
+	{
+	ReleasePriority( ego);
+	}
+
+Reset( nearJukeBox);
+if (Posn( ego, 0, 117, 33, 131))
+	{
+	Set( nearJukeBox);
+	}
+
+Reset( nearGirl);
+if (Posn( ego, 55, 0, 78, BAR_Y))
+	{
+	Set( nearGirl);
+	Set( nearPerson);
+	}
+
+Reset( nearBore);
+if (Posn( ego, 71, 0, 87, BAR_Y))
+	{
+	Set( nearBore);
+	Set( nearPerson);
+	}
+
+Reset( nearEmptyStool);
+if (Posn( ego, 85, 0, 99, BAR_Y))
+	{
+	Set( nearEmptyStool);
+	}
+
+Reset( nearMen);
+if (Posn( ego, 94, 0, 124, BAR_Y))
+	{
+	Set( nearMen);
+	Set( nearPerson);
+	}
+
+Reset( nearDoor);
+if (Posn( ego, 132, 137, 149, 154))
+	{
+	Set( nearDoor);
+	}
+
+
+[*****
+:handleInput
+[*****
+
+if (!haveInput)			{goto noInput;}
+
+
+[	Handle the pimp door sequence.
+
+if (doorScript != WAITING_FOR_PASSWORD)
+	{
+	if (Said( ken$sent$me))
+		{
+		Print( 6);
+		}
+	}
+else
+	{
+	Set( doorScriptDone);
+	if (Said( ken$sent$me))
+		{
+		doorScript = 100;
+		doorTimer = 0;
+		}
+	Set( haveMatch);
+	unknownWord = 0;
+	}
+
+if ((Said( ask, anyword, password) ||
+	Said( ask, password)))
+	{
+	if (!nearPerson)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 68);
+		}
+	}
+
+if ((Said( unlock, door) ||
+	Said( open, door)))
+	{
+	if (!nearDoor)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 47);
+		}
+	}
+
+if ((Said( look, peephole, rol) ||
+	Said( look$in, peephole, rol) ||
+	Said( look, door) ||
+	Said( look$in, door) ||
+	Said( look, window, rol) ||
+	Said( look$in, window, rol)))
+	{
+	Print( 65);
+	}
+
+if ((Said( break, down, door) ||
+	Said( break, door, rol) ||
+	Said( hit, door)))
+	{
+	if (!nearDoor)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 55);
+		}
+	}
+
+if (Said( knock, rol))
+	{
+	if (!nearDoor)
+		{
+		Set( notCloseEnough);				
+		}
+	else
+		{
+		if (doorScript)
+			{
+			Print( 46);
+			}
+		else
+			{
+			Set( programControl);
+			StopMotion( ego);
+			Print( 5);
+			doorTimer = 3;
+			}
+		}
+	}
+
+if ((Said( unlock, door, rol) ||
+	Said( use, key, rol)))
+	{
+	if (!nearDoor)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 63);
+		}
+	}
+
+
+[	General purpose looks.
+
+if ((Said( look) ||
+	Said( look, room) ||
+	Said( look, bar)))
+	{
+	Print( 1);
+	}
+
+if ((Said( tip, bartender) ||
+	Said( give, bartender, money) ||
+	Said( give, money, bartender) ||
+	Said( give, tip, bartender)))
+	{
+	if (currentStatus != ON_BAR_STOOL)
+		{
+		Print( 33);
+		}
+	else
+		{
+		if (!dollars > 4)
+			{
+			Print( 76);
+			}
+		else
+			{
+			++tipCount;
+			dollars -= 5;
+			if (tipCount == 1)				{Print( 77);}
+			if (tipCount == 2)				{Print( 78);}
+			if (tipCount == 3)				{Print( 79);}
+			if (tipCount == 4)				{Print( 80);}
+			if (tipCount  > 4)				{Print( 81);}
+			}
+		}
+	}
+
+if (Said( look, bartender))
+	{
+	Print( 82);
+	Print( 83);
+	}
+
+if (Said( buy, bartender, drink))
+	{
+	if (currentStatus != ON_BAR_STOOL)
+		{
+		Print( 33);
+		}
+	else
+		{
+		Print( 69);
+		}
+	}
+
+if (Said( buy, round))
+	{
+	if (currentStatus != ON_BAR_STOOL)
+		{
+		Print( 33);
+		}
+	else
+		{
+		if (!beenToldPrice)
+			{
+			Set( beenToldPrice);
+			Print( 70);
+			}
+		else
+			{
+			dollars = 0;
+			Print( 71);
+			}
+		}
+	}
+
+if ((Said( give, bartender, money) ||
+	Said( give, money, bartender) ||
+	Said( pay, lefty) ||
+	Said( bribe, lefty)))
+	{
+	Print( 72);
+	}
+
+if (Said( look, moose))
+	{
+	Print( 45);
+	}
+
+if (Said( look, girl))
+	{
+	Print( 48);
+	}
+
+if ((Said( look, man) ||
+	Said( look, people)))
+	{
+	Print( 53);
+	}
+
+if (Said( look, fan))
+	{
+	Print( 49);
+	Print( 50);
+	}
+
+if (Said( look, painting))
+	{
+	Print( 51);
+	}
+
+if ((Said( touch, girl) ||
+	Said( touch, girl, leg) ||
+	Said( touch, leg) ||
+	Said( look, leg) ||
+	Said( feel, leg) ||
+	Said( feel, girl, leg) ||
+	Said( feel, girl)))
+	{
+	if (!nearGirl)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 67);
+		}
+	}
+
+if ((Said( pick$up, girl) ||
+	Said( ask, girl, dance) ||
+	Said( dance, with, girl) ||
+	Said( buy, girl, drink) ||
+	Said( kiss, girl) ||
+	Said( talk, girl)))
+	{
+	if (!nearGirl)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 60);
+		Print( 56);
+		Print( 57);
+		}
+	}
+
+if ((Said( listen, man) ||
+	Said( talk, man)))
+	{
+	if ((nearBore || currentStatus == ON_BAR_STOOL))
+		{
+		Print( 59);
+		}
+	else
+		{
+		if (nearMen)
+			{
+			Print( 61);
+			}
+		else
+			{
+			Set( notCloseEnough);
+			}
+		}
+	}
+
+if ((Said( look, jukebox) ||
+	Said( look$in, jukebox)))
+	{
+	if (!nearJukeBox)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 64);
+		}
+	}
+
+if ((Said( play, jukebox) ||
+	Said( use, jukebox) ||
+	Said( play, music) ||
+	Said( put, anyword, dollar, jukebox) ||
+	Said( put, dollar, jukebox) ||
+	Said( put, money, jukebox)))
+	{
+	if (!nearJukeBox)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 4);
+		dollars -= 1;
+		Set( startJukeBox);
+		}
+	}
+
+if ((Said( use, hammer, door) ||
+	Said( open, door, use, hammer) ||
+	Said( hit, door, with, hammer) ||
+	Said( use, hammer, open, door) ||
+	Said( use, hammer, door) ||
+	Said( use, hammer, on, door) ||
+	Said( hammer, on, door)))
+	{
+	if (!nearDoor)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		if (!Has( iHammer))
+			{
+			Set( dontHaveIt);
+			}
+		else
+			{
+			Print( 73);
+			}
+		}
+	}
+
+
+[	Handle the purchase of libations.
+
+if ((Said( order, drink) ||
+	Said( buy, drink, wino) ||
+	Said( buy, wino, drink) ||
+	Said( buy, drink) ||
+	Said( drink) ||
+	Said( talk, bartender)))
+	{
+	if (currentStatus != ON_BAR_STOOL)
+		{
+		Print( 20);
+		}
+	else
+		{
+		Print( 21);
+		}
+	}
+
+if ((Said( wine) ||
+	Said( give, me, wine) ||
+	Said( get, wine) ||
+	Said( order, wine)))
+	{
+	if (currentStatus != ON_BAR_STOOL)
+		{
+		Print( 33);
+		}
+	else
+		{
+		if (script && script < 5)
+			{
+			Print( 40);
+			}
+		else
+			{
+			Print( 36);
+			Print( 37);
+			Set( orderedAWine);
+			script = 0;
+			Set( scriptDone);
+			}
+		}
+	}
+
+if ((Said( beer) ||
+	Said( give, me, beer) ||
+	Said( get, beer) ||
+	Said( order, beer)))
+	{
+	if (currentStatus != ON_BAR_STOOL)
+		{
+		Print( 33);
+		}
+	else
+		{
+		if (script && script < 5)
+			{
+			Print( 40);
+			}
+		else
+			{
+			Print( 23);
+			Set( orderedABeer);
+			script = 0;
+			Set( scriptDone);
+			}
+		}
+	}
+
+if ((Said( booze) ||				[	Generic non-handled liquors.
+	Said( give, me, booze) ||
+	Said( get, booze) ||
+	Said( champagne) ||
+	Said( give, me, champagne) ||
+	Said( get, champagne) ||
+	Said( order, champagne) ||
+	Said( order, booze)))
+	{
+	if (currentStatus != ON_BAR_STOOL)
+		{
+		Print( 33);
+		}
+	else
+		{
+		if (script && script < 5)
+			{
+			Print( 40);
+			}
+		else
+			{
+			Print( 54);
+			}
+		}
+	}
+
+if ((Said( light, beer) ||
+	Said( give, me, light, beer) ||
+	Said( get, light, beer) ||
+	Said( order, light, beer)))
+	{
+	if (currentStatus != ON_BAR_STOOL)
+		{
+		Print( 33);
+		}
+	else
+		{
+		if (script && script < 5)
+			{
+			Print( 40);
+			}
+		else
+			{
+			Print( 52);
+			}
+		}
+	}
+
+if ((Said( whiskey) ||
+	Said( give, me, whiskey) ||
+	Said( get, whiskey) ||
+	Said( order, whiskey)))
+	{
+	if (currentStatus != ON_BAR_STOOL)
+		{
+		Print( 33);
+		}
+	else
+		{
+		if (script && script < 5)
+			{
+			Print( 40);
+			}
+		else
+			{
+			Print( 22);
+			Set( orderedAWhiskey);
+			script = 0;
+			Set( scriptDone);
+			}
+		}
+	}
+
+if (Said( drink, whiskey))
+	{
+	if (!Has( iWhiskey))
+		{
+		Set( dontHaveIt);
+		}
+	else
+		{
+		if (currentStatus != ON_BAR_STOOL)
+			{
+			Print( 34);
+			}
+		else
+			{
+			Set( tookADrink);
+			Drop( iWhiskey);
+			Print( 39);
+			}
+		}
+	}
+
+
+
+[	Handle mounting, and dismounting, of stool.
+
+if ((Said( sit) ||
+	Said( sit, down)||
+	Said( sit, bar)||
+	Said( mount, stool)||
+	Said( mount, bar, stool)||
+	Said( get, on, stool) ||
+	Said( sit, on, stool) ||
+	Said( sit, on, bar, stool) ||
+	Said( sit, down, on, stool) ||
+	Said( sit, down, on, bar, stool) ||
+	Said( sit, bar, stool) ||
+	Said( sit, stool)))
+	{
+	if (currentStatus == ON_BAR_STOOL)
+		{
+		Print( 3);
+		}
+	else
+		{
+		if (!nearEmptyStool)
+			{
+			Set( notCloseEnough);				
+			}
+		else
+			{
+			currentStatus = ON_BAR_STOOL;
+			IgnoreBlocks( ego);
+			SetView( ego, vBarFlys);
+			SetLoop( ego, L_EGO_ON_STOOL);
+			RepositionTo( ego, 90, 128);
+			StopMotion( ego);
+			Set( programControl);
+
+			StopCycling( aBore);
+			jokeSeconds = 15;		[	Seconds(+7) before first joke.
+			boreTalkCycles = 0;		[	Turn off his random talking.
+			}
+		}
+	}
+
+
+if ((Said( leave, stool) ||
+	Said( leave, bar, stool) ||
+	Said( get, off, stool) ||
+	Said( get, off, bar, stool) ||
+	Said( get, up) ||
+	Said( get, off) ||
+	Said( get, down) ||
+	Said( stand, up) ||
+	Said( stand)))
+	{
+	if (currentStatus != ON_BAR_STOOL)
+		{
+		Print( 2);
+		}
+	else
+		{
+		if (script && script < 5)
+			{
+			Print( 40);
+			}
+		else
+			{
+			SetView( ego, vEgo);
+			StartMotion( ego);
+			Reset( programControl);
+			ObserveBlocks( ego);
+			RepositionTo( ego, 90, 131);
+
+			SetLoop( aBore, FACING_LEFT);
+			StopCycling( aBore);
+			Random( 24, 32, boreTalkCycles); [	Cycles before talking to girl.
+			jokeSeconds = 0;			[	No more jokes.
+
+			if (!drunkSeconds)
+				{
+				currentStatus = NORMAL;
+				}
+			else
+				{
+				currentStatus = DRUNK;
+				Set( handsOff);
+				PreventInput();
+				Print( 41);
+				}
+			}
+		}
+	}
+
+
+if ((Said( kiss, off, rol) ||
+	Said( fuck$you, rol) ||
+	Said( damn, rol) ||
+	Said( go, hump, rol) ||
+	Said( shut, up, rol) ||
+	Said( get, lost, rol)))
+	{
+	if (currentStatus != ON_BAR_STOOL)
+		{
+		Print( 44);
+		}
+	else
+		{
+		CurrentLoop( aBore, work);
+		if (work != FACING_RIGHT)
+			{
+			Print( 62);
+			}
+		else
+			{
+			Print( 43);
+
+			[	Make him sulk awhile before he starts talking to the girl.
+			SetLoop( aBore, FACING_LEFT);
+			StopCycling( aBore);
+			Reset( boreCycling);
+			Random( 123, 234, boreTalkCycles);
+			Random( 44, 88, jokeSeconds);	[	seconds till he talks to ego.
+			}
+		}
+	}
+
+
+[*****
+:noInput
+[*****
+
+if (aSecondPassed)
+	{
+	--jukeBoxTimer;
+	if (jukeBoxTimer == 1 && !soundOn)
+		{
+		Set( musicDone);
+		}
+
+	--bartenderTimer;
+	if (bartenderTimer == 1)
+		{
+		Toggle( bartenderWandering);
+		if (bartenderWandering)
+			{
+			Random( 4, 12, bartenderTimer);
+			StartUpdate( aBartender);
+			Wander( aBartender);
+			}
+		else
+			{
+			Random( 12, 33, bartenderTimer);
+			SetLoop( aBartender, FACING_FRONT);
+			ForceUpdate( aBartender);
+			StopUpdate( aBartender);
+			}
+		}
+
+	--doorTimer;
+	if (doorTimer == 1)
+		{
+		Set( doorScriptDone);
+		}
+
+	if (currentStatus == DRUNK)
+		{
+		--drunkSeconds;
+		if (drunkSeconds == 41)
+			{
+			Print( 66);
+			}
+
+		if (drunkSeconds == 1)
+			{
+			--drunkSeconds;
+			staggerCycles = 0;
+			AcceptInput();
+			ReleaseLoop( ego);
+			PlayerControl();
+			Reset( programControl);
+			currentStatus = NORMAL;
+			Reset( handsOff);
+			Print( 42);
+			}
+		}
+
+	--jokeSeconds;
+	if (jokeSeconds == 7)
+		{
+		SetLoop( aBore, FACING_RIGHT);
+		StartCycling( aBore);		[	He's starting a new joke
+		}
+
+	if (jokeSeconds == 1)
+		{
+		if (typing)
+			{
+			jokeSeconds = 4;
+			}
+		else
+			{
+			Random( 20, 45, jokeSeconds);	[	seconds before he starts again
+			StopCycling( aBore);		[	He's starting a new joke
+
+			if ((!heardJoke1 ||
+				!heardJoke2 ||
+				!heardJoke3 ||
+				!heardJoke4 ||
+				!heardJoke5 ||
+				!heardJoke6 ||
+				!heardJoke7 ||
+				!heardJoke8 ||
+				!heardJoke9))
+				{
+				:pickAJoke;
+				Random( 11, 19, joke);	[	Pick a punch line.
+				work = joke;
+				work += 210;			[	Because flags are 221-229.
+				if (IssetV( work))		[	Be sure it's a new one.
+					{
+					goto pickAJoke;
+					}
+
+				SetV( work);
+				Print( 10);
+				PrintV( joke);
+				Print( 58);
+				}
+			}
+		}
+	}
+
+
+--boreTalkCycles;
+if (boreTalkCycles == 1)
+	{
+	Random( 23, 45, boreTalkCycles);
+	Toggle( boreCycling);
+	if (boreCycling)
+		{
+		StartCycling( aBore);
+		}
+	else
+		{
+		StopCycling( aBore);
+		}
+	}
+
+
+if (scriptDone)
+	{
+	Reset( scriptDone);
+	++script;
+
+	if (script == 1)
+		{
+		bartenderTimer = 0;
+		StartUpdate( aBartender);
+		MoveObj( aBartender, 106, 102, 1, scriptDone);
+		}
+
+	if (script == 2)
+		{
+		SetLoop( aBartender, FACING_FRONT);
+		StopUpdate( aBartender);
+		ForceUpdate( aBartender);
+		scriptTimer = 4;
+		}
+
+	if (script == 3)
+		{
+		StartUpdate( aBartender);
+		MoveObj( aBartender, 90, 102, 1, scriptDone);
+		}
+
+	if (script == 4)
+		{
+		SetLoop( aBartender, FACING_FRONT);
+		StopUpdate( aBartender);
+		ForceUpdate( aBartender);
+		scriptTimer = 3;
+		}
+
+	if (script == 5)
+		{
+		Print( 24);
+		if (!dollars > 2)
+			{
+			Print( 26);
+			Print( 27);
+
+			script = 6;
+			}
+		else
+			{
+			StartUpdate( aBartender);
+			MoveObj( aBartender, 119, 99, 1, scriptDone);
+
+			Print( 25);
+			dollars -= 3;
+			if (orderedAWhiskey)
+				{
+				Reset( orderedAWhiskey);
+				if (Has( iWhiskey))
+					{
+					Set( tookADrink);
+					Print( 35);
+					}
+				else
+					{
+					if (!boughtWhiskey)
+						{
+						Set( boughtWhiskey);
+						currentScore += 1;
+						}
+					Get( iWhiskey);
+					Print( 38);
+					}
+				}
+
+			if (orderedABeer)
+				{
+				Reset( orderedABeer);
+				Set( tookADrink);
+				Print( 28);
+				}
+			
+			if (orderedAWine)
+				{
+				Reset( orderedAWine);
+				Set( tookADrink);
+				Print( 29);
+				Print( 30);
+				}
+			}
+		}
+
+	if (script == 6)
+		{
+		script = 0;
+		SetLoop( aBartender, FACING_BACK);
+		StopUpdate( aBartender);
+		ForceUpdate( aBartender);
+
+		Reset( bartenderWandering);
+		bartenderTimer = 5;
+		}
+	}
+
+
+
+--legCycles;
+if (legCycles == 1)
+	{
+	Random( 10, 22, legCycles);
+	Toggle( legCycling);
+	if (legCycling)
+		{
+		StartCycling( aGirl);
+		}
+	else
+		{
+		StopCycling( aGirl);
+		}
+	}
+
+if (doorScriptDone)
+	{
+	Reset( doorScriptDone);
+	++doorScript;
+
+	if (doorScript == 1)
+		{
+		Draw( aPeepHole);
+		EndOfLoop( aPeepHole, doorScriptDone);
+		}
+
+	if (doorScript == 2)
+		{
+		StopUpdate( aPeepHole);
+		doorTimer = 3;
+		}
+
+	if (doorScript == WAITING_FOR_PASSWORD)
+		{
+		Print( 7);
+		doorTimer = 12;
+		}
+
+	if (doorScript == 4)
+		{
+		Print( 8);
+		StartUpdate( aPeepHole);
+		BeginningOfLoop( aPeepHole, doorScriptDone);
+		}
+
+	if (doorScript == 5)
+		{
+		Erase( aPeepHole);
+		StartMotion( ego);
+		Reset( programControl);
+		doorScript = 0;
+		doorTimer = 0;
+		}
+
+	if (doorScript == 101)			[	He knew the password.
+		{
+		Print( 9);
+		StopMotion( ego);
+		Set( programControl);
+		StartUpdate( aPeepHole);
+		BeginningOfLoop( aPeepHole, doorScriptDone);
+		}
+
+	if (doorScript == 102)
+		{
+		Erase( aPeepHole);
+		StartUpdate( aDoor);
+		EndOfLoop( aDoor, doorScriptDone);
+		}
+
+	if (doorScript == 103)
+		{
+		newRoom = rmBackroom;
+		}
+	}
+
+
+if (musicDone)
+	{
+	Reset( musicDone);
+	SetCel( aJukeBox, 1);
+	StopUpdate( aJukeBox);
+	ForceUpdate( aJukeBox);
+	}
+
+if (startJukeBox)
+	{
+	Reset( startJukeBox);
+	StartUpdate( aJukeBox);
+	Sound( mTitle, musicDone);
+
+	if (!soundOn)
+		{
+		Reset( musicDone);
+		Random( 8, 12, jukeBoxTimer);
+		StartUpdate( aJukeBox);
+		}
+	}
+
+
+
+
+[	Scott Murphy's drinking problem
+
+if (tookADrink)
+	{
+	Reset( tookADrink);
+	ShakeScreen( 1);
+	if (!drunkSeconds)
+		{
+		drunkSeconds = 5;		[	increases geometricly with each drink.
+		staggerCycles = 10;
+		Print( 31);
+		}
+	else
+		{
+		Print( 32);
+		if (drunkSeconds < 120)
+			{
+			drunkSeconds += drunkSeconds;
+			}
+		}
+	}
+
+if (currentStatus == DRUNK)
+	{
+	if (egoDir != EGO_STOPPED)
+		{
+		--staggerCycles;
+		if (staggerCycles == 1)
+			{
+			Toggle( staggering);
+			if (!staggering)
+				{
+				Reset( programControl);
+				ReleaseLoop( ego);
+				staggerCycles = 7;
+				}
+			else
+				{
+				Set( programControl);
+				FixLoop(ego);
+				:loop1
+				Random( 1, 8, work);
+				if (work == egoDir)
+					{
+					goto loop1;
+					}
+				egoDir = work;
+				staggerCycles = 5;
+				}
+			}
+		}
+	}
+
+
+[*****
+:exit							[	test for leaving the room
+[*****
+
+if (edgeEgoHit == TOP)			{newRoom = rmHallway;}
+if (edgeEgoHit == BOTTOM)		{newRoom = rmOutsideBar;}

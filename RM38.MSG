@@ -1,0 +1,168 @@
+[messages for room 38 -- rmBlackjack
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"You are sitting at a blackjack table in the casino.
+ There is a sign on the table titled \"House Rules.\""
+
+%message	2
+"Do you want insurance? "
+
+%message	3
+"Amount in dollars: $"
+
+%message	4
+"Please bet an even number of dollars (2, 4, 6, etc.).
+ The house does not keep half-dollars."
+
+%message	5
+"The dealer has blackjack!"
+
+%message	6
+"Surrendering your cards, you are refunded half of your bet."
+
+%message	7
+"You bet zero dollars, receive zero cards, and win zero dollars and
+ zero cents."
+
+%message	8
+"You can play all night like this!"
+
+%message	9
+"Your insurance bet pays 2 to 1."
+
+%message	10
+"Please answer \"y\" or \"n\"."
+
+%message	11
+"You are busted."
+
+%message	12
+"The dealer busted."
+
+%message	13
+"She's a beautiful young lady,
+ but you vow to keep your thoughts on the game."
+
+%message	14
+"It's a push!"
+
+%message	15
+"\"Thanks for playing,\" says the dealer, finally cracking a smile.
+ \"Come back anytime.\""
+
+%message	16
+"You lose!"
+
+%message	17
+"You have blackjack."
+
+%message	18
+"Six cards make a winner."
+
+%message	19
+"You can only "
+
+%message	20
+" when you have two cards."
+
+%message	21
+"\"Please, no talking at the tables.\""
+
+%message	22
+"That's not a pair."
+
+%message	23
+"\"I'm sorry, Sir. We're not permitted to accept gratuities!\""
+
+%message	24
+"%m19double when you have 10 or 11 points."
+
+%message	25
+"%m19split%m20"
+
+%message	26
+"%m19surrender%m20"
+
+%message	27
+"You don't have enough money!"
+
+%message	28
+"Don't be in such a hurry. Finish this hand first!"
+
+%message	29
+"It's too late now. This hand is already being played."
+
+%message	30
+"You can't bet more than you have."
+
+%message	31
+"$20.00 is the maximum bet at this table."
+
+%message	32
+""
+
+%message	33
+""
+
+%message	34
+"Your first hand "
+
+%message	35
+"%m34is a push!"
+
+%message	36
+"%m34wins!"
+
+%message	37
+"%m34loses!"
+
+%message	38
+"%m34busted!"
+
+%message	39
+"%m43is a push!"
+
+%message	40
+"%m43wins!"
+
+%message	41
+"%m43loses!"
+
+%message	42
+"%m43busted!"
+
+%message	43
+"Your split hand "
+
+%message	44
+"Please wait until it's your turn."
+
+%message	45
+"\n
+        HOUSE RULES\n\n
+This table has a $20.00 limit.
+ Bets must be a multiple of $2.00.\n\n
+Dealer must hit 16, and must stand on 17.\n\n
+Blackjack pays 1-1/2 to 1 odds.\n\n
+Any six cards under 22 wins.\n
+"
+
+%message	46
+"\n
+Insurance bets are offered whenever the dealer shows an ace.
+ They are half your bet, and pay 2 to 1 odds.\n\n
+You may split a pair or surrender whenever you have only two cards.\n\n
+You may double down if your cards total 10 or 11 points.\n
+"
+
+%message	47
+"\n
+Press F4 when ready to play.\n\n
+Press F6 for another card.\n\n
+Press F8 to stand.\n\n
+To change the amount of your bet, type \"change bet.\"\n"
+

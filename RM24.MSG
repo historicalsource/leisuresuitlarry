@@ -1,0 +1,110 @@
+[messages for room 24 -- rmInsideDisco
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"The disco is filled with remarkably similar guys, all looking for girls."
+
+%message	2
+"Don't mess around, Larry. Get out there and dance with her!"
+
+%message	5
+"Perhaps they're waiting for Fawn to return."
+
+%message	6
+"Not now, you're busy."
+
+
+%message	8
+"\"Come on, Larry. What are you waiting for?
+ I'm hot to get it on with you!\""
+
+
+%message	19
+"(What are you into this time, Larry?)"
+
+
+%message	21
+"\"Either give me some money, or I'll leave without you.\""
+
+%message	22
+"\"That's it! See ya later, chump!\""
+
+
+%message	29
+"You smile at the girl and say, \"May I join you?\""
+
+%message	30
+"And, of course she replies, \"Why, am I coming apart?\""
+
+%message	31
+"(Drum fill)"
+
+
+%message	38
+"You are sitting."
+
+%message	39
+"You are standing."
+
+%message	40
+"The dance floor is lit from below with brightly colored lights.
+ It is presently unused."
+
+%message	41
+"Evidently every guy here has been turned down by the only girl in the place.
+ Her beauty has them frozen in their tracks."
+
+%message	42
+"There isn't one. This place is run by computer.
+ (Besides, at this time of night DJ should be home with Chris.)"
+
+
+%message	44
+"Perhaps you should sit with her first."
+
+%message	45
+"She might listen to you, if you can establish eye contact."
+
+
+%message	52
+"\"Oooh, you're so sweet. I just love "
+
+%message	53
+"Sitting here brings back fond memories of those minutes you spent with
+ Fawn."
+
+%message	54
+"Your heart just isn't in it."
+
+%message	55
+"You miss her, don't you?"
+
+%message	56
+"Gosh, Larry. Maybe you should have loaned her some money!"
+
+%message	57
+"Funny, this is a dry club."
+
+
+%message	59
+"\"Not again. That trip through the ceiling gave me a headache!\""
+
+%message	60
+"You're being a little too direct again, Larry."
+
+%message	61
+"There's a gorgeous blond sitting at the table, and she's all alone!"
+
+%message	62
+"You can't sit there; she would think you rude to take her chair."
+
+%message	63
+"They seem to be staring at something they all want."
+
+
+%message	66
+"You can't sit there; she would think you rude to sit on top of her."
+

@@ -1,0 +1,472 @@
+[logics for room 32 -- rmOutsideCasino
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm32.msg"
+%include	"gamedefs.h"
+
+
+
+%define	L_SIGN				0
+%define	L_DOOR				1
+%define	L_DOOR_WITH_EGO		2
+
+%define	nearDoor				lf0
+%define	doorsOpen				lf1
+%define	manDone				lf2
+%define	doorDone				lf3
+%define	nearMan				lf4
+%define	manOnScreen			lf5
+
+%define	manScript				lv0
+%define	manTimer				lv1
+
+%object	aDoor1				1
+%object	aDoor2				2
+%object	aMan					3
+%object	aSign				4
+
+
+
+if (initLog)
+	{
+	if  (watchHours > 4 &&			[	Anything after 5 am.
+		watchHours < 10)
+		{
+		NewRoom( rmSunrise);
+		}
+
+	SetHorizon( 107);
+
+	LoadPic( currentRoom);
+	DrawPic( currentRoom);
+	DiscardPic( currentRoom);
+
+	LoadLogics( lgcStreet);
+
+	LoadView( vCasinoExterior);
+
+	Random( 1, 3, work);
+
+[		Set( forceAtest);
+	if (forceAtest)
+		{
+		work = 1;
+		}
+	if (currentStatus == NORMAL &&
+		work == 1 &&
+		ObjInRoom( iApple, currentRoom))
+		{
+		LoadView( vCasinoManInBarrel);[	View.132
+
+		AnimateObj( aMan);
+		SetView( aMan, vCasinoManInBarrel);
+		Position( aMan, 120, 131);
+		Random( 4, 7, manTimer);
+		ObjectOnLand( aMan);
+		}
+
+
+	AnimateObj( aDoor1);
+	IgnoreBlocks( aDoor1);
+	IgnoreObjs( aDoor1);
+	SetView( aDoor1, vCasinoExterior);
+	SetLoop( aDoor1, L_DOOR);
+	FixLoop( aDoor1);
+	SetCel( aDoor1, 0);
+	StopCycling( aDoor1);
+			    
+	AnimateObj( aDoor2);
+	IgnoreBlocks( aDoor2);
+	IgnoreObjs( aDoor2);
+	SetView( aDoor2, vCasinoExterior);
+	SetLoop( aDoor2, L_DOOR);
+	FixLoop( aDoor2);
+	SetCel( aDoor2, 1);
+	StopCycling( aDoor2);
+
+	if (slowProcessor)
+		{
+		AddToPic( vCasinoExterior, L_SIGN, 1, 51, 61, 4, 4);
+			[view, loop, cel, x, y, obj priority, box priority
+		}
+	else
+		{
+		AnimateObj( aSign);
+		IgnoreHorizon( aSign);
+		IgnoreBlocks( aSign);
+		IgnoreObjs( aSign);
+		SetView( aSign, vCasinoExterior);
+		SetLoop( aSign, L_SIGN);
+		Position( aSign, 51, 61);
+		Draw( aSign);
+		}
+
+
+	if (previousRoom == rmInsideCasino)
+		{
+		egoX = 75;
+		egoY = 109;
+		SetLoop( ego, FACING_FRONT);
+
+		Position( aDoor1, 57, 108);
+		Position( aDoor2, 88, 108);
+
+		Draw( aDoor1);
+		Draw( aDoor2);
+		Set( doorsOpen);
+		}
+	else
+		{
+		Position( aDoor1, 67, 108);
+		Draw( aDoor1);
+
+		Position( aDoor2, 78, 108);
+		Draw( aDoor2);
+
+		if (previousRoom == rmDarkAlley)
+			{
+			egoX = 0;
+			egoY = 141;
+			}
+		else
+			{
+			if (previousRoom != rmOutsideChapel)
+				{
+				egoX = 77;
+				egoY = 155;
+				}
+			}
+	 	}
+	PositionV( ego, egoX, egoY);
+	Draw( ego);
+	ObjectOnAnything( ego);
+
+	Call( lgcStreet);
+
+	ShowPic( );
+
+	Return( );
+
+	}							[	end initLOG
+
+
+
+Reset( nearMan);
+Distance( aMan, ego, work);
+if (manOnScreen && work < 25)
+	{
+	Set( nearMan);
+	}
+
+Reset( nearDoor);
+if (Posn( ego, 63, 100, 86, 113))
+	{
+	Set( nearDoor);
+	}
+
+if (manScript == 3)					[	Waiting to buy apple.
+	{
+	Distance( aMan, ego, work);
+	if  (work < ERROR &&
+		work > 20)				[	Ego walked away from him.
+		{
+		Print( 10);
+		Set( manDone);
+		manScript = 1;
+		manTimer = 0;
+		}
+	}
+
+
+[*****
+:handleInput
+[*****
+
+if (!haveInput)			{goto noInput;}
+
+if ((Said( look) ||
+	Said( look, building) ||
+	Said( look, room) ||
+	Said( look, casino) ||
+	Said( look, hotel)))
+	{
+	Print( 1);
+	}
+
+if ((Said( look, plant) ||
+	Said( look$in, plant) ||
+	Said( look$in, pot) ||
+	Said( look, pot)))
+	{
+	Print( 15);
+	}
+
+if (Said( open, door))
+	{
+	if (nearTaxi)
+		{
+		Reset( haveMatch);
+		}
+	else
+		{
+		Print( 16);
+		}
+	}
+
+if (Said( look, wall))
+   	{
+	Print( 20);
+	}
+
+if ((Said( look, window) ||
+	Said( look, glass) ||
+	Said( look, door) ||
+	Said( look, glass, door) ||
+	Said( look$in, glass)))
+	{
+	Print( 17);
+	}
+
+if (manOnScreen)
+	{
+	if (Said( look, man))
+		{
+		Print( 5);
+		}
+
+	if (Said( talk, man))
+		{
+		if (!nearMan)
+			{
+			Set( notCloseEnough);
+			}
+		else
+			{
+			if (Has( iApple))
+				{
+				Print( 19);
+				}
+			else
+				{
+				if (manScript < 3)
+					{
+					Print( 18);
+					}
+				else
+					{
+					Print( 6);
+					}
+				}
+			}
+		}
+
+	if ((Said( ask, name) ||
+		Said( ask, man, his, name) ||
+		Said( get, name) ||
+		Said( ask, his, name) ||
+		Said( ask, man, name) ||
+		Said( name) ||
+		Said( name, man) ||
+		Said( man, name)))
+		{
+		if (!nearMan)
+			{
+			Set( notCloseEnough);
+			}
+		else
+			{
+			Print( 7);
+			}
+		}
+
+	if ((manScript == 2 ||
+		manScript == 3))
+		{
+		if ((Said( no) ||
+			Said( get, lost, rol) ||
+			Said( go, away, rol) ||
+			Said( hump, off, rol) ||
+			Said( no, thanks)))
+			{
+			Print( 12);
+			Set( manDone);
+			manScript = 3;
+			manTimer = 0;
+			}
+		}
+
+	if ((Said( ask, last, name) ||
+		Said( last, name) ||
+		Said( last, name, man) ||
+		Said( man, last, name)))
+		{
+		if (!nearMan)
+			{
+			Set( notCloseEnough);
+			}
+		else
+			{
+			Print( 8);
+			}
+		}
+
+	if (Said( take, barrel))
+		{
+		if (!nearMan)
+			{
+			Set( notCloseEnough);
+			}
+		else
+			{
+			Print( 13);
+			}
+		}
+
+	if (Said( look$in, barrel))
+		{
+		if (!nearMan)
+			{
+			Set( notCloseEnough);
+			}
+		else
+			{
+			Print( 14);
+			}
+		}
+
+	if ((Said( buy, rol) ||
+		Said( give, money, man) ||
+		Said( pay, rol)))
+		{
+		if (!nearMan)
+			{
+			Set( notCloseEnough);
+			}
+		else
+			{
+			if (!ObjInRoom( iApple, currentRoom))
+				{
+				Print( 11);
+				}
+			else
+				{
+				currentScore += 3;
+				Print( 9);
+				Get( iApple);
+				--dollars;
+				Set( manDone);
+				manTimer = 0;
+				manScript = 3;
+				}
+			}
+		}
+	}
+
+
+[*****
+:noInput
+[*****
+
+if (aSecondPassed)
+	{
+	--manTimer;
+	if (manTimer == 1)
+		{
+		Set( manDone);
+		}
+	}
+
+if (manScript == 3 && edgeEgoHit)
+	{
+	Print( 4);
+	}
+
+if (manScript == 4 && objHitEdge == aMan)
+	{
+	Set( manDone);
+	}
+
+
+if (manDone)
+	{
+	Reset( manDone);
+	++manScript;
+
+	if (manScript == 1)
+		{
+		Draw( aMan);
+		Set( manOnScreen);
+		manScript = 2;		[	So we can make him chase ego again later.
+		}
+
+	if (manScript == 2)
+		{
+		StartCycling( aMan);
+		FollowEgo( aMan, 8, manDone);
+		}
+
+	if (manScript == 3)
+		{
+		manTimer = 11;
+		StopCycling( aMan);
+		Print( 2);
+		Print( 3);
+		Set( nearPerson);
+		}
+
+	if (manScript == 4)
+		{
+		StartCycling( aMan);
+		Wander( aMan);
+		}
+
+	if (manScript == 5)
+		{
+		Erase( aMan);
+		Reset( manOnScreen);
+		manScript = 0;
+		}
+	}
+
+
+
+if (nearDoor)
+	{
+	IgnoreBlocks( ego);
+	ObserveObjs( aDoor1);
+	ObserveObjs( aDoor2);
+	ObserveObjs( ego);
+
+	if (!doorsOpen)
+		{
+		Set( doorsOpen);
+		MoveObj( aDoor1, 57, 108, 1, done);
+		MoveObj( aDoor2, 88, 108, 1, done);
+		}
+	}
+else
+	{
+	ObserveBlocks( ego);
+	if (doorsOpen)
+		{
+		Reset( doorsOpen);
+		IgnoreObjs( aDoor1);
+		IgnoreObjs( aDoor2);
+		MoveObj( aDoor1, 67, 108, 1, done);
+		MoveObj( aDoor2, 78, 108, 1, done);
+		}
+	}
+
+
+
+[*****
+:exit							[	test for leaving the room
+[*****
+
+Call( lgcStreet);
+
+if (edgeEgoHit == TOP)				{newRoom = rmInsideCasino;}
+if (edgeEgoHit == RIGHT)				{newRoom = rmOutsideChapel;}
+if (edgeEgoHit == LEFT)				{newRoom = rmDarkAlley;}
+

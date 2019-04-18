@@ -1,0 +1,278 @@
+[messages for room 15 -- rmInsideBar
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"This is the sleaziest bar you've ever been in.
+ And you've been in quite a few."
+
+%message	2
+"You are standing."
+
+%message	3
+"You are sitting."
+
+%message	4
+"You insert a dollar into the juke box, and select a suitably sleazy song."
+
+%message	5
+"You rap loudly on the naugahyde door.
+ You wonder how many naugas had to give their
+ all just to decorate this sleazehole."
+
+%message	6
+"So what?"
+
+%message	7
+"\"Yeah. Whatsda passwoid?\""
+
+%message	8
+"\"Scram, dog breath!\""
+
+%message	9
+"\"Come on in!\""
+
+%message	10
+"\"...blah, blah, blah, blah, blah...\""
+
+%message	11
+"\"...a lotta guys just leave her hanging in a tree somewhere!\""
+
+%message	12
+"\"...'cause Thursday's your night in the barrel!\""
+
+%message	13
+"\"...just think of the money he saved!\""
+
+%message	14
+"\"...and there stood the pig and the cow!\""
+
+%message	15
+"\"...dammit Liza, doncha know ya own reflection?\""
+
+%message	16
+"\"...we are coming back this way, aren't we?\""
+
+%message	17
+"\"...You idiot! I said POSSE!!\""
+
+%message	18
+"\"...nobody can eat THAT much ice cream!\""
+
+%message	19
+"\"...25 bucks, same as in town!\""
+
+%message	20
+"You'd better sit down first."
+
+%message	21
+"You greet the bartender.\n\n
+\"What'll it be,\" Lefty responds, \"whiskey, wine or beer?\""
+
+%message	22
+"\"I'll have a glass of your fine, well whiskey!\" you tell Lefty."
+
+%message	23
+"\"Gimme a mug o' beer!\" you order Lefty."
+
+%message	24
+"\"That'll be $3.00, please.\""
+
+%message	25
+"You flip three bucks onto the counter."
+
+%message	26
+"\"I'm presently a little short,\" you stammer."
+
+%message	27
+"\"Yeah, and not just in the financial department, I bet!\" he replies,
+ grabbing back your order."
+
+%message	28
+"You down the beer in your pseudo-macho style,
+ and slam the mug back on the bar."
+
+%message	29
+"You delicately sip the wine until it's all gone.\n\n
+You tell Lefty,
+ \"I find this impudent and sassy, with the slightest hint of impertinence.\""
+
+%message	30
+"He gazes at you longingly and moistens his lips!"
+
+%message	31
+"Suddenly you feel a little woozy."
+
+%message	32
+"This one tastes even better than the last.
+ One more sounds like a good idea."
+
+%message	33
+"Try sitting at the bar; that usually gets Lefty's attention."
+
+%message	34
+"It's not good etiquette to drink standing up."
+
+%message	35
+"Since you can only balance one open glass of whiskey at a time,
+ you toss this one down immediately."
+
+%message	36
+"\"May I please have a glass of your delicate white zinfandel, sir?\"
+ you ask Lefty."
+
+%message	37
+"Hey, was that your voice?"
+
+%message	38
+"You don't drink the whiskey, but instead,
+ decide to carry it with you wherever you go,
+ precariously balanced in an open shot glass."
+
+%message	39
+"The whiskey burns its way down your throat.
+ You vow to never again buy a \"well\" brand."
+
+%message	40
+"Hold on; you haven't got your last order yet!"
+
+%message	41
+"You feel a little light-headed."
+
+%message	42
+"Shaking your head, you clear away the cobwebs and are able to once again
+ walk in your standard, studly style."
+
+%message	43
+"\"Cram it, clown!\" you tell the bore on the stool next to you!"
+
+%message	44
+"\"Same to ya!\" shouts Lefty."
+
+%message	45
+"It's an antique, left over from \"King's Quest III.\""
+
+%message	46
+"Patience, Larry; patience!"
+
+%message	47
+"The door is locked. And, there is no key."
+
+%message	48
+"She may not be a great looker, but think of the muscles in that leg."
+
+%message	49
+"It's just going around in circles..."
+
+%message	50
+"...like your life."
+
+%message	51
+"You don't know much about art, but you do know what you like!"
+
+%message	52
+"You mean to say you're playing a 3-D adventure game,
+ and all you want is LIGHT beer??"
+
+%message	53
+"They're just sitting at the bar, drinking their livers into oblivion."
+
+%message	54
+"\"Sorry, we don't sell them sissy drinks here,\" says Lefty.
+ \"We got whiskey, wine and beer. What do you want?\""
+
+%message	55
+"My, aren't we the little savage!
+ Didn't your mother teach you anything?"
+
+%message	56
+"\"Who cares,\" she replies sarcastically.
+ \"Stop bugging me, or I'll have my boy friend
+ take care of you when he gets back from the rest room!\""
+
+%message	57
+"Looks like you're operating at your standard level of charm, Larry."
+
+%message	58
+"\"Har, har!!\""
+
+%message	59
+"He has nothing to say, but says it continuously."
+
+%message	60
+"\"Hi there, lovely legs!\" you say sweetly.
+ \"My name's Larry; Larry Laffer.\""
+
+%message	61
+"They have no comment."
+
+%message	62
+"He's not bothering you now; leave him alone, you big bully!"
+
+%message	63
+"You can't. There's no key in this game!"
+
+%message	64
+"Gee, Dad. It's a Wurlitzer!"
+
+%message	65
+"The peephole is locked from the inside."
+
+%message	66
+"Boy, are you drunk!"
+
+%message	67
+"SLAP!"
+
+%message	68
+"\"Ya got me!\""
+
+%message	69
+"\"No, thanks,\" Lefty replies. \"I don't drink.\""
+
+%message	70
+"\"Ok,\" says Lefty, \"but that'll cost ya $%v90.00!\""
+
+%message	71
+"The last of the big time spenders,
+ you go down in a blaze of glory, ordering drinks for everybody in the place."
+
+%message	72
+"\"I'll not help you,\" says Lefty, \"no matter how much you offer me!\""
+
+%message	73
+"The naugahyde bounces the hammer back, grazing your scalp but slightly."
+
+%message	74
+"You flip a fiver out on the bar.
+ Lefty grabs it, smiles, and says, \"Hey, thanks buddy! "
+
+%message	75
+"%m74"
+
+%message	76
+"You don't have enough money!"
+
+%message	77
+"\"Double down on eleven.\""
+
+%message	78
+"\"If you're short of money, you could always try gambling at the casino.\""
+
+%message	79
+"\"If you're bored hanging around my place, try hailing a cab outside.\""
+
+%message	80
+"\"Have you talked to Sierra On-Line lately?\""
+
+%message	81
+"\"Guys tell me I need to clean my rest room walls.\""
+
+%message	82
+"He appears to be perverted, twisted and sick!"
+
+%message	83
+"You instantly take a liking to him."
+

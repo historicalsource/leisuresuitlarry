@@ -1,0 +1,194 @@
+[messages for room 43 -- rmHotTub
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"The moon lights an expansive rooftop garden with a spa in one corner.
+ You've found the source of the gurgling noise!"
+
+%message	2
+"Wasting no time, you hop into the water.
+ Oooh, does it feel good!
+ The warm water swirls about you,
+ the bubbles stimulating you nearly as much as the beautiful woman across
+ from you.
+ With the warmth of the water soaking into your body,
+ you become quite relaxed."
+
+%message	3
+"Wow! Just the way you like your women: nearby and naked!
+ She has a beautiful tan, and a gorgeous body.
+ You've waited a lifetime for this moment."
+
+%message	4
+"What a beautiful face!
+ She's leaning back, relaxing in the spa with
+ the water bubbling up around her.
+ It's even possible you could become sexually aroused by this!"
+
+%message	5
+"Eve takes your apple, and with a sweet, innocent look,
+ raises it to her mouth.
+ She takes a small bite out of it, while a sexy smile comes across her face.
+ She winks, and lies back in the water, chewing delicately."
+
+%message	6
+"Eve gently moves her sensuous tongue around the apple,
+ tiny drops of the apple's juice glistening on her lips."
+
+%message	7
+"In the hot tub is the most beautiful girl you've ever seen!
+ Beside her is her towel, and swim suit.
+ You can't believe she doesn't mind your presence here."
+
+%message	8
+"You have no apple."
+
+%message	9
+"Looking over at the next hotel, you notice an ugly girl getting undressed."
+
+%message	10
+"She's not really that pretty."
+
+%message	11
+"Well, she's looking better."
+
+%message	12
+"You know, she's not that bad."
+
+%message	13
+"You could ignore some of her faults."
+
+%message	14
+"Perhaps you're in love!"
+
+%message	15
+"Pant, pant, pant, pant, pant."
+
+%message	16
+"Something tells you that's the wrong approach with this one, Larry."
+
+%message	17
+"She's really turning you on!
+ You had no idea fruit could be so exciting."
+
+%message	18
+"\"Bad breath's one thing, Mister; but you could knock a buzzard off
+ a manure truck!\""
+
+%message	19
+"Nah. Who wants to go hot-tubbing alone?"
+
+%message	20
+"\"Hey, handsome, why don't you slip into the water with me,
+ so we can REALLY get to know each other!\""
+
+%message	21
+"Her hand is resting near a fluffy, white, expensive bath towel,
+ embroidered in florid script with the name: \"Eve.\""
+
+%message	22
+"You can take a hint. \"Let's go, baby!\" you whisper!"
+
+%message	23
+"\"This water feels SO good!\""
+
+%message	24
+"After finishing the apple, Eve slowly slides out of the hot tub,
+ her steamy, naked body glistening in the moonlight.
+ Barely covering her tremendous assets with the towel,
+ she smiles and motions for you to follow her."
+
+%message	25
+"\"Who loves ya, baby?\""
+
+%message	26
+"\"So long, baby!\" you shout!"
+
+%message	27
+"As you leave the hot tub, Eve speaks at last,
+ \"Say, Larry. You really ARE glad to see ME!!\""
+
+%message	28
+""
+
+%message	29
+"It's difficult to take your eyes off the beautiful woman with
+ whom you share the hot tub."
+
+%message	30
+"She says nothing, but that smile tells you a lot."
+
+%message	31
+"Perhaps if you establish eye contact first..."
+
+%message	32
+"\"What's your name, gorgeous?\" you ask."
+
+%message	33
+"\"Have you ever tried it underwater?\" you coyly ask."
+
+%message	34
+"She doesn't say."
+
+%message	35
+"\"What's your sign, dollface?\" you ask."
+
+%message	36
+"At last she speaks. \"Yield,\" she says simply."
+
+%message	37
+"Although she smiles, it appears she's a woman of few words.
+ She's waiting for you to determine what it is she wants!"
+
+%message	38
+"\"Share your wine with me?\" you ask."
+
+%message	39
+"She hands you the glass, and you take an uncustomarily small sip.
+ She replenishes it from the bottle, so it appears no different
+ than before."
+
+%message	40
+"It appears she doesn't like that!"
+
+%message	41
+"She wouldn't like that."
+
+%message	42
+"Say; what's this? A beautiful woman all alone in a hot tub!
+ And, she's smiling at you? And, and..."
+
+%message	43
+"Why take it, when you can drink it?"
+
+%message	44
+"It looks like a bottle of fine champagne, suitable for two."
+
+%message	45
+"They ARE off."
+
+%message	46
+"They ARE on."
+
+%message	47
+"Her gold bracelet is engraved with the word \"Eve.\""
+
+%message	48
+"...and, she speaks, \"Hi, handsome. Where have you been all my life?\""
+
+%message	49
+"(Larry, this one seems to LIKE you!)"
+
+%message	50
+"SLAP!"
+
+%message	51
+"\"Oooh, I like that name!\""
+
+%message	52
+"SLAP!\n\n
+SLAP!!"
+

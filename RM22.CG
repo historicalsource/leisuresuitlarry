@@ -1,0 +1,959 @@
+[logics for room 22 -- rmOutside7_11
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm22.msg"
+%include	"gamedefs.h"
+
+
+
+%define	DONE					255
+
+%define	wrongSideOfPole		lf0
+%define	nearPole				lf1
+%define	nearBum				lf2
+%define	nearPhone				lf3
+%define	bumDone				lf4
+%define	hungUpPhone			lf5
+
+%define	bumTimer				lv1
+%define	bumScript				lv3
+
+%object	aBum					1
+
+
+
+if (initLog)
+	{
+	if  (watchHours > 4 &&			[	Anything after 5 am.
+		watchHours < 10)
+		{
+		NewRoom( rmSunrise);
+		}
+
+	SetHorizon( 118);
+
+	LoadLogics( lgcStreet);
+
+	LoadSound( mRm22Drunk);
+
+
+								[
+		[	BE CAREFUL BELOW:	
+		LoadView( v7_11Exterior);	[	view.130
+		LoadPic( currentRoom);		[	
+		DrawPic( currentRoom);		[	
+		DiscardPic( currentRoom);	[	
+		AddToPic( v7_11Exterior, 0, 0, 44, 54, 12, 4);[	
+					[view, loop, cel, x, y, obj priority, box priority
+		DiscardView( v7_11Exterior);	[	
+								[
+
+
+	if (currentStatus != STIFFED_CABBIE &&
+		!Has( iPocketKnife))
+		{
+		LoadView( v7_11Bum);		[	view.93
+
+		AnimateObj( aBum);
+		SetView( aBum, v7_11Bum);
+		Position( aBum, 0, 135);
+		Random( 5, 15, bumTimer);
+		CycleTime( aBum, three);
+		StepTime( aBum, three);
+		}
+
+	if (answeredSurvey)
+		{
+		scriptTimer = 5;
+		script = 210;
+		}
+
+	if (previousRoom == rmInside7_11)
+		{
+		egoX = 36;
+		egoY = 115;
+		SetLoop( ego, FACING_FRONT);
+		}
+	else
+		{
+		if (previousRoom == rmDarkAlley)
+			{
+			egoX = 0;
+			egoY = 114;
+			}
+		else
+			{
+			if (previousRoom != rmOutsideDisco)
+				{
+				egoX = 77;
+				egoY = 146;
+				}
+			}
+		}		 
+	PositionV( ego, egoX, egoY);
+	IgnoreBlocks( ego);
+	Draw( ego);
+
+	Reset( noFawnInDisco);			[	She'll be back now!
+	Call( lgcStreet);
+
+	ShowPic( );
+
+	Return( );
+
+	}							[	end initLOG
+
+
+
+Reset( nearPhone);
+if (Posn( ego, 52, 126, 69, 150))
+	{
+	Set( nearPhone);
+	}
+
+Reset( nearPole);
+if (Posn( ego, 50, 125, 77, 142))
+	{
+	Set( nearPole);
+	}
+
+Reset( wrongSideOfPole);
+if (Posn( ego, 50, 143, 77, 167))
+	{
+	Set( wrongSideOfPole);
+	}
+
+Reset( nearBum);
+if (bumScript)
+	{
+	Distance( aBum, ego, work);
+	if (work < 25)
+		{
+		Set( nearBum);
+		Set( nearPerson);
+		}
+	}
+
+
+[*****
+:handleInput
+[*****
+
+if (!haveInput)			{goto noInput;}
+
+if ((Said( look) ||
+	Said( look, room)))
+	{
+	Print( 1);
+	}
+
+if (Said( look, store))
+	{
+	Print( 34);
+	}
+
+if (Said( open, door))
+	{
+	if (nearTaxi)
+		{
+		Reset( haveMatch);
+		}
+	else
+		{
+		Print( 67);
+		}
+	}
+
+
+
+[	Telephone department.
+if ((Said( use, phone) ||
+	Said( make, phone, call) ||
+	Said( dial, phone)))
+	{
+	if (!nearPhone)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		if (handsOff)
+			{
+			Print( 73);
+			}
+		else
+			{
+			script = 0;
+			Set( scriptDone);
+			}
+		}
+	}
+
+if ((Said( look, phone) ||
+	Said( look, side, phone) ||
+	Said( look, phone, book)))
+	{
+	if (!nearPhone)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 22);
+		if (!readSideOfPhone)
+			{
+			Set( readSideOfPhone);
+			currentScore += 1;
+			}
+		}
+	}
+
+if (Said( look, pole))
+	{
+	if (nearPole)
+		{
+		Print( 22);
+		}
+	else
+		{
+		if (wrongSideOfPole)
+			{
+			Print( 33);
+			}
+		else
+			{
+			Reset( haveMatch);		[	So dynamic says "Taxi stand"
+			}
+		}
+	}
+
+if ((Said( answer, phone) ||
+	Said( answer, phone, call) ||
+	Said( answer, phone) ||
+	Said( answer) ||
+	Said( get, phone)))
+	{
+	if (!nearPhone)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		if (handsOff)
+			{
+			Print( 73);
+			}
+		else
+			{
+			if (script < 210)
+				{
+				Print( 50);
+				}
+			else
+				{
+				Print( 51);
+				script = 215;
+				Set( scriptDone);
+				}
+			}
+		}
+	}
+
+
+
+[	Here's the bum stuff.  (Not Bum Stuff!)
+
+if (bumScript)
+	{
+	if (Said( look, man))
+		{
+		if (!nearBum)
+			{
+			Set( notCloseEnough);
+			}
+		else
+			{
+			Print( 32);
+			}
+		}
+
+	if ((Said( talk, man) ||
+		Said( talk)))
+		{
+		if (!nearBum)
+			{
+			Set( notCloseEnough);
+			}
+		else
+			{
+			Print( 23);
+			}
+		}
+
+	if (Said( no, rol))
+		{
+		Print( 28);
+		Set( bumDone);
+		bumScript = 4;
+		bumTimer = 0;
+		}
+
+	if ((Said( give, wine, man) ||
+		Said( give, wine) ||
+		Said( give, man, wine)))
+		{
+		if (!Has( iWine))
+			{
+			Set( dontHaveIt);
+			}
+		else
+			{
+			if (!nearBum)
+				{
+				Set( notCloseEnough);
+				}
+			else
+				{
+				Drop( iWine);
+				if (!ObjInRoom( iPocketKnife, currentRoom))
+					{
+					Print( 35);
+					}
+				else
+					{
+					Get( iPocketKnife);
+					currentScore += 5;
+
+					Print( 24);
+					Print( 25);
+					Print( 26);
+					Set( bumDone);
+					bumScript = 4;
+					bumTimer = 0;
+					}
+				}
+			}
+		}
+
+	if ((Said( give, whiskey, man) ||
+		Said( give, whiskey) ||
+		Said( give, man, whiskey)))
+		{
+		if (!Has( iWhiskey))
+			{
+			Set( dontHaveIt);
+			}
+		else
+			{
+			if (!nearBum)
+				{
+				Set( notCloseEnough);
+				}
+			else
+				{
+				Print( 2);
+				Drop( iWhiskey);
+				Set( bumDone);
+				bumScript = 4;
+				bumTimer = 0;
+				}
+			}
+		}
+
+	if ((Said( give, money, man) ||
+		Said( give, money) ||
+		Said( pay, man) ||
+		Said( pay, man, money) ||
+		Said( give, man, money)))
+		{
+		if (!nearBum)
+			{
+			Set( notCloseEnough);
+			}
+		else
+			{
+			dollars -= 1;
+			Print( 31);
+			Set( bumDone);
+			bumScript = 4;
+			bumTimer = 0;
+			}
+		}
+
+	if ((Said( smell, man) ||
+		Said( smell)))
+		{
+		Print( 29);
+		}
+
+	if (Said( search, man))
+		{
+		Print( 49);
+		}
+
+	if ((Said( give, man, bottle) ||
+		Said( give, bottle, man)))
+		{
+		Print( 41);
+		}
+	}
+
+
+
+[	Generic problems, solved.
+
+if (Said( dial, rol))
+	{
+	Print( 37);
+	}
+
+if (Said( answer, rol))
+	{
+	Print( 39);
+	}
+
+if (Said( anyword, phone, book))
+	{
+	Print( 38);
+	}
+
+if ((Said( look, window) ||
+	Said( look$in, window)))
+	{
+	Print( 66);
+	}
+
+
+[*****
+:noInput
+[*****
+
+if (aSecondPassed)
+	{
+	if (scriptTimer == 1)
+		{
+		if ((script == 101 ||
+			script == 102))
+			{
+			script = 110;			[	Waited too long.  Hang up.
+			}
+		}
+
+	--bumTimer;
+	if (bumTimer == 1)
+		{
+		Set( bumDone);
+		}
+	}
+
+if (bumScript > 4 && edgeObjHit && objHitEdge == aBum)
+	{
+	Set( bumDone);
+	}
+
+if (bumDone)
+	{
+	Reset( bumDone);
+	++bumScript;
+
+	if (bumScript == 1)
+		{
+		Draw( aBum);
+		Sound( mRm22Drunk, done);
+		FollowEgo( aBum, 8, bumDone);
+		}
+
+	if (bumScript == 2)
+		{
+		StopMotion( aBum);
+		StopCycling( aBum);
+		Print( 27);
+		bumTimer = 9;
+		}
+
+	if (bumScript == 3)				[	timer elapsed; ask for wine
+		{
+		Print( 48);
+		bumTimer = 9;
+		}
+
+	if (bumScript == 4)				[	timer elapsed; bum splits!
+		{
+		Print( 28);
+		bumScript = 5;
+		}
+
+	if (bumScript == 5)				[	player caused him to go.
+		{
+		StartCycling( aBum);
+		Wander( aBum);
+		}
+
+	if (bumScript == 6)
+		{
+		Erase( aBum);
+		bumScript = 0;
+		}
+	}
+
+
+if (scriptDone)
+	{
+	Reset( scriptDone);
+	++script;
+
+	if (script == 1)				[	Accept a phone number.
+		{
+		Set( handsOff);
+		PreventInput();
+		StopMotion( ego);
+		Set( programControl);
+		if (monitorType != MONO)
+			{
+			ClearLines( 23, 23, BG_COLOR);
+			}
+		SetString( 1, 52);			[	" " default blank string;
+		GetString( 1, 30, 23, 0, 14);
+			[string#, prompt, row, col, max length
+		
+		scriptTimer = 3;			[	kill some time before deciding 
+		}
+	
+	
+
+	[	Now, decide if he entered one of our many valid numbers.
+
+	if (script == 2)				[	Accept a phone number.
+		{
+		SetString( 2, 56);			[	Liquor store.
+		SetString( 3, 57);
+		if ((CompareStrings( 1, 2) ||
+			CompareStrings( 1, 3)))
+			{
+			script = 100;
+			}
+
+		SetString( 2, 58);			[	Sex survey.
+		SetString( 3, 59);
+		if ((CompareStrings( 1, 2) ||
+			CompareStrings( 1, 3)))
+			{
+			if (answeredSurvey)
+				{
+				script = 110;
+				}
+			else
+				{
+				script = 200;
+				}
+			}
+
+		SetString( 2, 60);			[	Sierra.
+		SetString( 3, 61);
+		SetString( 4, 62);
+		SetString( 5, 63);
+		SetString( 11, 64);
+		SetString( 12, 65);
+		if ((CompareStrings( 1,  2) ||
+			CompareStrings( 1,  3) ||
+			CompareStrings( 1,  4) ||
+			CompareStrings( 1,  5) ||
+			CompareStrings( 1, 11) ||
+			CompareStrings( 1, 12)))
+			{
+			script = 150;
+			}
+		if (monitorType != MONO)
+			{
+			ClearLines( 23, 23, BG_COLOR);
+			}
+		scriptTimer = 5;
+		Set( soundDone);
+		}
+
+
+	if (script == 3)				[	Unsuccessful dialing experience.
+		{
+		Print( 42);
+		Print( 43);
+		script = DONE;
+		}
+
+
+
+	if (script == 101)				[	"Hello. Ajax Liquor Store"
+		{
+		if (!fawnInRoom)
+			{
+			Print( 36);
+			script = DONE;
+			}
+		else
+			{
+			Print( 44);
+			Print( 45);
+
+			SetString( 11, 52);
+			if (monitorType != MONO)
+				{
+				ClearLines( 23, 23, BG_COLOR);
+				GetString( 11, 53, 23, 0, 38);
+				[	string#, prompt, row, col, max length
+				}
+			else
+				{
+				GetString( 11, 52, 23, 0, 28);
+				}
+
+			PreventInput();
+			AcceptInput();
+			Parse( 11);
+
+			if ((Said( wine) ||
+				Said( order, wine) ||
+				Said( deliver, wine)))
+				{
+				++script;
+				}
+			else
+				{
+				Set( haveMatch);
+				Print( 54);			[	screwed up.
+				script = DONE;
+				}
+			}
+		}
+
+
+	if (script == 102)
+		{
+		Print( 46);
+		[	string#, prompt, row, col, max length
+		SetString( 11, 52);
+		if (monitorType != MONO)
+			{
+			ClearLines( 23, 23, BG_COLOR);
+			GetString( 11, 53, 23, 0, 38);
+			}
+		else
+			{
+			GetString( 11, 52, 23, 0, 28);
+			}
+
+		PreventInput();
+		AcceptInput();
+		Parse( 11);
+
+		if ((Said( anyword, honeymoon$suite) ||
+			Said( anyword, anyword, honeymoon$suite) ||
+			Said( honeymoon$suite, rol)))
+			{
+			++script;
+			}
+		else
+			{
+			Set( haveMatch);
+			Print( 55);			[	screwed up.
+			script = DONE;
+			}
+		}
+
+
+	if (script == 103)
+		{
+		Print( 47);
+		Set( orderedWine);
+		if (!orderedWineFirstTime)
+			{
+			Set( orderedWineFirstTime);
+			currentScore += 5;
+			}
+
+		script = DONE;
+		}
+
+
+	if (script == 111)				[	He dialed survey twice!
+		{
+		Print( 36);
+		script = DONE;
+		}
+
+
+	if (script == 151)				[	He dialed Sierra.
+		{
+		Print( 68);
+		Print( 69);
+		Print( 70);
+		Print( 71);
+		Print( 72);
+		if (!dialedSierra)
+			{
+			Set( dialedSierra);
+			currentScore += 5;
+			}
+
+		script = DONE;
+		}
+
+
+	if (script == 201)				[	Take the sex survey.
+		{
+		Print( 3);
+		SetString(  6, 52);			[	Blank 'em out.
+		SetString(  7, 52);
+		SetString(  8, 52);
+		SetString(  9, 52);
+		SetString( 10, 52);
+		SetString( 11, 74);			[	a NULL string.
+
+		Print( 4);
+		if (monitorType != MONO)
+			{
+			ClearLines( 23, 23, BG_COLOR);
+			GetString( 6, 53, 23, 0, 38);
+			ClearLines( 23, 23, BG_COLOR);
+			}
+		else
+			{
+			GetString( 6, 52, 23, 0, 28);
+			}
+		if (CompareStrings( 11, 6))
+			{
+			Set( hungUpPhone);
+			goto surveyDone;
+			}
+
+
+		Print( 5);
+		if (monitorType != MONO)
+			{
+			ClearLines( 23, 23, BG_COLOR);
+			GetString( 7, 53, 23, 0, 38);
+			ClearLines( 23, 23, BG_COLOR);
+			}
+		else
+			{
+			GetString( 7, 52, 23, 0, 28);
+			}
+		if (CompareStrings( 11, 7))
+			{
+			Set( hungUpPhone);
+			goto surveyDone;
+			}
+
+
+		Print( 6);
+		if (monitorType != MONO)
+			{
+			ClearLines( 23, 23, BG_COLOR);
+			GetString( 8, 53, 23, 0, 38);
+			ClearLines( 23, 23, BG_COLOR);
+			}
+		else
+			{
+			GetString( 8, 52, 23, 0, 28);
+			}
+		if (CompareStrings( 11, 8))
+			{
+			Set( hungUpPhone);
+			goto surveyDone;
+			}
+
+
+		Print( 7);
+		if (monitorType != MONO)
+			{
+			ClearLines( 23, 23, BG_COLOR);
+			GetString( 9, 53, 23, 0, 38);
+			ClearLines( 23, 23, BG_COLOR);
+			}
+		else
+			{
+			GetString( 9, 52, 23, 0, 28);
+			}
+		if (CompareStrings( 11, 9))
+			{
+			Set( hungUpPhone);
+			goto surveyDone;
+			}
+
+
+		Print( 8);
+		if (monitorType != MONO)
+			{
+			ClearLines( 23, 23, BG_COLOR);
+			GetString( 10, 53, 23, 0, 38);
+			ClearLines( 23, 23, BG_COLOR);
+			}
+		else
+			{
+			GetString( 10, 52, 23, 0, 28);
+			}
+		if (CompareStrings( 11, 10))
+			{
+			Set( hungUpPhone);
+			goto surveyDone;
+			}
+
+
+
+		:surveyDone;
+		if (hungUpPhone)
+			{
+			Reset( hungUpPhone);
+			Print( 75);
+			}
+		else
+			{
+			Print( 9);
+			Set( answeredSurvey);
+			if (!answeredSurveyFirstTime)
+				{
+				Set( answeredSurveyFirstTime);
+				currentScore += 2;
+				}
+			}
+
+		Print( 10);
+		Print( 11);
+		script = DONE;
+		}
+
+
+
+	if (script == 211)				[	He's back in the room. Ring phone
+		{
+		scriptTimer = 5;
+		if (typing)
+			{
+			--script;
+			}
+		else
+			{
+			Print( 13);
+			}
+		}
+
+	if (script == 212)
+		{
+		scriptTimer = 5;
+		if (typing)
+			{
+			--script;
+			}
+		else
+			{
+			Print( 14);
+			}
+		}
+
+	if (script == 213)
+		{
+		scriptTimer = 5;
+		if (typing)
+			{
+			--script;
+			}
+		else
+			{
+			Print( 15);
+			}
+		}
+
+	if (script == 214)
+		{
+		scriptTimer = 5;
+		if (typing)
+			{
+			--script;
+			}
+		else
+			{
+			Print( 16);
+			}
+		}
+
+	if (script == 215)
+		{
+		scriptTimer = 5;
+		if (typing)
+			{
+			--script;
+			}
+		else
+			{
+			script = 210;				[	keep repeating
+			Print( 17);
+			}
+		}
+
+	if (script == 216)
+		{
+		Reset( answeredSurvey);
+		if (!heardSurveyFirstTime)
+			{
+			Set( heardSurveyFirstTime);
+			currentScore += 5;
+			}
+
+		Print( 18);
+		Print( 19);
+		Print( 20);
+		Print( 21);
+		}
+
+
+
+	if (script == DONE)
+		{
+		script = 0;
+		Reset( handsOff);
+		if (monitorType != MONO)
+			{
+			ClearLines( 23, 23, BG_COLOR);
+			}
+		StartMotion( ego);
+		Reset( programControl);
+		PreventInput();
+		AcceptInput();
+		Reset( soundDone);
+		}
+	}
+
+
+
+
+[*****
+:exit							[	test for leaving the room
+[*****
+
+Call( lgcStreet);
+
+if (Said( call, operator))
+	{
+	Print( 40);
+	}
+
+if ((Said( make, call) ||
+	Said( use, phone) ||
+	Said( make, phone, call) ||
+	Said( call, anyword)))			[	Didn't call a cab!
+	{
+	Print( 37);
+	}
+
+if (edgeEgoHit == RIGHT)				{newRoom = rmOutsideDisco;}
+if (edgeEgoHit == LEFT)				{newRoom = rmDarkAlley;}
+if (edgeEgoHit == TOP)
+	{
+	if (egoX > 27)
+		{
+		newRoom = rmInside7_11;
+		}
+	else
+		{
+		newRoom = rmDarkAlley;
+		}
+	}

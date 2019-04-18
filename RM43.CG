@@ -1,0 +1,1298 @@
+[logics for room 43 -- rmHotTub
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm43.msg"
+%include	"gamedefs.h"
+
+
+
+[	Facial treatment:
+[	cel0 = normal;		use if no action.
+[	cel1 = smiling; 	use if give apple, talk nice, good breath, look face
+[	cel2	= frowning;	use if say rude things, bad breath
+
+
+[	%view	vCloseupBubbles		177
+[	%view	vEveFace				180
+[	%view	vEveInTub				181
+[		#define	C_SITTING			0
+
+[	%view	vEve					182
+[		#define	L_WALKING_RIGHT	0
+[		#define	L_SITTING_ON_BED	1
+[		#define	L_AFTER_SEX		2
+[	
+[	%view	vHotTubBubbles			183
+
+[	%view	vEgoUndressing			2
+[	%view	vEgoInHotTub			7
+[		#define	L_JUMPING_IN	0
+[		#define	L_JUMPING_OUT	1
+		#define	L_CLOTHES_PILE	2
+
+
+%define	L_EYES				1	[	vEveCloseup 
+%define	L_MOUTH				0
+	#define	C_NORMAL		0		[	mouth cells
+	#define	C_SMILE		1
+	#define	C_FROWN		2
+	#define	DONE			255
+
+%define	DRESSING_SPEED			3	[	Ego's CycleTime while changing.
+%define	HOT_TUB_SPEED			4	[	Ego & Eve's exiting tub CycleTime
+
+
+%define	egoInHotTub			lf0
+%define	clothesOnFloor			lf1
+%define	egoNaked				lf2
+%define	eveInHotTub			lf3
+%define	lookingAtEve			lf4
+%define	nearHotTub			lf5
+%define	eyesCycling			lf6
+%define	dollDone				lf7
+%define	bubblesOn				lf8
+%define	dollOnScreen			lf9
+%define	dollSoundDone			lf10
+%define	cutToLongShot			lf11
+%define	cutToCloseup			lf12
+
+
+%define	eyeCycles				lv0
+%define	breathLineTimer		lv1
+[%define	lv2
+[%define	lv3
+%define	lookCount				lv4
+%define	talkCount				lv5
+%define	mouthTimer			lv6
+%define	mouth				lv7
+
+
+%object	aBubbles				1
+%object	aEve					2
+%object	aEgo'sClothes			3
+%object	aEve'sTowel			4
+%object	aMouth				5
+%object	aEyes				6
+%object	aDoll				7
+%object	aCloseupBubbles1		11
+%object	aCloseupBubbles2		12
+%object	aCloseupBubbles3		13
+%object	aCloseupBubbles4		14
+
+
+if (initLog)
+	{
+	LoadView( vHotTubBubbles);
+
+	if (!eveGone)
+		{
+		Set( eveInHotTub);
+		Set( bubblesOn);
+
+		LoadView( vEve);
+		LoadView( vEveFace);
+		LoadView( vEveInTub);
+
+		LoadView( vCloseupBubbles);
+
+		LoadView( vEgoInHotTub);
+		LoadView( vEgoWearingTowel);
+		LoadView( vEgoUndressing);
+
+		picture = picEveCloseup;
+		LoadPic( picture);
+		}
+
+	LoadPic( currentRoom);
+	DrawPic( currentRoom);
+	[	DON'T	DiscardPic( currentRoom);
+
+	if (eveInHotTub)
+		{
+		AnimateObj( aEve);
+		IgnoreBlocks( aEve);
+		IgnoreObjs( aEve);
+		SetView( aEve, vEveInTub);
+		SetPriority( aEve, 9);
+		Position( aEve, 72, 89);
+		Draw( aEve);
+		StopUpdate( aEve);
+
+		AnimateObj( aEve'sTowel);	[	Put eve's towel by tub.
+		SetView( aEve'sTowel, vEgoInHotTub);
+		SetLoop( aEve'sTowel, L_CLOTHES_PILE);
+		Position( aEve'sTowel, 58, 92);
+		Draw( aEve'sTowel);
+
+		AnimateObj( aEgo'sClothes);
+		IgnoreBlocks( aEgo'sClothes);
+		IgnoreObjs( aEgo'sClothes);
+		SetView( aEgo'sClothes, vEgoInHotTub);
+		SetLoop( aEgo'sClothes, L_CLOTHES_PILE);
+		SetPriority( aEgo'sClothes, 15);
+		Position( aEgo'sClothes, 95, 105);
+		}
+
+	AnimateObj( aBubbles);
+	IgnoreBlocks( aBubbles);
+	IgnoreObjs( aBubbles);
+	Position( aBubbles, 59, 106);
+	SetView( aBubbles, vHotTubBubbles);
+	SetPriority( aBubbles, 9);
+	Draw( aBubbles);
+
+	if (currentStatus == CHASING_DOLL)
+		{
+		PreventInput();
+		Set( handsOff);
+
+		LoadView( vDollDeflating);
+		LoadSound( sDollDeflating);
+
+		AnimateObj( aDoll);
+		IgnoreHorizon( aDoll);
+		IgnoreBlocks( aDoll);
+		IgnoreObjs( aDoll);
+		SetView( aDoll, vDollDeflating);
+		SetPriority( aDoll, 15);
+		Position( aDoll, 77, 118);
+		Draw( aDoll);
+		MoveObj( aDoll, 0, 118, 4, dollDone);
+		Set( dollOnScreen);
+		Set( dollSoundDone);
+		}
+
+
+	egoX = 150;
+	if (egoY < 97)
+		{
+		egoY = 97;
+		}
+	if (egoY > 156)
+		{
+		egoY = 156;
+		}
+	PositionV( ego, egoX, egoY);
+	Draw( ego);
+
+	ShowPic( );
+
+	Return( );
+
+	}							[	end initLOG
+
+
+
+Reset( nearHotTub);
+if ((Posn( ego, 47, 90, 111, 123) ||
+	egoInHotTub))
+	{
+	Set( nearHotTub);
+	}
+
+if (eveInHotTub)
+	{
+	if ((Posn( ego, 59, 90, 86, 92) ||	[	Behind the tub
+		egoInHotTub))
+		{
+		Set( nearPerson);
+		}
+	}
+
+
+[*****
+:handleInput
+[*****
+
+if (!haveInput)			{goto noInput;}
+
+if (eveInHotTub)
+	{
+	if (lookingAtEve)
+		{
+		if ((Said( turn, on, bubbles) ||
+			Said( turn, bubbles, on) ||
+			Said( turn, spa, on) ||
+			Said( turn, on, spa)))
+			{
+			if (bubblesOn)
+				{
+				Print( 46);
+				}
+			else
+				{
+				Set( bubblesOn);
+				Draw( aCloseupBubbles1);
+				Draw( aCloseupBubbles2);
+				Draw( aCloseupBubbles3);
+				Draw( aCloseupBubbles4);
+				}
+			}
+
+		if ((Said( turn, off, bubbles) ||
+			Said( turn, bubbles, off) ||
+			Said( turn, spa, off) ||
+			Said( turn, off, spa)))
+			{
+			if (!bubblesOn)
+				{
+				Print( 45);
+				}
+			else
+				{
+				Reset( bubblesOn);
+				Erase( aCloseupBubbles1);
+				Erase( aCloseupBubbles2);
+				Erase( aCloseupBubbles3);
+				Erase( aCloseupBubbles4);
+				}
+			}
+
+		if (Said( use, spray, rol))
+			{
+			Reset( haveMatch);
+			mouth = C_SMILE;
+			Random( 6, 19, eyeCycles);
+			Reset( eyesCycling);
+			}
+
+		if (Said( look, bracelet))
+			{
+			Print( 47);
+			}
+
+		if ((Said( stop, looking, eve) ||
+			Said( look, away) ||
+			Said( look, room) ||
+			Said( look, garden) ||
+			Said( stand, rol) ||
+			Said( look, city) ||
+			Said( look, away, from, eve)))
+			{
+			Set( cutToLongShot);
+			Set( OK);
+			}
+		}
+
+	if ((Said( look, face, rol) ||
+		Said( establish$eye$contact, rol) ||
+		Said( look, eve, rol)))
+		{
+		if (!egoInHotTub)
+			{
+			Print( 20);
+			}
+		else
+			{
+			if (!lookingAtEve)
+				{
+				Set( cutToCloseup);
+				}
+			else
+				{
+				++lookCount;
+				if (lookCount == 1)
+					{
+					Print( 3);
+					mouth = C_SMILE;
+					}
+
+				if (lookCount == 2)
+					{
+					Print( 4);
+					mouth = C_SMILE;
+					}
+
+				if (lookCount > 2)
+					{
+					Print( 21);
+					mouth = C_NORMAL;
+					}
+				}
+			}
+		}
+
+	
+	if ((Said( talk, rol) ||
+		Said( say, anyword, eve, rol)))
+		{
+		if (!egoInHotTub)
+			{
+			Print( 20);
+			}
+		else
+			{
+			if (!lookingAtEve)
+				{
+				Print( 31);
+				}
+			else
+				{
+				++talkCount;
+				if (talkCount == 1)
+					{
+					Print( 25);
+					Print( 30);
+					mouth = C_SMILE;
+					}
+
+				if (talkCount == 2)
+					{
+					Print( 33);
+					Print( 34);
+					mouth = C_FROWN;
+					}
+
+				if (talkCount == 3)
+					{
+					Print( 32);
+					Print( 30);
+					mouth = C_SMILE;
+					}
+
+				if (talkCount == 4)
+					{
+					Print( 35);
+					Print( 36);
+					mouth = C_SMILE;
+					}
+
+				if (talkCount > 4)
+					{
+					Print( 37);
+					mouth = C_SMILE;
+					}
+				}
+			}
+		}
+
+
+	if ((Said( give, eve, apple, rol) ||
+		Said( give, apple, rol)))
+		{
+		if (!Has( iApple))
+			{
+			Print( 8);
+			}
+		else
+			{
+			if (!egoInHotTub)
+				{
+				Print( 20);
+				}
+			else
+				{
+				if (!lookingAtEve)
+					{
+					Print( 31);
+					}
+				else
+					{
+					script = 200;
+					Set( scriptDone);
+					}
+				}
+			}
+		}
+
+	if ((Said( give, eve, money, rol) ||
+		Said( give, money, eve, rol)))
+		{
+    		if (!egoInHotTub)
+			{
+			Print( 20);
+			}
+		else
+			{
+			if (!lookingAtEve)
+				{
+				Print( 31);
+				}
+			else
+				{
+				mouth = C_FROWN;
+				}
+			}
+		}
+
+	if ((Said( look, eyes, rol) ||
+		Said( look, eyes) ||
+		Said( look$in, eyes) ||
+		Said( flirt, with, her) ||
+		Said( wink, girl) ||
+		Said( look, mouth, rol)))
+		{
+		if (!egoInHotTub)
+			{
+			Print( 20);
+			}
+		else
+			{
+			if (!lookingAtEve)
+				{
+				Print( 31);
+				}
+			else
+				{
+				Print( 4);
+				}
+			}
+		}
+
+	if ((Said( drink, wine, rol) ||
+		Said( pour, wine, rol) ||
+		Said( pour, wine, rol) ||
+		Said( pour, eve, wine, rol) ||
+		Said( ask, eve, drink, wine, rol)))
+		{
+		if (!egoInHotTub)
+			{
+			Print( 20);
+			}
+		else
+			{
+			if (!lookingAtEve)
+				{
+				Print( 31);
+				}
+			else
+				{
+				Print( 38);
+				Print( 39);
+				mouth = C_SMILE;
+				}
+			}
+		}
+
+	if ((Said( get, wine, rol) ||
+		Said( get, bottle, wine, rol) ||
+		Said( get, glass, rol)))
+		{
+		if (!egoInHotTub)
+			{
+			Print( 20);
+			}
+		else
+			{
+			if (!lookingAtEve)
+				{
+				Print( 31);
+				}
+			else
+				{
+				Print( 43);
+				}
+			}
+		}
+
+	if ((Said( look, wine, rol) ||
+		Said( look, bottle, wine, rol) ||
+		Said( look, glass, rol)))
+		{
+		if (!egoInHotTub)
+			{
+			Print( 20);
+			}
+		else
+			{
+			if (!lookingAtEve)
+				{
+				Print( 31);
+				}
+			else
+				{
+				Print( 44);
+				}
+			}
+		}
+
+	if (Said( use, towel, rol))
+		{
+		if (!nearHotTub)
+			{
+			Set( notCloseEnough);
+			}
+		else
+			{
+			Print( 40);
+			mouth = C_SMILE;
+			}
+		}
+	}
+
+if ((Said( get, towel) ||
+	Said( get, clothes)))
+	{
+	Print( 41);
+	}
+
+if ((Said( look, towel) ||
+	Said( look, clothes)))
+	{
+	Print( 21);
+	}
+
+if (lookingAtEve)
+	{
+	if ((Said( look, her, hair) ||
+		Said( look, hair) ||
+		Said( touch, hair) ||
+		Said( stroke, hair) ||
+		Said( rub, hair) ||
+		Said( rub, her, hair)))
+		{
+		mouth = C_SMILE;
+		}
+
+	if ((Said( smile) ||
+		Said( smile, girl) ||
+		Said( hold, hand) ||
+		Said( take, her, hand) ||
+		Said( touch, girl) ||
+		Said( touch, her) ||
+		Said( ask, date)))
+		{
+		mouth = C_SMILE;
+		}
+
+	if ((Said( ask, name) ||
+		Said( girl, marry, me) ||
+		Said( marry, me) ||
+		Said( marry, girl) ||
+		Said( ask, girl, get, married) ||
+		Said( ask, girl, marry, me) ||
+		Said( talk, about, marriage) ||
+		Said( put, ring, on, her, finger) ||
+		Said( propose, her) ||
+		Said( talk, her, love) ||
+		Said( love, you) ||
+		Said( take, her, hand) ||
+		Said( look, mouth) ||
+		Said( look, her, mouth) ||
+		Said( ask, her, name) ||
+		Said( ask, name, girl)))
+		{
+		mouth = C_SMILE;
+		}
+
+	if ((Said( eat, eve, rol) ||
+		Said( grab, girl) ||
+		Said( feel, girl) ||
+		Said( lick, girl) ||
+		Said( touch, girl, under, table) ||
+		Said( feel, under, table) ||
+		Said( grab, leg) ||
+		Said( touch, leg) ||
+		Said( feel, her, leg) ||
+		Said( feel, her, leg, under, table) ||
+		Said( grab, her, leg) ||
+		Said( look, girl, tits) ||
+		Said( look, tits, rol) ||
+		Said( look, body) ||
+		Said( stare) ||
+		Said( stare, boobs) ||
+		Said( eat, eve, pussy, rol) ||
+		Said( drain, spa, rol) ||
+		Said( go, underwater, rol) ||
+		Said( look, underwater, rol) ||
+		Said( feel, underwater, rol) ||
+		Said( touch, boob, rol)))
+		{
+		Print( 50);
+		mouth = C_FROWN;
+		}
+
+	if ((Said( undress, her) ||
+		Said( ask, girl, for, sex) ||
+		Said( have, sex, with, me) ||
+		Said( hump, rol) ||
+		Said( make, girl) ||
+		Said( anyword, pussy, rol) ||
+		Said( lick, her, she, screams) ||
+		Said( anyword, tits, rol) ||
+		Said( play, with, her, boobs) ||
+		Said( grab, tits) ||
+		Said( fondle, breasts)))
+		{
+		Print( 50);
+		Print( 52);
+		mouth = C_FROWN;
+		}
+
+	if ((Said( touch, eve, rol) ||
+		Said( dive, rol) ||
+		Said( give, girl, kiss) ||
+		Said( kiss, girl) ||
+		Said( kiss, eve, rol)))
+		{
+		Print( 16);
+		mouth = C_FROWN;
+		}
+
+	if ((Said( larry) ||
+		Said( leisure$suit, larry)))
+		{
+		Print( 51)
+		mouth = C_SMILE;
+		}
+	}
+
+
+
+[	This may look funny, but it's ok, because "go" and "leave" are synonyms!
+
+if ((Said( enter, tub, rol) ||
+	Said( get, tub, rol) ||
+	Said( get, in, rol) ||
+	Said( get, out, rol) ||
+	Said( enter, rol) ||
+	Said( climb, in, tub, rol) ||
+	Said( climb, out, tub, rol) ||
+	Said( jump, in, tub, rol) ||
+	Said( jump, tub, rol) ||
+	Said( get, naked, rol) ||
+	Said( get, dressed, rol) ||
+	Said( undress, rol) ||
+	Said( remove, clothes, rol) ||
+	Said( put$on, clothes, rol) ||
+	Said( dress, rol)))
+	{
+	if (!eveInHotTub)
+		{
+		Print( 19);
+		}
+	else
+		{
+		if (egoInHotTub)
+			{
+			Print( 26);
+			Set( scriptDone);
+			script = 100;
+			}
+		else
+			{
+			Set( OK);
+			Set( scriptDone);
+
+			[	He's in the notch at hot tub's seven o'clock position.
+			if (Posn( ego, 47, 108, 59, 113))
+				{
+				script = 0;
+				}
+			else
+				{
+				[	Anywhere else to left of tub's three o'clock position
+				if ((Posn( ego, 59,  90, 93, 100) ||	[	Above tub.
+					Posn( ego, 77, 101, 93, 113) ||	[	Right of tub.
+					Posn( ego, 30, 114, 93, 167)))	[	Below tub.
+					{
+					script = 1;
+					}
+				else
+					{
+					script = 2;	[	To right of tub.
+					}
+				}
+			}
+		}
+	}
+
+if (Said( look, tub))
+	{
+	Print( 1);
+	if (eveInHotTub)
+		{
+		Print( 7);
+		}
+	}
+
+if ((Said( look) ||
+	Said( look, room) ||
+	Said( look, garden)))
+	{
+	Print( 1);
+	if (eveInHotTub)
+		{
+		Print( 7);
+		}
+	}
+
+if ((Said( look, city) ||
+	Said( look, building) ||
+	Said( look, hotel)))
+	{
+	if (egoInHotTub)
+		{
+		Print( 29);
+		}
+	else
+		{
+		Print( 9);
+		Print( 10);
+		Print( 11);
+		Print( 12);
+		Print( 13);
+		Print( 14);
+		Print( 15);
+		}
+	}
+
+
+[*****
+:noInput
+[*****
+
+if (cutToCloseup)
+	{
+	Reset( cutToCloseup);
+	Set( lookingAtEve);
+    	Set( handsOff);
+
+	UnanimateAll();				[	This command requires afterwards:
+								[		start.update();
+								[		start.motion();
+								[		start.cycling();
+								[		normal.cycle();
+								[		observe.blocks();
+								[		observe.horizon();
+								[		obj.on.anything();
+								[		release.priority();
+								[		release.loop();
+								[		observe.objects();
+
+	DrawPic( picture);
+
+	AnimateObj( aCloseupBubbles1);
+	SetView( aCloseupBubbles1, vCloseupBubbles);
+	SetLoop( aCloseupBubbles1, 0);
+	SetCel( aCloseupBubbles1, 1);
+	Position( aCloseupBubbles1, 0, 167);
+
+	AnimateObj( aCloseupBubbles2);
+	SetView( aCloseupBubbles2, vCloseupBubbles);
+	SetLoop( aCloseupBubbles2, 1);
+	SetCel( aCloseupBubbles2, 2);
+	Position( aCloseupBubbles2, 40, 167);
+
+	AnimateObj( aCloseupBubbles3);
+	SetView( aCloseupBubbles3, vCloseupBubbles);
+	SetLoop( aCloseupBubbles3, 0);
+	SetCel( aCloseupBubbles3, 3);
+	Position( aCloseupBubbles3, 80, 167);
+
+	AnimateObj( aCloseupBubbles4);
+	SetView( aCloseupBubbles4, vCloseupBubbles);
+	SetLoop( aCloseupBubbles4, 1);
+	SetCel( aCloseupBubbles4, 0);
+	Position( aCloseupBubbles4, 120, 167);
+
+	if (bubblesOn)
+		{
+		Draw( aCloseupBubbles1);
+		Draw( aCloseupBubbles2);
+		Draw( aCloseupBubbles3);
+		Draw( aCloseupBubbles4);
+		}
+
+	AnimateObj( aMouth);
+	SetView( aMouth, vEveFace);
+	SetLoop( aMouth, L_MOUTH);
+	SetCel( aMouth, 0);
+	Position( aMouth, 64, 79);
+
+	AnimateObj( aEyes);
+	IgnoreHorizon( aEyes);
+	SetView( aEyes, vEveFace);
+	SetLoop( aEyes, L_EYES);
+	SetCel( aEyes, 0);
+	Position( aEyes, 64, 44);
+	CycleTime( aEyes, three);
+
+	if (!mouthOK)
+		{
+		SetCel( aMouth, C_FROWN);
+		breathLineTimer = 6;
+		}
+	else
+		{
+		SetCel( aMouth, C_NORMAL);
+		Draw( aEyes);
+		Random( 6, 19, eyeCycles);
+		Reset( eyesCycling);
+		}
+	Draw( aMouth);
+	mouth = DONE;
+	StopUpdate( aMouth);
+
+	ShowPic();
+	}
+
+if (cutToLongShot)
+	{
+	Reset( cutToLongShot);
+	Reset( lookingAtEve);
+    	Reset( handsOff);
+
+	eyeCycles = 0;
+	breathLineTimer = 0;
+
+	UnanimateAll();
+
+	DrawPic( currentRoom);
+	
+	AnimateObj( aEve);
+	IgnoreBlocks( aEve);
+	IgnoreObjs( aEve);
+	SetPriority( aEve, 9);
+	Draw( aEve);
+	StopUpdate( aEve);
+	
+	AnimateObj( aBubbles);
+	IgnoreBlocks( aBubbles);
+	IgnoreObjs( aBubbles);
+	SetPriority( aBubbles, 9);
+	if (bubblesOn)
+		{
+		Draw( aBubbles);
+		}
+
+	AnimateObj( aEve'sTowel);		[	Put eve's towel by tub.
+	Draw( aEve'sTowel);
+
+	AnimateObj( aEgo'sClothes);
+	IgnoreBlocks( aEgo'sClothes);
+	IgnoreObjs( aEgo'sClothes);
+	SetPriority( aEgo'sClothes, 15);
+	Draw( aEgo'sClothes);
+
+	AnimateObj( ego);
+	IgnoreBlocks( ego);
+	SetPriority( ego, 15);
+	SetView( ego, vEgoInHotTub);
+	SetLoop( ego, FACING_LEFT);
+	LastCel( ego, work);
+	SetCelV( ego, work);
+	StopCycling( ego);
+	Draw( ego);
+
+	ShowPic();
+	}
+
+
+if (lookingAtEve)
+	{
+	--eyeCycles;
+	if (eyeCycles == 1)
+		{
+		Toggle( eyesCycling);
+		if (eyesCycling)
+			{
+			StartCycling( aEyes);
+			Random( 6, 16, eyeCycles);
+			}
+		else
+			{
+			StopCycling( aEyes);
+			SetCel( aEyes, 0);
+			ForceUpdate( aEyes);
+			Random( 22, 33, eyeCycles);
+			}
+		}
+
+	if (aSecondPassed)
+		{
+		--breathLineTimer;
+		if (breathLineTimer == 1)
+			{
+			if (mouthOK)
+				{
+				Print( 23);
+				}
+			else
+				{
+				Print( 18);
+				}
+			}
+
+		--mouthTimer;
+		if (mouthTimer == 1)		[	Resume after frown/smile
+			{
+			mouth = NORMAL;
+			}
+
+		if (mouth != DONE)
+			{
+			if (mouth == NORMAL)
+				{
+				eyeCycles = 2;		[	Restart eyes.
+				}
+
+			if (mouth == C_SMILE)
+				{
+				mouthTimer = SMILE_SECONDS;
+				Set( eyesCycling);
+				eyeCycles = 22;	[	Bat 'em, baby.
+				StartCycling( aEyes);
+				}
+
+			if (mouth == C_FROWN)
+				{
+				mouthTimer = FROWN_SECONDS;
+				Reset( eyesCycling);
+				eyeCycles = 0;		[	Stare him down, Eveie.
+				StopCycling( aEyes);
+				SetCel( aEyes, 0);
+				}
+
+			SetCelV( aMouth, mouth);
+			ForceUpdate( aMouth);
+			mouth = DONE;
+			}
+		}
+	}
+
+
+
+if (scriptDone)
+	{
+	Reset( scriptDone);
+	++script;
+
+	Set( programControl);
+	Set( handsOff);
+	PreventInput();
+
+
+	if (script == 1)				[	Walk ego to the side of the tub.
+		{
+		step = 1;
+		y = 114;
+		MoveObjV( ego, egoX, y, step, scriptDone);	
+		}
+
+	if (script == 2)
+		{
+		step = 1;
+		x = 94;
+		MoveObjV( ego, x, egoY, step, scriptDone);	
+		}
+
+	if (script == 3)				[	Walk him to position.
+		{
+		MoveObj( ego, 94, 102, 1, scriptDone);
+		}
+
+	if (script == 4)
+		{
+		SetView( ego, vEgoUndressing);
+		SetLoop( ego, FACING_LEFT);	[	Ego stripping loop.
+		SetCel( ego, 0);
+		SetPriority( ego, 15);
+		work = HOT_TUB_SPEED;
+		CycleTime( ego, work);
+		Set( keepCycling);
+		EndOfLoop( ego, scriptDone);
+
+		scriptCycles = 3;
+		MulN( scriptCycles, HOT_TUB_SPEED);
+		++scriptCycles;
+		}
+
+	if (script == 5)
+		{
+		Draw( aEgo'sClothes);		[	Draw his clothes.
+		}
+
+	if (script == 6)
+		{
+		SetView( ego, vEgoInHotTub);
+		SetLoop( ego, FACING_LEFT);	[	Leaping into tub loop.
+		SetCel( ego, 0);
+		CycleTime( ego, two);
+		MoveObj( ego, 85, 102, DRESSING_SPEED, scriptDone);
+		}
+
+	if (script == 7)
+		{
+		LastCel( ego, work);
+		SetCelV( ego, work);
+		StopCycling( ego);
+		Reset( keepCycling);
+		Set( noCycling);
+		StopMotion( ego);
+		RepositionTo( ego, 86, 102);
+		scriptTimer = 4;
+		}
+
+	if (script == 8)
+		{
+		Set( egoInHotTub);
+		AcceptInput();
+		Print( 2);
+		script = 0;
+		}
+
+
+
+	[	Leave the eve in the tub.
+
+	if (script == 101)
+		{
+		scriptTimer = 0;
+		if (lookingAtEve)
+			{
+			Set( cutToLongShot);
+			--script;				[	Let's try again next pass.
+			Set( scriptDone);
+			}
+		else
+			{
+			script = 102;
+			}
+		}
+
+	if (script == 102)
+		{
+		SetLoop( ego, 0);			[	Leaping out of the tub loop.
+		SetCel( ego, 0);
+		scriptCycles = HOT_TUB_SPEED;
+		CycleTime( ego, scriptCycles);
+		MulN( scriptCycles, 9);		[	So we change on cel 8.
+		Set( keepCycling);
+		Reset( noCycling);
+		EndOfLoop( ego, scriptDone);
+		}
+
+	if (script == 103)
+		{
+		SetView( ego, vEgoUndressing);
+		SetLoop( ego, FACING_RIGHT);	[	Ego undressing, reversed.
+		LastCel( ego, work);
+		SetCelV( ego, work);
+		RepositionTo( ego, 90, 103);
+		Set( keepCycling);
+		BeginningOfLoop( ego, scriptDone);
+
+		scriptCycles = HOT_TUB_SPEED;
+		CycleTime( ego, scriptCycles);
+		MulN( scriptCycles, 9);
+		}
+
+	if (script == 104)
+		{
+		Erase( aEgo'sClothes);
+		}
+
+	if (script == 105)
+		{
+		Reset( programControl);
+		Reset( keepCycling);
+		Reset( egoInHotTub);
+		Reset( handsOff);
+		script = 0;
+		AcceptInput();
+
+		ReleasePriority( ego);
+		ObserveBlocks( ego);
+		SetView( ego, vEgo);
+		CycleTime( ego, one);
+		StepSize( ego, one);
+		StartMotion( ego);
+		}
+
+
+
+	[	Gave her the apple.  Take the eve to the bedroom!
+
+	if (script == 201)
+		{
+		Set( gaveEveApple);
+		Set( eveGone);
+		Drop( iApple);
+		currentScore += 15;
+
+		SetCel( aMouth, C_SMILE);
+		ForceUpdate( aMouth);
+		mouthTimer = 0;			[	Keep smiling from now on.
+		scriptTimer = 3;
+		}
+
+	if (script == 202)
+		{
+		Print( 5);
+		scriptTimer = 5;
+		}
+
+	if (script == 203)
+		{
+		Print( 6);
+		scriptTimer = 5;
+		}
+
+	if (script == 204)
+		{
+		Print( 17);
+		scriptTimer = 5;
+		}
+
+	if (script == 205)
+		{
+		Print( 24);
+		scriptTimer = 3;
+		}
+
+	if (script == 206)
+		{
+		if (lookingAtEve)
+			{
+			Set( cutToLongShot);
+			--script;				[	Let's try again next pass.
+			Set( scriptDone);
+			}
+		else
+			{
+			script = 207;
+			}
+		}
+
+	if (script == 207)
+		{
+		StartUpdate( aEve);
+		work = HOT_TUB_SPEED;
+		CycleTime( aEve, work);
+		EndOfLoop( aEve, scriptDone);
+
+		scriptCycles = 3;
+		MulN( scriptCycles, HOT_TUB_SPEED);
+		++scriptCycles;
+		}
+
+	if (script == 208)
+		{
+		StartUpdate( aEve'sTowel);
+		Erase( aEve'sTowel);
+		}
+
+	if (script == 209)
+		{
+		SetView( aEve, vEve);
+		SetLoop( aEve, L_WALKING_RIGHT);
+		ReleasePriority( aEve);
+		RepositionTo( aEve, 78, 90);
+		CycleTime( aEve, one);
+		StartCycling( aEve);
+		MoveObj( aEve, 90, 90, 1, scriptDone);
+
+		Print( 22);
+
+		SetLoop( ego, 0);			[	Leaping out of the tub loop.
+		SetCel( ego, 0);
+		FixLoop( ego);
+		work = HOT_TUB_SPEED;
+		CycleTime( ego, work);
+		Set( keepCycling);
+		Reset( noCycling);
+		EndOfLoop( ego, scriptDone);
+		}
+
+	if (script == 210)
+		{
+		MoveObj( aEve, 105, 105, 1, scriptDone);
+		}
+
+	if (script == 211)
+		{
+		Print( 27);				[	"You ARE glad to see me!"
+		StopCycling( aEve);
+		}
+
+	if (script == 212)				[	Here's the sex change operation.
+		{
+		GetPosn( aEve, sourceX, sourceY);
+		SetView( aEve, vEgoWearingTowel);
+		StopCycling( aEve);
+		NormalMotion( aEve);
+
+		currentStatus = FOLLOWING_EVE;
+		Reset( noCycling);
+		Reset( keepCycling);
+		SetView( ego, vEve);		[	vEgoTransvestite!
+		SetLoop( ego, L_WALKING_RIGHT);
+		ReleasePriority( ego);
+		FixLoop( ego);
+
+		RepositionTo( aEve, 96, 104);
+		RepositionToV( ego, sourceX, sourceY);
+		
+		CycleTime( ego, one);
+		StepSize( ego, one);
+		MoveObj( ego, 151, 122, 1, scriptDone);
+		}
+
+	if (script == 213)
+		{
+		Erase( ego);							[	Really eve
+		currentStatus = 255;					[	Who knows?
+		CycleTime( aEve, one);
+		StepSize( aEve, one);
+		MoveObj( aEve, 152, 122, 1, scriptDone);	[	Really ego!
+		}
+
+	if (script == 214)
+		{
+		Reset( handsOff);
+		currentStatus = FOLLOWING_EVE;
+		newRoom = rmLivingRoom;
+		}
+	}
+
+
+if (currentStatus == FOLLOWING_EVE)
+	{
+	Distance( ego, aEve, work);
+	if (work > 10)
+		{
+		StartCycling( aEve);
+		FollowEgo( aEve, 2, done);
+		}
+	}
+
+
+if (dollDone)
+	{
+	Reset( dollDone);
+	Reset( handsOff);
+	Reset( programControl);
+	Reset( dollOnScreen);
+
+	StartMotion( ego);
+	currentStatus = NORMAL;
+	Erase( aDoll);
+	AcceptInput();
+	Print( 26);
+	secondsInRoom = 3;
+	}
+
+if (!dollOnScreen && !beenIn43 && secondsInRoom > 4)
+	{
+	Set( beenIn43);
+	Print( 42);
+	Print( 48);
+	Print( 49);
+	}
+
+if (dollSoundDone && dollOnScreen)
+	{
+	Sound( sDollDeflating, dollSoundDone);
+	}
+
+
+
+[*****
+:exit							[	test for leaving the room
+[*****
+
+
+if (edgeEgoHit == RIGHT)				{newRoom = rmLivingRoom;}
+

@@ -1,0 +1,640 @@
+[logics for room 57 -- lgcStreet
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm57.msg"
+%include	"gamedefs.h"
+
+
+
+[	This dynamic controls:
+[		the car that runs ego down whenever he tries to cross the street,
+[		the random dog pissing on ego's leg,
+[		and the taxi cab's arrival, wait, and departure.
+
+
+
+%define	BRING_OUT_DOG			222	[	# of cycles in same place
+%define	PISS_CYCLES			 35	[	length of piss
+
+%define	AFTER_EGO				1
+%define	DOG_PISSING			2
+%define	LEAVING				3
+%define	DOG_GONE				4
+
+
+[	#define	TAXI_WAITING		4	[	from gamedefs.h
+#define	TAXI_WAIT_TIME			14	[	in real seconds
+
+#define	cNormal				0
+#define	cBraking				1
+
+#define	DEATH_CAR_STEP			10
+
+
+
+%define	dogAtEgo				df0
+%define	egoErased				df1
+%define	taxiDone				df2
+%define	eraseCar				df3
+%define	eraseEgo				df4
+%define	dogOnscreen			df6
+
+
+%define	dogStatus				dv1
+%define	pissCycles			dv2
+%define	taxiTimer				dv3
+%define	taxiX				dv4
+%define	taxiY				dv5
+
+
+
+if (initLog)
+	{
+	LoadView( vDeathCar);
+	LoadView( vEgoRoadKill);
+	LoadView( vDog);
+	LoadView( vDogPissing);
+	LoadView( vDogPissing2);
+	LoadView( vTaxi);
+
+	LoadSound( sTaxiTires);
+	LoadSound( sDeathCar);
+	LoadSound( mDog);
+
+	AnimateObj( aCar);
+	IgnoreObjs( aCar);
+	SetView( aCar, vDeathCar);
+	SetLoop( aCar, 0);
+	FixLoop( aCar);
+	SetPriority( aCar, 15);
+
+	AnimateObj( aDog);
+	SetView( aDog, vDog);
+	Position( aDog, 0, 166);
+	notMovedCycles = 0;
+
+	AnimateObj( aTaxi);
+	SetView( aTaxi, vTaxi);
+	SetCel( aTaxi, 0);
+	StopCycling( aTaxi);
+	if (currentRoom == 11)
+		{
+		taxiY = 166;
+		}
+	else
+		{
+		taxiY = 160;
+		}
+
+	if (previousRoom != rmInsideTaxi)
+		{
+		taxiScript = 0;
+		}
+	else
+		{
+		taxiX = 60;
+		PositionV( aTaxi, taxiX, taxiY);
+		Draw( aTaxi);
+
+		egoX = taxiX;
+		egoX += 4;
+		egoY = taxiY;
+		egoY -= 4;
+		RepositionToV( ego, egoX, egoY);
+		ForceUpdate( ego);
+
+		taxiTimer = 2;
+
+		if (currentStatus == STIFFED_CABBIE)
+			{
+			LoadView( vEgoGettingBeaten);
+			PreventInput();
+			StopMotion( ego);
+			Set( programControl);
+			taxiScript = 200;		[	Pick a fight.
+			}
+		else
+			{
+			StartMotion( ego);
+			taxiScript = 101;		[	We know he's clear.
+			}
+		}
+
+	Return( );
+	}							[	end initLOG
+
+
+
+Reset( nearTaxi);
+if (taxiScript == TAXI_WAITING)
+	{
+	if (currentRoom == 11)
+		{
+		if (Posn( ego, 70, 155, 90, 167))
+			{
+			Set( nearTaxi);
+			}
+		}
+	else
+		{
+		if (Posn( ego, 70, 140, 90, 166))
+			{
+			Set( nearTaxi);
+			}
+		}
+	}
+
+
+[*****
+:handleInput
+[*****
+
+if (!haveInput)				{goto noInput;}
+
+if (Said( look, street))
+	{
+	Print( 24);
+	}
+
+if ((Said( look, sky) ||
+	Said( look, up)))
+	{
+	Print( 25);
+	}
+
+if (Said( climb, anyword))
+	{
+	Print( 27);
+	}
+
+
+
+[	First, we'll handle the DOG SHIT:
+
+if (Said( look, dog))
+	{
+	if (!dogOnscreen)
+		{
+		Print( 30);
+		}
+	else
+		{
+		if (dogStatus == AFTER_EGO)
+			{
+			Print( 7);
+			}
+
+		if (dogStatus == DOG_PISSING)
+			{
+			Print( 8);
+			}
+
+		if (dogStatus == LEAVING)
+			{
+			Print( 9);
+			}
+		}
+	}
+
+if (dogOnscreen)
+	{
+	if ((Said( hump, dog, rol) ||
+		Said( anyword, lay, rol) ||
+		Said( pee, on, dog, rol) ||
+		Said( anyword, pee, on, dog, rol) ||
+		Said( butt, hump, dog, rol)))
+		{
+		Print( 14);
+		}
+
+	if ((Said( hurt, dog, rol) ||
+		Said( kick, dog, rol) ||
+		Said( kill, dog, rol)))
+		{
+		Print( 15);
+		}
+
+	if (Said( smell, dog, rol))
+		{
+		Print( 16);
+		}
+
+	if (Said( pet, dog))
+		{
+		Print( 26);
+		}
+
+	if (Said( get, dog))
+		{
+		Print( 28);
+		}
+	}
+
+
+
+[	Next, take care of the cab stuff:
+
+if (Said( look, pole))
+	{
+	Print( 31);
+	}
+
+if ((Said( look, sign, pole) ||
+	Said( look, sign, on, pole) ||
+	Said( look, sign)))
+	{
+	Print( 17);
+	}
+
+if (Said( look, street))
+	{
+	Print( 21);
+	}
+
+if ((Said( hail, cab) ||
+	Said( cab) ||
+	Said( call, cab) ||
+	Said( yell, cab)))
+	{
+	if (!egoY < taxiY)
+		{
+		Print( 19);
+		}
+	else
+		{
+		Print( 2);
+		if (!taxiScript)
+			{
+			StopMotion( ego);
+			Set( programControl);
+			Random( 3, 7, taxiTimer);
+			}
+		}
+	}
+
+if (taxiScript == TAXI_WAITING)
+	{
+	if ((Said( look, cab) ||
+		Said( look$in, cab)))
+		{
+		Print( 4);
+		Print( 5);
+		Print( 6);
+		}
+
+	if (Said( smell, cab))
+		{
+		Print( 23);
+		}
+
+	if ((Said( enter, cab) ||
+		Said( enter) ||
+		Said( open, door, rol) ||
+		Said( open, cab, door, rol) ||
+		Said( open, door)))
+		{
+		if (!nearTaxi)
+			{
+			Set( notCloseEnough);
+			}
+		else
+			{
+			if (!rodeInCab)
+				{
+				Print( 3);
+				}
+			else
+				{
+				Set( OK);
+				}
+
+			Erase( ego);
+			Set( egoErased);
+			Set( programControl);
+			PreventInput();
+			
+			Set( taxiDone);
+			taxiScript = 101;
+			taxiTimer = 0;
+			}
+		}
+	}
+
+if (Said( look, alley))
+	{
+	Print( 18);
+	}
+
+if (Said( look, car))
+	{
+	Print( 22);
+	}
+
+
+[*****
+:noInput
+[*****
+
+if  (egoX == oldEgoX &&				[	hasn't moved
+	egoY == oldEgoY &&
+    !taxiScript &&
+    !script &&
+	currentStatus == NORMAL)
+	{
+	++notMovedCycles;
+	if (notMovedCycles == BRING_OUT_DOG)
+		{
+		Draw( aDog);
+		Sound( mDog, done);
+		Set( dogOnscreen);
+		FollowEgo( aDog, 5, dogAtEgo);
+		dogStatus = AFTER_EGO;
+		}
+	}
+else								[	he moved; start all over
+	{
+	notMovedCycles = 0;
+	if (dogStatus == AFTER_EGO)
+		{
+		Reset( dogAtEgo);
+		pissCycles = 2;			[	make dog wander off
+		}
+	}
+
+if (dogAtEgo && dogStatus == AFTER_EGO)
+	{
+	Reset( dogAtEgo);
+	Set( smellsLikeDogPiss);
+	dogStatus = DOG_PISSING;
+	pissCycles = PISS_CYCLES;
+	StopMotion( ego);
+	Set( programControl);
+
+	StopMotion( aDog);
+	GetPosn( aDog, work, y);
+	x = egoX;
+	if (egoX > 3)
+		{
+		x -= 4;
+		}
+	else
+		{
+		x = 0;
+		}
+
+	RepositionToV( aDog, x, y);
+
+	if (y > egoY)
+		{
+		SetView( aDog, vDogPissing);
+		}
+	else
+		{
+		SetView( aDog, vDogPissing2);
+		}
+	}
+
+--pissCycles;
+if (pissCycles == 1)
+	{
+	dogStatus = LEAVING;
+	StartMotion( ego);
+	Reset( programControl);
+	StartMotion( aDog);
+	SetView( aDog, vDog);
+	Wander( aDog);
+	}
+
+if (edgeObjHit && objHitEdge == aDog && dogStatus == LEAVING)
+	{
+	Erase( aDog);
+	Reset( dogOnscreen);
+	dogStatus = DOG_GONE;
+	}
+
+
+
+[	This does the car appearing out of nowhere, smashing ego to a pulp,
+[and disappearing screenLeft.
+
+Distance( ego, aTaxi, work);
+if  (edgeEgoHit == BOTTOM &&
+	work == ERROR &&				[	True, if no taxi on screen.
+	currentStatus != RUN_OVER)		[	init the wreck sequence
+	{
+	StopMotion( ego);
+	Set( programControl);
+	PreventInput();
+
+	currentStatus = RUN_OVER;
+	Position( aCar, 119, 167);
+	Draw( aCar);
+	Sound( sDeathCar, done);
+	step = DEATH_CAR_STEP;
+	if (egoX > 116)
+		{
+		egoX = 116;
+		}
+	MoveObjV( aCar, egoX, egoY, step, eraseEgo);
+	}
+
+
+if (currentStatus == RUN_OVER)
+	{
+	if (edgeEgoHit)
+		{
+		edgeEgoHit = 0;
+		}
+
+	if (eraseEgo)
+		{
+		Reset( eraseEgo);
+		Set( egoErased);
+
+		Erase( ego);
+		SetView( ego, vEgoRoadKill);
+		if (egoX > 33)
+			{
+			egoX -= 33;
+			}
+		else
+			{
+			egoX = 0;
+			}
+		PositionV( ego, egoX, egoY);
+
+		MoveObj( aCar, 0, 167, DEATH_CAR_STEP, eraseCar);
+		}
+
+	if (egoErased)
+		{
+		GetPosn( aCar, x, y);
+		if ((x < egoX || x < DEATH_CAR_STEP))
+			{
+			Reset( egoErased);
+			Draw( ego);
+			}
+		}
+		
+	if (eraseCar)
+		{
+		Reset( eraseCar);
+		Erase( aCar);
+		Print( 1);
+		Set( certainDeath);
+		}
+	}
+
+
+
+[	This section handles the taxi cab stopping after ego hails it.
+[If he stands around without entering the cab, it leaves.
+
+if (aSecondPassed)
+	{
+	--taxiTimer;
+	if (taxiTimer == 1)
+		{
+		Set( taxiDone);
+		}
+	}
+
+if (taxiScript)
+	{
+	GetPosn( aTaxi, x, y);
+	if ((x == 103 ||				[	don't muck with these!
+		x == 88 ||
+		x == 36))
+		{
+		Set( taxiDone);
+		}
+	}
+
+if (taxiDone)
+	{
+	Reset( taxiDone);
+	++taxiScript;
+
+	if (taxiScript == 1)
+		{
+		taxiX = 119;
+		PositionV( aTaxi, taxiX, taxiY);
+		Draw( aTaxi);
+		taxiX = 60;
+		step = 0;
+		MoveObjV( aTaxi, taxiX, taxiY, step, taxiDone);
+		StepSize( aTaxi, four);
+		}
+
+	if (taxiScript == 2)
+		{
+		StepSize( aTaxi, three);
+		}
+
+	if (taxiScript == 3)
+		{
+		StepSize( aTaxi, two);
+		SetCel( aTaxi, 1);
+		Sound( sTaxiTires, done);
+		}
+
+	if (taxiScript == TAXI_WAITING)	[	4; defined in gamedefs.h
+		{
+		SetCel( aTaxi, 0);
+
+		StartMotion( ego);
+		Reset( programControl);
+
+		taxiTimer = TAXI_WAIT_TIME;
+		}
+
+	if (taxiScript == 5)
+		{
+		Print( 10);				[	"Can't wait all day"
+		taxiScript = 101;
+		}
+		 
+
+	if (taxiScript == 101)			[	Try to leave
+		{
+		GetPosn( aTaxi, taxiX, taxiY);
+		if (egoX < taxiX &&
+			!egoY < taxiY)
+			{
+			Print( 20);
+			taxiTimer = 5;
+			--taxiScript;
+			}
+		else
+			{
+			taxiScript = 102;		[	He's clear; so leave!
+			}
+		}
+
+	if (taxiScript == 102)
+		{
+		StepSize( aTaxi, two);
+		taxiX = 0;
+		step = 0;
+		MoveObjV( aTaxi, taxiX, taxiY, step, taxiDone);
+		}
+
+	if (taxiScript == 103)
+		{
+		StepSize( aTaxi, four);
+		if (currentStatus == STIFFED_CABBIE)
+			{
+			IgnoreObjs( ego);
+			SetView( ego, vEgoRoadKill);
+			GetPosn( aTaxi, egoX, egoY);
+			--egoY;
+			PositionV( ego, egoX, egoY);
+			Draw( ego);
+			}
+		}
+
+	if (taxiScript == 104)
+		{
+		taxiScript = 0;
+		Erase( aTaxi);
+		if (currentStatus == STIFFED_CABBIE)
+			{
+			Reset( egoErased);
+			Set( certainDeath);
+			}
+
+		if (egoErased)
+			{
+			newRoom = rmInsideTaxi;
+			}
+		}
+
+
+	if (taxiScript == 201)
+		{
+		SetView( ego, vEgoGettingBeaten);
+		Set( keepCycling);
+		taxiTimer = 5;
+		}
+
+	if (taxiScript == 202)
+		{
+		Erase( ego);
+		Print( 11);
+		taxiScript = 101;			[	Leave without checking.
+		taxiTimer = 3;
+		}
+	}
+
+
+
+[*****
+:exit							[	test for leaving the room
+[*****
+
+if ((egoErased || currentStatus == RUN_OVER))
+	{
+	StopMotion( ego);
+	Set( programControl);
+	}

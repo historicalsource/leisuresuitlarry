@@ -1,0 +1,62 @@
+[logics for room 20 -- rmBoss
+[	"Leisure-Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm20.msg"
+%include	"gamedefs.h"
+
+
+if (initLog)
+	{
+	PreventInput();
+	Reset( enableMenu);
+	Set( handsOff);
+	Reset( soundOn);
+
+	Random( 1, 3, work);
+	if (work == 1)					{picture = rmBoss;}
+	if (work == 2)					{picture = picBoss2;}
+	if (work == 3)					{picture = picBoss3;}
+
+	LoadPic( picture);
+	DrawPic( picture);
+	DiscardPic( picture);
+
+	Reset( clockOn);
+	StatusLineOff();
+	ShowPic( );
+
+	Return( );
+
+	}							[	end initLOG
+
+
+
+[*****
+:handleInput
+[*****
+
+if (haveInput)
+	{
+	Print( 1);
+	RestoreGame();
+	}
+
+
+[*****
+:noInput
+[*****
+
+Reset( clockOn);
+StatusLineOff();
+
+if (HaveKey())
+	{
+	Print( 1);
+	RestoreGame();
+	}
+
+[*****
+:exit							[	test for leaving the room
+[*****
+

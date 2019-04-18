@@ -1,0 +1,66 @@
+[messages for room 11 -- rmOutsideBar
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"You are outside Lefty's bar. Isn't it wonderful what can be done
+ with a little neon?"
+
+%message	2
+"There is a sign on that utility pole."
+
+%message	3
+"It appears that the hooker gave you a little more than you bargained for!"
+
+%message	4
+"Considering the looks of this place, you decide that next time you'd be
+ better off to spend a little more money on your computer games!"
+
+%message	5
+"While life may be possible, it is no longer worth living."
+
+%message	6
+"The windows are too dirty to see through."
+
+%message	7
+"Nah. Lefty would probably break both your legs!"
+
+%message	8
+"Nice tuck and roll job, eh?"
+
+%message	9
+"\"Welcome\""
+
+%message	10
+"Amazed by your own cleverness, you lift the door mat and discover..."
+
+%message	11
+"...absolutely nothing!"
+
+%message	12
+"(What did you expect? A key?)"
+
+%message	13
+"You can't. The door is securely locked. "
+
+%message	14
+"Lefty's closes at 3:00 a.m."
+
+%message	15
+"\"STOP, PERVERT!!!\" shouts the cop.\n\n
+\"I wonder who he's yelling at,\" you think."
+
+%message	16
+"\"Caught you, pervert!\" the cop shouts.
+ \"We don't like people exposing themselves around this town,
+ especially wearing one of those!\""
+
+%message	17
+"Next time, if you insist on wearing your \"lubber\" in public,
+ you should at least zip your fly."
+
+%message	18
+"He appears to be chasing someone!"
+

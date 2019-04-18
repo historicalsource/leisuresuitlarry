@@ -1,0 +1,189 @@
+[logics for room 3 -- lgcQuestions1
+[	"Leisure-Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm3.msg"
+%include	"gamedefs.h"
+
+
+%define	FIRST_QUESTION			1
+%define	LAST_QUESTION			53
+
+%define	toldLastQuestion		lf1
+
+%define	allsWell				lv0
+%define	question1				lv1
+%define	question2				lv2
+%define	question3				lv3
+%define	question4				lv4
+%define	question5				lv5
+
+
+
+if (initLog)
+	{
+	if (forceAtest)
+		{
+		Print( 60);
+		currentQuestion = FIRST_QUESTION;
+		}
+	}							[	end initLOG
+
+
+
+if (!forceAtest)
+	{
+	:askAgain;
+	Random( FIRST_QUESTION, LAST_QUESTION, currentQuestion);
+	if ((currentQuestion == question1 ||
+		currentQuestion == question2 ||
+		currentQuestion == question3 ||
+		currentQuestion == question4 ||
+		currentQuestion == question5))
+		{
+		goto askAgain;
+		}
+	else
+		{
+		if (question == 1) 			{question1 = currentQuestion};
+		if (question == 2) 			{question2 = currentQuestion};
+		if (question == 3) 			{question3 = currentQuestion};
+		if (question == 4) 			{question4 = currentQuestion};
+		if (question == 5) 			{question5 = currentQuestion};
+		if (question == 6) 			{questionStatus = allDone;}
+		if (question == 5 &&
+			!toldLastQuestion)
+			{
+			Set( toldLastQuestion);
+			Print( 69);
+			}
+
+		++question;
+		}
+	}
+
+if (currentQuestion == 1) 		{correctAnswer = 3;}
+if (currentQuestion == 2) 		{correctAnswer = 2;}
+if (currentQuestion == 3) 		{correctAnswer = 4;}
+if (currentQuestion == 4) 		{correctAnswer = 3;}
+if (currentQuestion == 5) 		{correctAnswer = 2;}
+if (currentQuestion == 6) 		{correctAnswer = 1;}
+if (currentQuestion == 7) 		{correctAnswer = 4;}
+if (currentQuestion == 8) 		{correctAnswer = 0;}
+if (currentQuestion == 9) 		{correctAnswer = 1;}
+if (currentQuestion == 10) 		{correctAnswer = 2;}
+if (currentQuestion == 11) 		{correctAnswer = 4;}
+if (currentQuestion == 12) 		{correctAnswer = 3;}
+if (currentQuestion == 13) 		{correctAnswer = 3;}
+if (currentQuestion == 14) 		{correctAnswer = 1;}
+if (currentQuestion == 15) 		{correctAnswer = 4;}
+if (currentQuestion == 16) 		{correctAnswer = 2;}
+if (currentQuestion == 17) 		{correctAnswer = 0;}
+if (currentQuestion == 18) 		{correctAnswer = 3;}
+if (currentQuestion == 19) 		{correctAnswer = 1;}
+if (currentQuestion == 20) 		{correctAnswer = 0;}
+if (currentQuestion == 21) 		{correctAnswer = 4;}
+if (currentQuestion == 22) 		{correctAnswer = 4;}
+if (currentQuestion == 23) 		{correctAnswer = 4;}
+if (currentQuestion == 24) 		{correctAnswer = 2;}
+if (currentQuestion == 25) 		{correctAnswer = 2;}
+if (currentQuestion == 26) 		{correctAnswer = 4;}
+if (currentQuestion == 27) 		{correctAnswer = 3;}
+if (currentQuestion == 28) 		{correctAnswer = 1;}
+if (currentQuestion == 29) 		{correctAnswer = 3;}
+if (currentQuestion == 30) 		{correctAnswer = 4;}
+if (currentQuestion == 31) 		{correctAnswer = 0;}
+if (currentQuestion == 32) 		{correctAnswer = 0;}
+if (currentQuestion == 33) 		{correctAnswer = 2;}
+if (currentQuestion == 34) 		{correctAnswer = 4;}
+if (currentQuestion == 35) 		{correctAnswer = 4;}
+if (currentQuestion == 36) 		{correctAnswer = 2;}
+if (currentQuestion == 37) 		{correctAnswer = 4;}
+if (currentQuestion == 38) 		{correctAnswer = 2;}
+if (currentQuestion == 39) 		{correctAnswer = 2;}
+if (currentQuestion == 40) 		{correctAnswer = 2;}
+if (currentQuestion == 41) 		{correctAnswer = 3;}
+if (currentQuestion == 42) 		{correctAnswer = 3;}
+if (currentQuestion == 43) 		{correctAnswer = 3;}
+if (currentQuestion == 44) 		{correctAnswer = 1;}
+if (currentQuestion == 45) 		{correctAnswer = 2;}
+if (currentQuestion == 46) 		{correctAnswer = 2;}
+if (currentQuestion == 47) 		{correctAnswer = 3;}
+if (currentQuestion == 48) 		{correctAnswer = 1;}
+if (currentQuestion == 49) 		{correctAnswer = 2;}
+if (currentQuestion == 50) 		{correctAnswer = 3;}
+if (currentQuestion == 51) 		{correctAnswer = 2;}
+if (currentQuestion == 52) 		{correctAnswer = 4;}
+if (currentQuestion == 53) 		{correctAnswer = 1;}
+
+
+if (questionStatus != allDone)
+	{
+	if (forceAtest)
+		{
+		ClearLines( 23, 23, 0);
+		Display( 23, 0, 66);
+		PrintV( currentQuestion);
+		++currentQuestion;
+		if (!currentQuestion > LAST_QUESTION)
+			{
+			questionStatus = waitAwhile;
+			scriptTimer = 2;
+			}
+		else
+			{
+			questionStatus = allDone;
+			}
+		}
+	else
+		{
+		AcceptInput();
+		CancelLine();
+		PreventInput();
+		ClearLines( 22, 24, BG_COLOR);
+
+		Set( leaveWindow);
+		PrintV( currentQuestion);
+		lastChar = 0;
+		Display( 23, 0, 67);
+
+
+		SetScanStart();
+		if (!lastChar)
+			{
+			Return();
+			}
+		
+		if  (lastChar > 64 &&		[	ABCD
+			lastChar < 69)
+			{
+			lastChar += 32;		[	Convert to abcd (lower case).
+			}
+
+		if ((lastChar < 97 ||
+			lastChar > 100))
+			{
+			Sound( sError, done);
+			Return();
+			}
+		ResetScanStart();		[	We've got a valid letter.
+
+
+		answer = lastChar;
+		lastChar = 0;
+		answer -= 96;			[	Now answer between a and d.
+
+		message = 60;			[	1 less than first message #
+		message += answer;
+		y = 23;
+		x = 29;
+		DisplayV( y, x, message);
+		questionStatus = waitAwhile;
+		scriptTimer = 3;
+		}
+	}
+
+
+[*****
+:exit							[	test for leaving the room
+[*****

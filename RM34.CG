@@ -1,0 +1,448 @@
+[logics for room 34 -- rmInsideChapel
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm34.msg"
+%include	"gamedefs.h"
+
+
+
+#define	TALK_TIME				3
+
+#define	L_TALKING				0
+#define	L_WALKING				1
+
+%define	nearAlter				lf0
+%define	gotMarried			lf1
+%define	fawnHere				lf2
+%define	ministerHere			lf3
+
+%object	aCandle1				1
+%object	aCandle2				2
+%object	aFawn				3
+%object	aMinister				4
+
+
+
+if (initLog)
+	{
+	LoadPic( currentRoom);
+	DrawPic( currentRoom);
+	DiscardPic( currentRoom);
+
+	LoadView( vChapelInterior);
+
+	AddToPic( vChapelInterior, 0, 0, 62, 120, 0, 0);
+	AddToPic( vChapelInterior, 0, 0, 93, 120, 0, 0);
+				[view, loop, cel, x, y, obj priority, box priority
+
+	AnimateObj( aCandle1);
+	IgnoreObjs( aCandle1);
+	SetView( aCandle1, vChapelInterior);
+	SetLoop( aCandle1, 1);
+	SetCel( aCandle1, 0);
+	SetPriority( aCandle1, 11);
+	Position( aCandle1, 62, 93);
+	Draw( aCandle1);
+
+	AnimateObj( aCandle2);
+	IgnoreObjs( aCandle2);
+	Position( aCandle2, 93, 93);
+	SetView( aCandle2, vChapelInterior);
+	SetLoop( aCandle2, 1);
+	SetCel( aCandle2, 1);
+	SetPriority( aCandle2, 11);
+	Draw( aCandle2);
+
+
+	if (!fawnInRoom &&
+	    !marriedFawn &&
+		gaveFawnEverything)
+		{
+		Set( fawnHere);
+		Set( ministerHere);
+		Set( musicDone);
+
+		LoadView( vFawn);
+		LoadView( vChapelMinister);
+		LoadSound( mWedding);
+
+		AnimateObj( aFawn);
+		SetView( aFawn, vFawn);
+		Position( aFawn, 70, 120);
+		SetLoop( aFawn, FACING_FRONT);
+		Draw( aFawn);
+		StopCycling( aFawn);
+
+		AnimateObj( aMinister);
+		SetView( aMinister, vChapelMinister);
+		SetLoop( aMinister, L_TALKING);
+		Position( aMinister, 76, 113);
+		Draw( aMinister);
+		StopCycling( aMinister)
+		}
+
+	Position( ego, 76, 167);
+	Draw( ego);
+
+	ShowPic( );
+
+	if (unsuccessfulCeremony)
+		{
+		Reset( unsuccessfulCeremony);
+		Print( 27);
+		}
+
+	Return( );
+
+	}							[	end initLOG
+
+
+Reset( nearAlter);
+if (fawnHere &&
+	Posn( ego, 61, 114, 94, 130))
+	{
+	Set( nearAlter);
+	Set( nearPerson);
+	}
+
+
+
+[*****
+:handleInput
+[*****
+
+if (!haveInput)			{goto noInput;}
+
+if ((Said( look) ||
+	Said( look, room) ||
+	Said( look, chapel)))
+	{
+	if (!fawnHere)
+		{
+		Print( 1);
+		}
+	else
+		{
+		Print( 2);
+		}
+	}
+
+if ((Said( look, window) ||
+	Said( look, heart) ||
+	Said( look, painting) ||
+	Said( look, wall) ||
+	Said( look, out, window)))
+	{
+	Print( 28);
+	}
+
+if ((Said( look, altar) ||
+	Said( look, pews)))
+	{
+	Print( 29);
+	}
+
+if (Said( look, ceiling))
+	{
+	Print( 38);
+	}
+
+
+if ((Said( sit, pews) ||
+	Said( sit) ||
+	Said( sit, down) ||
+	Said( sit, in, pews) ||
+	Said( sit, on, pews)))
+	{
+	Print( 30);
+	}
+
+if (Said( look, candles))
+	{
+	Print( 32);
+	}
+
+if (Said( take, candles))
+	{
+	Print( 33);
+	}
+
+if ((Said( blow, out, candles) ||
+	Said( blow, candles, out) ||
+	Said( put, candles, out) ||
+	Said( put, out, candles)))
+	{
+	Print( 39);
+	}
+
+
+if (ministerHere &&
+	Said( look, man))
+	{
+	Print( 34);
+	}
+
+if (ministerHere &&
+	Said( talk, man))
+	{
+	Print( 35);
+	Print( 37);
+	}
+
+if (fawnHere &&
+	Said( talk, girl))
+	{
+	Print( 36);
+	}
+
+
+
+if (fawnHere &&
+	Said( look, fawn))
+	{
+	Print( 2);
+	}
+
+if (!script &&
+	Said( kiss, fawn))
+	{
+	Print( 23);
+	}
+
+if (!script &&
+    (Said( marry, fawn) ||
+	Said( marry) ||
+	Said( say, vows) ||
+	Said( give, money, minister) ||
+	Said( ask, minister, marry, us) ||
+	Said( marry, us) ||
+	Said( give, minister) ||
+	Said( pay, rol) ||
+	Said( get, married) ||
+	Said( get, married, fawn) ||
+	Said( talk, minister)))
+	{
+	if (!fawnHere)
+		{
+		Print( 31);
+		}
+	else
+		{
+		if (!nearAlter)
+			{
+			Print( 26);
+			}
+		else
+			{
+			Set( scriptDone);
+			}
+		}
+	}
+
+
+[*****
+:noInput
+[*****
+
+if (scriptDone)
+	{
+	Reset( scriptDone);
+	++script;
+	step = 1;
+
+	if (script == 1)
+		{
+		IgnoreObjs( ego);
+		Set( programControl);
+		PreventInput();
+
+		if (egoX == 80)
+			{
+			script = 2;
+			}
+		else
+			{
+			x = 80;  
+			MoveObjV( ego, x, egoY, step, scriptDone);
+			}
+		}
+
+	if (script == 2)
+		{
+		PreventInput();
+		MoveObj( ego, 80, 120, 1, scriptDone);
+		}
+
+	if (script == 3)
+		{
+		PreventInput();
+		SetLoop( aFawn, FACING_BACK);
+
+		StopUpdate( ego);
+		SetLoop( ego, FACING_BACK);
+		ForceUpdate( ego);
+
+		Print( 3);
+		Print( 4);
+		StartCycling( aMinister);
+		scriptTimer = TALK_TIME;
+		}
+
+	if (script == 4)
+		{
+		Print( 5);
+		scriptTimer = TALK_TIME;
+		}
+
+	if (script == 5)
+		{
+		Print( 6);
+		scriptTimer = TALK_TIME;
+		}
+
+	if (script == 6)
+		{
+		Print( 7);
+		Print( 8);
+		scriptTimer = TALK_TIME;
+		}
+
+	if (script == 7)
+		{
+		Print( 9);
+		scriptTimer = TALK_TIME;
+		}
+
+	if (script == 8)
+		{
+		Print( 10);
+		Print( 11);
+
+		if (dollars < 100)
+			{
+			script = 9;
+			}
+		else
+			{
+			script = 101;
+			}
+		}
+
+	if (script == 9)			[	Start the "not enough money" branch.
+		{
+		Print( 13);
+		Print( 14);
+
+		IgnoreObjs( aMinister);
+		RepositionTo( aMinister, 76, 121);
+		SetLoop( aMinister, L_WALKING);
+		MoveObj( aMinister, 76, 167, 2, scriptDone);
+		scriptCycles = 12;
+		}
+
+	if (script == 10)
+		{
+		Print( 15);
+		SetLoop( aFawn, FACING_FRONT);
+
+		StartUpdate( ego);
+		MoveObj( ego, 76, 167, 1, scriptDone);
+		scriptCycles = 12;
+		}
+
+	if (script == 11)
+		{
+		Erase( aMinister);
+		Reset( ministerHere);
+		Print( 16);
+		Print( 17);
+		Print( 18);
+		Print( 19);
+		}
+
+	if (script == 12)
+		{
+		Print( 20);
+		Erase( ego);
+		Set( unsuccessfulCeremony);
+		Reset( programControl);
+		AcceptInput();
+		newRoom = rmOutsideChapel;
+		}
+
+
+
+	if (script == 101)				[	He's got enough to pay for it.
+		{
+		Print( 12);
+		Print( 21);
+		dollars -= 100;
+		Set( marriedFawn);
+		IgnoreObjs( aMinister);
+		SetLoop( aMinister, L_WALKING);
+		RepositionTo( aMinister, 76, 121);
+		StartCycling( aMinister);
+		MoveObj( aMinister, 76, 167, 2, scriptDone);
+		scriptCycles = 12;
+		}
+
+	if (script == 102)
+		{
+		Print( 22);
+		}
+
+	if (script == 103)
+		{
+		Erase( aMinister);
+
+		Print( 23);
+
+		StartUpdate( aFawn);
+		StartCycling( aFawn);
+		MoveObj( aFawn, 76, 167, 2, scriptDone);
+		scriptCycles = 12;
+		}
+
+	if (script == 104)
+		{
+		Print( 24);
+		StartUpdate( ego);
+		StartMotion( ego);
+		Reset( programControl);
+		ObserveObjs( ego);
+		}
+
+	if (script == 105)
+		{
+		Erase( aFawn);
+		Set( gotMarried);
+		currentScore += 12;
+		Reset( fawnHere);
+		StopSound();
+		Set( fawnInRoom);
+		script = 0;
+		AcceptInput();
+		}
+	}
+
+
+if (fawnHere && musicDone)
+	{
+	Sound( mWedding, musicDone);
+	}
+
+
+
+[*****
+:exit							[	test for leaving the room
+[*****
+
+if (edgeEgoHit == BOTTOM)
+	{
+	newRoom = rmOutsideChapel;
+	if (gotMarried)
+		{
+		Print( 25);
+		}
+	}

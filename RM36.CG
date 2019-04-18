@@ -1,0 +1,869 @@
+[logics for room 36 -- rmLounge
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm36.msg"
+%include	"gamedefs.h"
+%include	"iv_views.h"
+
+
+
+%define	GIRL_Y				93
+%define	JOKE_MAX				37	[	number of gags in repetoire
+%define	ZINGER_MIN			21	[	number of first zinger message
+%define	ZINGER_MAX			26	[	number of last zinger message
+
+%define	mcOnStage				lf0
+%define	girlsOnStage			lf1
+%define	girlsAtRight			lf2
+%define	girlsAtLeft			lf3
+%define	nearChair				lf4
+%define	egoSitDone			lf5
+%define	egoStandDone			lf6
+%define	drummerDone			lf7
+%define	outOfJokes			lf8
+%define	cushionDone			lf9
+%define	doMagicTrick			lf10
+%define	heardJoke1			lf11
+%define	heardJoke2			lf12
+%define	heardJoke3			lf13
+%define	heardJoke4			lf14
+%define	heardJoke5			lf15
+%define	heardJoke6			lf16
+%define	heardJoke7			lf17
+%define	heardJoke8			lf18
+%define	heardJoke9			lf19
+%define	heardJoke10			lf20
+%define	heardJoke11			lf21
+%define	heardJoke12			lf22
+%define	heardJoke13			lf23
+%define	heardJoke14			lf24
+%define	heardJoke15			lf25
+%define	heardJoke16			lf26
+%define	heardJoke17			lf27
+%define	heardJoke18			lf28
+%define	heardJoke19			lf29
+%define	heardJoke20			df0
+%define	heardJoke21			df1
+%define	heardJoke22			df2
+%define	heardJoke23			df3
+%define	heardJoke24			df4
+%define	heardJoke25			df5
+%define	heardJoke26			df6
+%define	heardJoke27			df7
+%define	heardJoke28			df8
+%define	heardJoke29			df9
+%define	heardJoke30			df10
+%define	heardJoke31			df11
+%define	heardJoke32			df12
+%define	heardJoke33			df13
+%define	heardJoke34			df14
+%define	heardJoke35			df15
+%define	heardJoke36			df16
+%define	heardJoke37			df17
+%define	heardJoke38			df18
+%define	heardJoke39			df19
+[	%define	heardJoke40			df20
+[	%define	heardJoke41			df21
+[	%define	heardJoke42			df22
+[	%define	heardJoke43			df23
+[	%define	heardJoke44			df24
+[	%define	heardJoke45			df25
+
+%define	joke					lv0
+%define	zinger				lv1
+%define	trickTimer			lv2
+
+
+%object	aMC					1
+%object	aGirls				2
+%object	aCandle1				3
+%object	aCandle2				4
+%object	aCandle3				5
+%object	aCandle4				6
+%object	aCandle5				7
+%object	aDrummer				8
+
+
+
+if (initLog)
+	{
+	LoadPic( currentRoom);
+	DrawPic( currentRoom);
+	DiscardPic( currentRoom);
+
+	LoadView( vLoungeCandles);
+	LoadView( vEgoSittingLounge);
+	LoadSound( sWhoopieCushion);
+
+	AnimateObj( aCandle1);
+	IgnoreObjs( aCandle1);
+	SetView( aCandle1, vLoungeCandles);
+	SetCel( aCandle1, 0);
+	SetPriority( aCandle1, 11);
+	Position( aCandle1, 41, 110);
+	Draw( aCandle1);
+
+	AnimateObj( aCandle2);
+	IgnoreObjs( aCandle2);
+	SetView( aCandle2, vLoungeCandles);
+	SetCel( aCandle2, 1);
+	SetPriority( aCandle2, 11);
+	Position( aCandle2, 78, 110);
+	Draw( aCandle2);
+
+	AnimateObj( aCandle3);
+	IgnoreObjs( aCandle3);
+	SetView( aCandle3, vLoungeCandles);
+	SetCel( aCandle3, 2);
+	SetPriority( aCandle3, 11);
+	Position( aCandle3, 115, 110);
+	Draw( aCandle3);
+
+	AnimateObj( aCandle4);
+	IgnoreObjs( aCandle4);
+	SetView( aCandle4, vLoungeCandles);
+	SetCel( aCandle4, 0);
+	SetPriority( aCandle4, 14);
+	Position( aCandle4, 58, 140);
+	Draw( aCandle4);
+
+	AnimateObj( aCandle5);
+	IgnoreObjs( aCandle5);
+	SetView( aCandle5, vLoungeCandles);
+	SetCel( aCandle5, 1);
+	SetPriority( aCandle5, 14);
+	Position( aCandle5, 98, 140);
+	Draw( aCandle5);
+
+	Random( 1, 2, work);
+	if (work == 1)
+		{
+		Random( 1, 3, work);
+		if (work == 1)
+			{
+			Set( doMagicTrick);
+			Random( 20, 40, trickTimer);
+			}
+
+		Set( mcOnStage);
+		LoadView( vLoungeComedian);
+		LoadView( vDrummer);
+		LoadSound( sDrummer);
+
+		AnimateObj( aMC);
+		SetView( aMC, vLoungeComedian);
+		SetCel( aMC, 0);
+		Position( aMC, 77, 93);
+		Draw( aMC);
+		StopUpdate( aMC);
+		scriptCycles = 51;
+
+		AnimateObj( aDrummer);
+		SetView( aDrummer, vDrummer);
+		SetCel( aDrummer, 0);
+		Position( aDrummer, 41, 92);
+		Draw( aDrummer);
+		StopUpdate( aDrummer);
+		}
+	else
+		{
+		Set( girlsOnStage);
+		LoadView( vLoungeDancers);
+		LoadSound( mCanCan);
+
+		AnimateObj( aGirls);
+		SetView( aGirls, vLoungeDancers);
+		Position( aGirls, 70, 93);
+		Draw( aGirls);
+		Set( girlsAtRight);
+		Set( musicDone);
+		}
+
+
+	egoX = 25;
+	egoY = 167;
+	SetLoop( ego, FACING_BACK);
+	PositionV( ego, egoX, egoY);
+	Draw( ego);
+	StartMotion( ego);
+
+	ShowPic( );
+
+	Return( );
+
+	}							[	end initLOG
+
+
+Reset( nearChair);
+if (Posn( ego, 100, 145, 114, 163))
+	{
+	Set( nearChair);
+	}
+
+if  (mcOnStage &&
+	secondsInRoom > 15)
+	{
+	Set( nearPerson);
+	}
+
+
+[*****
+:handleInput
+[*****
+
+if (!haveInput)			{goto noInput;}
+
+if ((Said( look) ||
+	Said( look, room)))
+	{
+	Print( 1);
+	Print( 2);
+	}
+
+if (mcOnStage &&
+    (Said( heckle, comic) ||
+	Said( talk, comic) ||
+	Said( yell, comic)))
+	{
+	Print( 13);
+	Print( 14);
+	}
+
+if (Said( applaud, rol))
+	{
+	if (mcOnStage)
+		{
+		Print( 111);
+		}
+	else
+		{
+   		Print( 112);
+		}
+	}
+
+if ((Said( name, room) ||
+	Said( name, place)))
+	{
+	Print( 15);
+	Print( 2);
+	}
+
+if ((Said( look, top, table) ||
+	Said( look, table) ||
+	Said( look, chair)))
+	{
+	Print( 6);
+	}
+
+if (Said( look, ashtray))
+	{
+	Print( 77);
+	}
+
+if (Said( look, candle))
+	{
+	Print( 7);
+	Print( 8);
+	}
+
+if (Said( look, stage))
+	{
+	if (mcOnStage)
+		{
+		Print( 9);
+		}
+	else
+		{
+   		Print( 10);
+		}
+	}
+
+if (Said( look, man))
+	{
+	if (mcOnStage)
+		{
+		Print( 9);
+		}
+	else
+		{
+   		Print( 11);
+		}
+	}
+
+if ((Said( look, girl) ||
+	Said( look, dancers) ||
+	Said( look, show, girls)))
+	{
+	if (mcOnStage)
+		{
+		Print( 12);
+		}
+	else
+		{
+   		Print( 10);
+		}
+	}
+
+if  (mcOnStage &&
+	Said( anyword, drummer, rol))
+	{
+	Print( 18);
+	}
+
+if ((Said( wave, girls, rol) ||
+	Said( wave, comic, rol) ||
+	Said( whistle, girls, rol)||
+	Said( whistle, comic, rol)))
+	{
+	if (mcOnStage)
+		{
+		Print( 19);
+		Print( 20);
+		}
+	else
+		{
+		Print( 78);
+		Print( 79);
+		}
+	}
+
+
+
+if ((Said( buy, drink) ||
+	Said( call, waiter) ||
+	Said( order, rol) ||
+	Said( get, drink)))
+	{
+	if (currentStatus != SITTING)
+		{
+		Print( 16);
+		}
+	else
+		{
+		Print( 17);
+		}
+	}
+
+
+if ((Said( sit) ||
+	Said( sit, table) ||
+	Said( sit, chair) ||
+	Said( sit, down)))
+	{
+	if (currentStatus == SITTING)
+		{
+		Print( 3);
+		}
+	else
+		{
+		if (!nearChair)
+			{
+			Print( 5);
+			}
+		else
+			{
+			currentStatus = SITTING;
+			StopMotion( ego);
+			Set( programControl);
+			SetView( ego, vEgoSittingLounge);
+			SetCel( ego, 0);
+			SetPriority( ego, 15);
+			RepositionTo( ego, 107, 152);
+			StopSound();
+			Sound( sWhoopieCushion, musicDone);
+			EndOfLoop( ego, cushionDone);
+			Set( keepCycling);
+			}
+		}
+	}
+
+if ((Said( stand) ||
+	Said( leave, table) ||
+	Said( rise) ||
+	Said( stand, up)))
+	{
+	if (currentStatus != SITTING)
+		{
+		Print( 4);
+		}
+	else
+		{
+		Set( OK);
+		Reset( keepCycling);
+		SetView( ego, vEgo);
+		ReleasePriority( ego);
+		RepositionTo( ego, 107, 151);
+		Reset( programControl);
+		StartMotion( ego);
+		currentStatus = NORMAL;
+		}
+	}
+
+if ((Said( climb, stage) ||
+	Said( climb, on, stage) ||
+	Said( jump, on, stage) ||
+	Said( sit, on, stage) ||
+	Said( sing, rol) ||
+	Said( dance, rol) ||
+	Said( go, stage)))
+	{
+	Print( 80);
+	}
+
+if (Said( throw, rose, rol))
+	{
+	Print( 81);
+	Drop( iRose);
+	}
+
+if (Said( get, rose))
+	{
+	Print( 100);
+	}
+
+
+[*****
+:noInput
+[*****
+
+if (cushionDone)
+	{
+	Reset( cushionDone);
+	Print( 75);
+	StopCycling( ego);
+	Reset( keepCycling);
+	if (!satOnWhoopieCushion)
+		{
+		Set( satOnWhoopieCushion);				
+		currentScore += 1;
+		}
+	}
+
+if (girlsAtRight)
+	{
+	Reset( girlsAtRight);
+	MoveObj( aGirls, 47, GIRL_Y, 1, girlsAtLeft);
+	}
+
+if (girlsAtLeft)
+	{
+	Reset( girlsAtLeft);
+	MoveObj( aGirls, 93, GIRL_Y, 1, girlsAtRight);
+	}
+
+
+if (scriptDone)
+	{
+	Reset( scriptDone);
+	++script;
+
+	if (script == 1)
+		{
+		Random( 12, 22, scriptCycles);
+		if (typing)
+			{
+			--script;				[	Try again in a little while.
+			}
+		else
+			{
+			StartUpdate( aMC);
+			}
+		}
+
+	if (script == 2)
+		{
+		Random( 8, 14, scriptCycles);
+
+		if (typing)
+			{
+			--script;				[	Try again in a little while.
+			}
+		else
+			{
+			SetCel( aMC, 0);
+			StopUpdate( aMC);
+			ForceUpdate( aMC);
+
+			if ((!heardJoke1	||
+				!heardJoke2	||
+				!heardJoke3	||
+				!heardJoke4	||
+				!heardJoke5	||
+				!heardJoke6	||
+				!heardJoke7	||
+				!heardJoke8	||
+				!heardJoke9	||
+				!heardJoke10	||
+				!heardJoke11	||
+				!heardJoke12	||
+				!heardJoke13	||
+				!heardJoke14	||
+				!heardJoke15	||
+				!heardJoke16	||
+				!heardJoke17	||
+				!heardJoke18	||
+				!heardJoke19	||
+				!heardJoke20	||
+				!heardJoke21	||
+				!heardJoke22	||
+				!heardJoke23	||
+				!heardJoke24	||
+				!heardJoke25	||
+				!heardJoke26	||
+				!heardJoke27	||
+				!heardJoke28	||
+				!heardJoke29	||
+				!heardJoke30	||
+				!heardJoke31	||
+				!heardJoke32	||
+				!heardJoke33	||
+				!heardJoke34	||
+				!heardJoke35	||
+				!heardJoke36	||
+				!heardJoke37))		[		||
+	[				!heardJoke38	||
+	[				!heardJoke39))	||
+	[				!heardJoke40	||
+	[				!heardJoke41	||
+	[				!heardJoke42	||
+	[				!heardJoke43	||
+	[				!heardJoke44	||
+	[				!heardJoke45))	  
+				{
+				:pickAJoke;
+				Random( 1, JOKE_MAX, joke);
+				work = joke;
+				work += 210;		[	Because flags are 211-255.
+				if (IssetV( work))	[	Be sure it's a new one.
+					{
+					goto pickAJoke;
+					}
+
+				SetV( work);
+
+				if (joke == 1)
+					{
+					Print( 27);
+					Print( 28);
+					}
+
+				if (joke == 2)
+					{
+					Print( 29);
+					Print( 30);
+					}
+
+				if (joke == 3)
+					{
+					Print( 31);
+					Print( 32);
+					}
+
+				if (joke == 4)
+					{
+					Print( 33);
+					Print( 34);
+					}
+
+				if (joke == 5)
+					{
+					Print( 35);
+					Print( 36);
+					}
+
+				if (joke == 6)
+					{
+					Print( 37);
+					Print( 38);
+					}
+
+				if (joke == 7)
+					{
+					Print( 39);
+					Print( 40);
+					}
+
+				if (joke == 8)
+					{
+					Print( 41);
+					Print( 42);
+					}
+
+				if (joke == 9)
+					{
+					Print( 43);
+					}
+
+				if (joke == 10)
+					{
+					Print( 44);
+					Print( 45);
+					}
+
+				if (joke == 11)
+					{
+					Print( 46);
+					}
+
+				if (joke == 12)
+					{
+					Print( 47);
+					}
+
+				if (joke == 13)
+					{
+[						Print( 48);
+					Print( 109);
+					Print( 110);
+					}
+
+				if (joke == 14)
+					{
+					Print( 49);
+					Print( 50);
+					}
+
+				if (joke == 15)
+					{
+					Print( 51);
+					}
+
+				if (joke == 16)
+					{
+					Print( 52);
+					}
+
+				if (joke == 17)
+					{
+					Print( 53);
+					Print( 54);
+					Print( 55);
+					Print( 56);
+					Print( 57);
+					}
+
+				if (joke == 18)
+					{
+					Print( 58);
+					Print( 59);
+					}
+
+				if (joke == 19)
+					{
+					Print( 60);
+					Print( 61);
+					}
+
+				if (joke == 20)
+					{
+					Print( 62);
+					Print( 76);
+					}
+
+				if (joke == 21)
+					{
+					Print( 63);
+					Print( 64);
+					}
+
+				if (joke == 22)
+					{
+					Print( 65);
+					}
+
+				if (joke == 23)
+					{
+					Print( 66);
+					Print( 67);
+					}
+
+				if (joke == 24)
+					{
+					Print( 68);
+					Print( 69);
+					}
+
+				if (joke == 25)
+					{
+					Print( 70);
+					}
+
+				if (joke == 26)
+					{
+					Print( 71);
+					}
+
+				if (joke == 27)
+					{
+					Print( 72);
+					Print( 73);
+					}
+
+				if (joke == 28)
+					{
+					Print( 74);
+					Print( 93);
+					}
+
+				if (joke == 29)
+					{
+					Print( 94);
+					Print( 95);
+					}
+
+				if (joke == 30)
+					{
+					Print( 96);
+					Print( 97);
+					}
+
+				if (joke == 31)
+					{
+					Print( 98);
+					Print( 99);
+					}
+
+				if (joke == 32)
+					{
+					Print( 96);
+					Print( 97);
+					}
+
+				if (joke == 33)
+					{
+					Print( 98);
+					Print( 99);
+					}
+
+				if (joke == 34)
+					{
+					Print( 101);
+					Print( 102);
+					}
+
+				if (joke == 35)
+					{
+					Print( 103);
+					Print( 104);
+					}
+
+				if (joke == 36)
+					{
+					Print( 105);
+					Print( 106);
+					}
+
+				if (joke == 37)
+					{
+					Print( 107);
+					Print( 108);
+					}
+
+[					if (joke == 38)
+[						{
+[						}
+
+[					if (joke == 39)
+[						{
+[						Print( );
+[						Print( );
+[						}
+[	
+[					if (joke == 40)
+[						{
+[						Print( );
+[						Print( );
+[						}
+[	
+				}
+			else
+				{
+				Set( outOfJokes);
+				Print( 113);
+				SetCel( aMC, 0);
+				StopUpdate( aMC);
+				ForceUpdate( aMC);
+				script = 0;
+				scriptTimer = 0;
+				scriptCycles = 0;
+				}
+			}
+		}
+
+	if (script == 3)
+		{
+		StartUpdate( aDrummer);
+		Sound( sDrummer, done);
+		EndOfLoop( aDrummer, scriptDone);
+		}
+
+	if (script == 4)
+		{
+		SetCel( aDrummer, 0);
+		StopUpdate( aDrummer);
+		ForceUpdate( aDrummer);
+
+		StartUpdate( aMC);
+		Random( 11, 22, scriptCycles);
+		}
+
+	if (script == 5)
+		{
+		Random( 4, 7, scriptTimer);	[	Time before next joke.
+		if (typing)
+			{
+			--script;				[	Try again in a little while.
+			}
+		else
+			{
+			script = 0;
+
+			SetCel( aMC, 0);
+			StopUpdate( aMC);
+			ForceUpdate( aMC);
+
+			if (!outOfJokes)
+				{
+				Random( ZINGER_MIN, ZINGER_MAX, zinger);
+				PrintV( zinger);
+				}
+			}
+		}
+	}
+
+
+if (musicDone && girlsOnStage)
+	{
+	Sound( mCanCan, musicDone);
+	}
+
+if (aSecondPassed && trickTimer)
+	{
+	--trickTimer;
+	if (trickTimer == 1)
+		{
+		if (script)
+			{
+			trickTimer = 2;
+			}
+		else
+			{
+			message = 82;
+			:mrLooper;
+			PrintV( message);
+			++message;
+			if (!message > 92)
+				{
+				goto mrLooper;
+				}
+			ShowObj( ivWallet);
+			}
+		}
+	}
+
+[*****
+:exit							[	test for leaving the room
+[*****
+
+if (edgeEgoHit == BOTTOM)		{newRoom = rmElevatorBottom;}

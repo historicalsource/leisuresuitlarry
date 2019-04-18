@@ -1,0 +1,23 @@
+[messages for room 9 -- rmDarkAlley
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"Larry, when are you gonna learn to stay out of those dark alleys!!"
+
+%message	2
+""
+
+%message	3
+"\"Hey guys!!
+ He's screwed up again!
+ Dump this one down the tubes, and get him another body!\""
+
+%message	4
+"Since you're dead, why are you talking?? Just hang on for the ride."
+
+%message	5
+"It appears he wants something -- YOU! Get out of here!"
+

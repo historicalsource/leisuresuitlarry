@@ -1,0 +1,89 @@
+[messages for room 23 -- rmOutsideDisco
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"You are outside a flashy disco. The bouncer does not look happy."
+
+%message	2
+"\"Either show your membership card, or get lost, Scum-Breath!\""
+
+%message	3
+"\"Good evening, Sir. I'm so sorry I didn't recognize you sooner.
+ Please, come right in!!\""
+
+%message	4
+"You whip out your \"borrowed\" membership card, and lay it on him."
+
+%message	5
+"It seems he's uninterested in idle chit-chat, Larry."
+
+%message	6
+"You don't have a membership card!"
+
+%message	7
+"\"We hope you enjoyed your visit tonight, Sir!\""
+
+%message	8
+"\"Oh, there's no need to do that, Sir!\" says the bouncer."
+
+%message	9
+"\"HALT!!\n\n
+I'm sorry, Sir,\" says the bouncer, \"but this is a private club.\""
+
+%message	10
+"He seems glad to see you leave."
+
+%message	11
+"He's physically well-developed,
+ but you bet he's not as wise in the ways of women as you are."
+
+%message	12
+"Larry! How could you!"
+
+%message	13
+"You know he'd beat you to a pulp!"
+
+%message	14
+"Gazing up at the storefronts before you, a feeling comes over you.
+ Surely every one of those windows has a deep,
+ wonderful story hidden behind it.
+ There are millions of stories here in Lost Wages,
+ but you'll never know any of them.
+ Such is the fate of those who are morally-weak,
+ but financially-strong."
+
+%message	15
+"(What the hell was that all about????)"
+
+%message	16
+"Gaudy, aren't they?"
+
+%message	17
+"He's far too strong for you, Larry."
+
+%message	18
+""
+
+%message	19
+"All the stores are locked. But, that disco sure looks inviting."
+
+%message	20
+"\"You can only get a card if you already have a card,\" he laughs,
+ \"but then, of course, you wouldn't NEED a card.\""
+
+%message	21
+"\"So, beat it, Chump!\""
+
+%message	22
+"\"How's about a little green sliding across your palm?\"
+ you ask the bouncer."
+
+%message	23
+"\"How's about your rear end sliding across the pavement?\" he replies."
+
+%message	24
+"Why does the dog use you, and not it?"
+

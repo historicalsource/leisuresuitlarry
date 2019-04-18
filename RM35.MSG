@@ -1,0 +1,79 @@
+[messages for room 35 -- rmElevators
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"The entrance to the Cabaret Lounge is to the right, by the telephone.
+ A glass elevator awaits you.
+ An ashtray is in front of the planter."
+
+%message	2
+"You are inside the glass elevator.
+ Your favorite kind of music is playing.
+ You hum along, insipidly."
+
+%message	3
+"There are buttons labeled \"one\" through \"eight.\""
+
+%message	4
+"Type a word, like \"one\" or \"two.\""
+
+%message	5
+"Whee!"
+
+%message	6
+"You know, the people on those plants look like ants from up here."
+
+%message	7
+"\"strangers in the night, da da da dee da...\""
+
+%message	8
+"Those ARE ants, you fool; we haven't left the ground yet!"
+
+%message	9
+"Wasn't that a fast ride!"
+
+%message	10
+"They're of your favorite species: polyvinyl chloride.
+ There is an ashtray in front of the planter."
+
+%message	11
+"You carefully remove the card from the cancerous remains in the ashtray.
+ It's a valid pass to the disco!"
+
+%message	12
+"There's some kind of card in the ashtray."
+
+%message	13
+"Yuck!"
+
+%message	14
+"Where?"
+
+%message	15
+"The doors close whenever you choose a floor."
+
+%message	16
+"Go inside and push a button."
+
+%message	17
+"It's of no interest."
+
+%message	18
+"The ashtray is of no further interest since you have the card."
+
+%message	19
+"It's not ringing."
+
+%message	20
+"All the pages are torn out."
+
+%message	21
+"Somebody filled the coin slot with chewing gum."
+
+%message	22
+"You can't. It's so firmly embedded, nothing will get it out.
+ You'll just have to find another telephone."
+

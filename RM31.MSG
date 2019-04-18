@@ -1,0 +1,40 @@
+[messages for room 31 -- rmInsideCasino
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"You are in the casino.
+ There are slot machines to the right, and blackjack tables to the left.
+ This place is a gambler's paradise!"
+
+%message	2
+"The front blackjack table is presently unoccupied."
+
+%message	3
+"The rear blackjack table is rather busy now. Try the front table."
+
+%message	4
+"Move to an unoccupied slot machine first."
+
+%message	5
+"At least one person appears to be winning at the slot machines.
+ Perhaps you could too."
+
+%message	6
+"They appear to be having a great time. Perhaps you'd like to join them?"
+
+%message	7
+"Move to a slot machine and put in some money.
+ Or, find an empty blackjack table and sit down."
+
+%message	8
+"You could, if you'd sit down first."
+
+%message	9
+"Don't interrupt them; they're trying to win."
+
+%message	10
+"Casino dealers are notoriously silent."
+

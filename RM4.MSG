@@ -1,0 +1,434 @@
+[messages for room 4 -- lgcQuestions3
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1	
+"When playing \"Monopoly\" you\n\n
+  a. hope for a straight\n
+       flush.\n
+  b. must own four houses\n
+       before building\n
+       a hotel.\n
+  c. need a black jack to\n
+       win.\n
+  d. win with a seven and\n
+       a five."
+
+%message	2	
+"Which is not in Hawaii?\n\n
+  a. Oahu\n
+  b. Kauai\n
+  c. Fiji\n
+  d. Maui"
+
+%message	3	
+"Which is not a car?\n\n
+  a. Ferrari\n
+  b. Porsche\n
+  c. Corvair\n
+  d. Toshiba"
+
+%message	4	
+"President Eisenhower's nickname was\n\n
+  a. Tink.\n
+  b. Blackjack.\n
+  c. Ike.\n
+  d. Tina."
+
+%message	5	
+"Bourbon Street is in\n\n
+  a. Whiskeyville, Indiana.\n
+  b. Jackass Flats, Idaho.\n
+  c. \"Monopoly.\"\n
+  d. New Orleans, Louisiana."
+
+%message	6	
+"Does a pair of queens beat three deuces?\n\n
+  a. Yes, in blackjack.\n
+  b. Yes, in poker.\n
+  c. No, in canasta.\n
+  d. It depends on what the\n
+       three deuces said."
+
+%message	7	
+"Calvin Klein is\n\n
+  a. married to\n
+       Brooke Shields.\n
+  b. a movie star.\n
+  c. a clothing designer.\n
+  d. President of the\n
+       Coarsegold Chamber\n
+       of Commerce."
+
+%message	8	
+"Two bits is\n\n
+  a. all it takes to consume\n
+       a \"Big Mac.\"\n
+  b. computer talk.\n
+  c. about a dollar.\n
+  d. the former cost for a\n
+       shave and a haircut."
+
+%message	9	
+"Charlie McCarthy and\n\n
+  a. John Lennon\n
+  b. Louis Pasteur\n
+  c. Albert Einstein\n
+  d. Edgar Bergen"
+
+%message	10	
+"Who is not a famous musician?\n\n
+  a. Lawrence Welk\n
+  b. Tommy Dorsey\n
+  c. Les Brown\n
+  d. Steve Garvey"
+
+%message	11	
+"Which is non-alcoholic?\n\n
+  a. whiskey\n
+  b. Grand Marnier\n
+  c. Perrier\n
+  d. tequila"
+
+%message	12	
+"Who was not a politician?\n\n
+  a. Richard Nixon\n
+  b. Ronald Reagan\n
+  c. W. C. Fields\n
+  d. George Bush"
+
+%message	13	
+"The last name of Annette (on the original Mickey Mouse Club) was\n\n
+  a. Funnicular.\n
+  b. that WAS her last name.\n
+  c. Funicello.\n
+  d. Avalon."
+
+%message	14
+"\"Tiptoe Through the Tulips\" was recorded by\n\n
+  a. Alice Cooper.\n
+  b. Alice B. Toklas.\n
+  c. Tiny Tim.\n
+  d. Big Tiny Little."
+
+%message	15  
+"Which one of these was not a war?\n\n
+  a. Crimean\n
+  b. Korean\n
+  c. Chinese\n
+  d. Vietnamese"
+
+%message	16  
+"Who's buried in Grant's tomb?\n\n
+  a. Grant Tinker\n
+  b. Land Grant\n
+  c. NSF Grant\n
+  d. Mrs. Grant" 
+
+%message	17	
+"John F. Kennedy drove a\n\n
+  a. PT boat.\n
+  b. spike faster than a\n
+       steam driver.\n
+  c. battleship.\n
+  d. Ferrari."
+
+%message	18	
+"Peter Piper picked a peck of pickled\n\n
+  a. pips.\n
+  b. pipers.\n
+  c. peppers.\n
+  d. peekers."
+
+%message	19	
+"A result of Watergate was\n\n
+  a. the loss of water.\n
+  b. Jimmy Carter quit.\n
+  c. Richard Nixon quit.\n
+  d. Gerald Ford quit."
+
+%message	20	
+"I find computer games with adult content\n\n
+  a. offensive.\n
+  b. acceptable.\n
+  c. repulsive.\n
+  d. under my bed."
+
+%message	21	
+"The Atlantic and Pacific Oceans are connected by the\n\n
+  a. Panama Canal.\n
+  b. Snake River.\n
+  c. hips.\n
+  d. Isthmus of Panama."
+
+%message	22	
+"The most likely place to find virgins is\n\n
+  a. The Virgin Islands.\n
+  b. Virginia.\n
+  c. St. Mary's Girls School.\n
+  d. Hollywood."
+
+%message	23	
+"Who wrote \"To be, or not to be?\"\n\n
+  a. Bill Shakespeare.\n
+  b. Paul McCartney.\n
+  c. George Bernard Shaw.\n
+  d. Tennessee Williams."
+
+%message	24	
+"The largest state is\n\n
+  a. California.\n
+  b. Alaska.\n
+  c. Rhode Island.\n
+  d. Texas."
+
+%message	25	
+"Utah is full of\n\n
+  a. fresh water.\n
+  b. Jews.\n
+  c. Catholics.\n
+  d. None of the above."
+
+%message	26	
+"The leader of Nazi Germany was\n\n
+  a. Boris Godunov.\n
+  b. Mussolini.\n
+  c. Oleg Cassinni.\n
+  d. Adolph Hitler."
+
+%message	27	
+"Lee Harvey Oswald killed\n\n
+  a. Harvey Milk.\n
+  b. Charles Nelson Reilly.\n
+  c. John Fitzgerald Kennedy.\n
+  d. William Randolph Hearst."
+
+%message	28	
+"How many molecules are in a glass of water?\n\n
+  a. one million\n
+  b. one trillion\n
+  c. one million trillion\n
+  d. as many as there are\n
+       glasses of water\n
+       in the whole world"
+
+%message	29	
+"If a physician were stranded on a desert island with Bo Derek, he would
+ probably\n\n
+  a. build a boat.\n
+  b. take two aspirins.\n
+  c. overcharge her.\n
+  d. thank God."
+
+%message	30	
+"If Bo Derek were here, I'd ask her to\n\n
+  a. leave.\n
+  b. respect my privacy.\n
+  c. help me with my\n
+       homework.\n
+  d. stop playing computer\n
+       games."
+
+%message	31	
+"Joe DiMaggio played\n\n
+  a. pool.\n
+  b. baseball.\n
+  c. basketball.\n
+  d. trumpet."
+
+%message	32	
+"The most populous city in the United States is\n\n
+  a. Los Angeles.\n
+  b. Mexico City.\n
+  c. New York.\n
+  d. Chicago."
+
+%message	33	
+"A nehru jacket is\n\n
+  a. made from tanned nehru\n
+       hides.\n
+  b. out of date.\n
+  c. a Middle Eastern\n
+       prophylactic.\n
+  d. around a car's radiator."
+
+%message	34	
+"Sergeant Pepper was\n\n
+  a. the Beatles' chauffeur.\n
+  b. Elvis' manager.\n
+  c. the leader of the Lonely\n
+       Hearts Club Band.\n
+  d. hung for treason."
+
+%message	35	
+"Which is not an American armed force?\n\n
+  a. the Army\n
+  b. the Navy\n
+  c. the National Guard\n
+  d. the National League"
+
+%message	36	
+"The most effective form of birth control is\n\n
+  a. abstinence.\n
+  b. the Rhythm Method.\n
+  c. the Pill.\n
+  d. dating ugly people."
+
+%message	37	
+"Which is not a city in Mexico?\n\n
+  a. Tijuana\n
+  b. Puerto Vallarta\n
+  c. San Diego\n
+  d. Mexico City"
+
+%message	38	
+"Herb Alpert and the _____ Brass\n\n
+  a. Tijuana\n
+  b. Boss\n
+  c. Canadian\n
+  d. Top"
+
+%message	39	
+"\"It's not nice to fool\"\n\n
+  a. Mother Hubbard.\n
+  b. Mother Nature.\n
+  c. the government.\n
+  d. Mayor Daly."
+
+%message	40	
+"\"Where's the\"\n\n
+  a. catsup?\n
+  b. toilet?\n
+  c. beef?\n
+  d. rest of this game?"
+
+%message	41
+"Who was not an astronaut?\n\n
+  a. John Milton\n
+  b. John Glenn\n
+  c. Neil Armstrong\n
+  d. Richard Gordon"
+
+%message	42
+"Who has not been a\n
+U. S. Attorney General?\n\n
+  a. John Mitchell\n
+  b. Sam Shepard\n
+  c. Ramsey Clark\n
+  d. Herbert Browner"
+
+%message	43
+"Which is not a cheese?\n\n
+  a. Jarlsburg\n
+  b. Mozzarella\n
+  c. Brie\n
+  d. Reisling"
+
+%message	44
+"Captain Kangaroo's sidekick was\n\n
+  a. Mr. Potato Head.\n
+  b. Winnie the Pooh.\n
+  c. Mr. Rogers.\n
+  d. Mr. Greenjeans."
+
+%message	45
+"Mohammed Ali is\n\n
+  a. a ballet star.\n
+  b. an Arab terrorist.\n
+  c. a professional boxer.\n
+  d. a singer."
+
+%message	46
+"Who is not a mass murderer?\n\n
+  a. Charlie Manson\n
+  b. Ted Bundy\n
+  c. Jack the Ripper\n
+  d. Timothy Leary"
+
+%message	47
+"There are about _____ calories in a can of beer.\n\n
+  a. 15\n
+  b. 150\n
+  c. 1500\n
+  d. 15000"
+
+%message	48
+"John Belushi was on\n\n
+  a. \"Mr. Rogers.\"\n
+  b. \"The PTL club.\"\n
+  c. \"My Mother the Car.\"\n
+  d. \"Saturday Night Live.\""
+
+%message	49
+"James Earl Jones was the voice of\n\n
+  a. Jason in \"Friday\n
+       the 13th.\"\n
+  b. Freddie in \"Nightmare on\n
+       Elm Street.\"\n
+  c. Darth Vader in\n
+       \"Star Wars.\"\n
+  d. Kriswell in \"Plan 9 From\n
+       Outer Space.\""
+
+%message	50
+"Doonesbury's \"Uncle Duke\" is based on\n\n
+  a. Jeffrey Hunter.\n
+  b. Hunter S. Thompson.\n
+  c. Huntz Hall.\n
+  d. None of the above."
+
+%message	51
+"In Westworld, \"where nothing can go wrong,\" guests were entertained by\n\n
+  a. Stephen Wright.\n
+  b. X-rated movies.\n
+  c. robots.\n
+  d. Rodney Dangerfield."
+
+%message	52.
+"Mork was from the planet\n\n
+  a. Ork.\n
+  b. Vulcan.\n
+  c. Krypton.\n
+  d. Pluto."
+
+%message	53
+"Who was banned from \"Saturday Night Live\" because he lost a telephone poll?\n\n
+  a. John Belushi\n
+  b. Dan Akroyd\n
+  c. Chevy Chase\n
+  d. Andy Kaufman"
+
+
+
+
+%message	60
+"Dynamic logic = 4."
+
+%message	61
+"a"
+
+%message	62
+"b"
+
+%message	63
+"c"
+
+%message	64
+"d"
+
+%message	65
+"So far, so good.\n\n
+Now for the final question."
+
+%message	66
+"Question #%v96. Correct answer is %v93."
+
+%message	67
+"Please answer a, b, c, or d: "
+
+%message	69
+"So far, so good.\n\n
+Now for the final question."
+

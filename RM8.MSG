@@ -1,0 +1,29 @@
+[messages for room 8 -- rmWorkshop
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"Hey! You're not alive yet."
+
+%message	2
+""
+
+%message	3
+"The Sierra adventure team races to your rescue,
+ dumping your worthless, leisure suit- clad hulk into their giant bit bucket,
+ for recycling into future games.
+ Their underground workshop is humming with activity.
+ This is \"Where Adventurers Are Made, Not Born!\""
+
+%message	4
+"Commander Cavin quickly assembles a replacement Larry,
+ while subordinates repair players damaged in other Sierra adventure games."
+
+%message	5
+"With your new body and ego, you are returned to
+ fight again the battles of Lost Wages!\n\n
+(Now you know what we have to go through
+ every time you press that \"Restart\" key.)"
+

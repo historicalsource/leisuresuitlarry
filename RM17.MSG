@@ -1,0 +1,157 @@
+[messages for room 17 -- rmHooker
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"This is the hooker's seedy bedroom.
+ The bed's a mess, ditto the hooker!"
+
+%message	2
+"Yep! This would be a perfect time! The Surgeon General would be proud."
+
+%message	3
+"You already are wearing it."
+
+%message	4
+"It looks like the hooker has a box of candy on her table."
+
+%message	5
+"Although successful, you feel less than satisfied.
+ Technically speaking, you're no longer a virgin,
+ but for some reason, the thrill just wasn't there.
+ You vow to continue your quest until you please your heart,
+ not just your other organs!"
+
+%message	6
+"Sniffing the air, you're suddenly hungry for tuna."
+
+%message	7
+"\"Come on over here, Larry!\""
+
+%message	8
+"She says, \"Me first!\" as she%m25"
+
+%message	9
+"Not again! A guy can only take so much!!"
+
+%message	10
+"She seems more interested in that cigarette than she was in you."
+
+%message	11
+"It's a good thing you were wearing that rubber!"
+
+%message	12
+"It's already open."
+
+%message	13
+"Nah. This room needs the fresh air!"
+
+%message	14
+"You repeatedly bang your head against the closed glass."
+
+%message	15
+""
+
+%message	16
+"It's a really ugly table."
+
+%message	17
+"\"Jeez, Mister! What've you been eating? Buffalo chips???\""
+
+%message	18
+"She certainly seems to enjoy that gum."
+
+%message	19
+"A sign near the bed says: \"Substantial penalty for early withdrawals.\""
+
+%message	20
+"\"So,\" she snarls, \"you just gonna stand there, or what?\""
+
+%message	21
+"\"Was it good for you, baby?\" you ask her."
+
+%message	22
+"\"Was what good?\" she replies."
+
+%message	23
+"Although you might look precious in that little white lace number,
+ you're just not that kind of guy!"
+
+%message	24
+"She%m25"
+
+%message	25
+" goes to work on you.
+ Then she smiles as she bites it off!
+ \"Sorry, Larry. No oral sex in this game. Suffer!\""
+
+%message	26
+"Now's a great time to think of that!"
+
+%message	27
+"\"Is that a toothpick in your pocket,
+ or are you just happy to get past my pimp?\""
+
+%message	28
+"You'd have a better view if you'd move to the front of the bed!"
+
+%message	29
+"There is a fire escape outside the window."
+
+%message	30
+"The clothesline is barely strong enough to hold its present load.
+ Poor girl, you'd think at these prices she could afford a laundromat."
+
+%message	31
+"\"Hey, what kind of girl do you think I am?\""
+
+%message	32
+"It's getting old and rusty -- not unlike you, Larry."
+
+%message	33
+"It just hangs there."
+
+%message	34
+"There's nothing (and no one) there."
+
+%message	35
+"It, too, is broken."
+
+%message	36
+""
+
+%message	37
+"It's barely strong enough to hold up its present load.
+ Besides, if you take it, her underwear would fall down."
+
+%message	38
+"There is a table near the window."
+
+%message	39
+"There's nothing there."
+
+%message	40
+"You have no use for a stained pillow."
+
+%message	41
+"You are as naked as you're going to get!"
+
+%message	42
+"With all your clothes on?"
+
+%message	43
+"You slyly tap out a message in Morse code; unfortunately, only some rats
+ hear it."
+
+%message	44
+"You can't. She's nailed it to the floor."
+
+%message	45
+"Your rope is not long enough to reach outside."
+
+%message	46
+"NOW!?
+ You've come this far, Larry; now's the time to do more than just look!"
+

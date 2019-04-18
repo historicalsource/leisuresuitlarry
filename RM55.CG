@@ -1,0 +1,175 @@
+[logics for room 55 -- lgc.help
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm55.msg"
+%include	"gamedefs.h"
+%include	"colors.h"
+
+
+
+
+
+PreventInput();
+StatusLineOff();
+SetTextAttribute( BLUE, WHITE);
+TextScreen();
+lastChar = 0;
+Reset( haveMatch);
+
+Display(  1,  9,  1);
+Display(  2,  5,  2);
+
+
+Display(  5, 11,  3);
+
+
+
+Display(  9,  1,  4);
+Display( 10,  1,  5);
+
+
+Display( 13,  1,  6);
+Display( 14,  1,  7);
+Display( 15,  1,  8);
+
+
+Display( 18,  1,  9);
+Display( 19,  1, 10);
+	     
+Display( 22,  1, 17);
+Display( 23,  1, 18);
+
+
+
+
+
+
+
+
+
+
+
+
+:checkKb
+if (!HaveKey())
+	{
+	goto	checkKb;
+	}
+
+
+lastChar = 0;
+SetTextAttribute( TEXT_COLOR, BG_COLOR);
+TextScreen( );
+Display(  1,  9,  1);
+Display(  2,  5,  2);
+   
+
+Display(  5, 11, 21);
+
+
+
+Display(  9,  1, 22);
+Display( 10,  1, 23);
+
+
+if (machineType == ST)
+	{
+	Display( 13,  1, 11);
+	Display( 14,  1, 12);
+	Display( 15,  1, 13);
+	}
+else
+	{
+	Display( 13,  1, 24);
+	Display( 14,  1, 25);
+	Display( 15,  1, 26);
+	}
+
+
+Display( 18,  1,  9);
+Display( 19,  1, 10);
+
+
+if (mouseMachine)
+	{
+	:checkKb2
+	if (!HaveKey( ))
+		{
+		goto	checkKb2;
+		}
+	
+
+
+
+
+
+
+
+
+
+
+[				helpScreen3:
+	lastChar = 0;
+	SetTextAttribute( TEXT_COLOR, BG_COLOR);
+	TextScreen( );
+
+	Display(  1,  9,  1);
+	Display(  2,  5,  2);
+   
+
+	Display(  5, 13, 41);
+
+
+	Display(  9,  1, 42);
+	if (machineType == ST)
+		{
+		Display( 10,  1, 48);
+		Display( 13,  1, 44);
+		Display( 14,  1, 49);
+		Display( 15,  1, 50);
+		}
+	else
+		{
+		if ((machineType == CORTLAND ||
+			machineType == MAC))
+			{
+			Display( 10,  1, 43);
+			}
+		else
+			{
+			if (machineType == AMIGA)
+				{
+				Display( 10,  1, 48);
+				Display( 13,  1, 45);
+				Display( 14,  1, 46);
+				}
+			}
+		}
+
+
+
+	Display( 18,  1,  9);
+	Display( 19,  1, 10);
+	}
+
+Display( 23,  7, 47);
+
+
+
+:checkKb3
+if (!HaveKey( ))
+	{
+	goto	checkKb3;
+	}
+
+lastChar = 0;
+SetTextAttribute( TEXT_COLOR, BG_COLOR);
+AcceptInput();
+StatusLineOn();
+Graphics();
+Set( haveMatch);
+
+	
+
+

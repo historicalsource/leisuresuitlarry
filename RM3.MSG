@@ -1,0 +1,461 @@
+[messages for room 3 -- lgcQuestions2
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1	
+"\"Close Encounters of the Third Kind\" is about\n\n
+  a. politics in third-world\n
+       countries.\n
+  b. homo- and heterosexual\n
+       sex.\n
+  c. creatures from outer\n
+       space.\n
+  d. a bicycle race across\n
+       Alaska."
+
+%message	2	
+"IBM stands for\n\n
+  a. Ittsy Bittsy Men.\n
+  b. International Business\n
+       Machines.\n
+  c. Italian Branch of the\n
+       Mafia.\n
+  d. Iranian Broom Makers."
+
+%message	3	
+"Who was NOT in the movie \"Easy Rider?\"\n\n
+  a. Peter Fonda\n
+  b. Dennis Hopper\n
+  c. Karen Black\n
+  d. Karen Carpenter"
+
+%message	4	
+"Las Vegas is famous for\n\n
+  a. its beaches.\n
+  b. being the capital of\n
+       Arizona.\n
+  c. gambling.\n
+  d. its weather."
+
+%message	5	
+"The term \"Working Girl\" refers to\n\n
+  a. a secretary.\n
+  b. a lady of negotiable\n
+       virtue.\n
+  c. an industrious woman.\n
+  d. an employed female."
+
+%message	6	
+"Making a \"Hole in One\" is\n\n
+  a. every golfer's dream.\n
+  b. too dirty to discuss\n
+       here.\n
+  c. something carpenters do.\n
+  d. best done with scissors."
+
+%message	7	
+"My boss is\n\n
+  a. a jerk.\n
+  b. a total jerk.\n
+  c. an absolute total jerk.\n
+  d. responsible for my\n
+       paycheck."
+
+%message	8	
+"How many programmers does it take to screw in a light bulb?\n\n
+  a. None, it's a hardware\n
+       problem.\n
+  b. None, programmers can't\n
+       fit in light bulbs.\n
+  c. 100. One to hold the\n
+       bulb and 99 to\n
+       debug the house.\n
+  d. None so far, but they'll\n
+       get to it\n
+       Real Soon Now."
+
+%message	9	
+"A hard disk is\n\n
+  a. better than a floppy.\n
+  b. embarrassing to have at\n
+       the office.\n
+  c. a state-of-the-art\n
+       frisbee.\n
+  d. what happens when you\n
+       leave your floppy out\n
+       in the sun too long."
+
+%message	10	
+"In some personal ads, TV stands for\n\n
+  a. television.\n
+  b. transvestite.\n
+  c. trans-venereal.\n
+  d. terre-voracic."
+
+%message	11	
+"Lucy, Ricky, Fred and\n\n
+  a. Barney.\n
+  b. Carol.\n
+  c. Alice.\n
+  d. Ethel."
+
+%message	12	
+"Mel Brooks is\n\n
+  a. black.\n
+  b. Puerto Rican.\n
+  c. a comedian.\n
+  d. Catholic."
+
+%message	13	
+"It is customary to tip about\n\n
+  a.  2 per cent.\n
+  b.  6 per cent.\n
+  c. 15 per cent.\n
+  d. 25 per cent."
+
+%message	14	
+"Blackjack is\n\n
+  a. an ace and a face card.\n
+  b. used by policemen.\n
+  c. related to Caucasian\n
+       Tom.\n
+  d. a kind of car sold only\n
+       in Fresno."
+
+%message	15	
+"Canada is\n\n
+  a. where Canadians live.\n
+  b. north of the U. S.\n
+  c. adjacent to the U. S.\n
+  d. All of the above."
+
+%message	16	
+"Oral Roberts is\n\n
+  a. a thermometer technique.\n
+  b. an evangelist.\n
+  c. best done with a friend.\n
+  d. shy."
+
+%message	17	
+"Richard Nixon was\n\n
+  a. an audio technician.\n
+  b. a plumber's friend.\n
+  c. a comedian.\n
+  d. a president."
+
+%message	18	
+"A 747 is\n\n
+  a. a cocktail.\n
+  b. a perfect bowling score.\n
+  c. a large airplane.\n
+  d. a prime number."
+
+%message	19	
+"Whips, chains and handcuffs are\n\n
+  a. kinky.\n
+  b. used by police\n
+       departments.\n
+  c. usually in text\n
+       adventures.\n
+  d. only permitted in\n
+       Eastern schools."
+
+%message	20	
+"A Macintosh is\n\n
+  a. a kind of Apple.\n
+  b. a kind of apple.\n
+  c. an article of clothing.\n
+  d. All of the above."
+
+%message	21	
+"My parents are\n\n
+  a. age 10 to 25.\n
+  b. age 25 to 30.\n
+  c. age 31 to 35.\n
+  d. 36 or over."
+
+%message	22	
+"My favorite actor is\n\n
+  a. Pia Zadora.\n
+  b. Fred Flintstone.\n
+  c. Jim Bakker.\n
+  d. not listed here."
+
+%message	23	
+"I have hair on my\n\n
+  a. head.\n
+  b. palms.\n
+  c. keyboard.\n
+  d. lottsa places."
+
+%message	24	
+"When it's noon in California in August, in St. Louis it's\n\n
+  a. miserable.\n
+  b. 2:00 p.m.\n
+  c. 3:00 p.m.\n
+  d. time for a beer."
+
+%message	25	
+"The best \"pick-up\" line is:\n\n
+  a. Hey baby, what's your\n
+       sign?\n
+  b. Want to go for a ride\n
+       in my Porsche?\n
+  c. For a fat girl, you\n
+       sure don't sweat much!\n
+  d. Do you know where I can\n
+       buy some Vaseline?"
+
+%message	26	
+"The \"Mile-High Club\" is\n\n
+  a. a bird-watching society.\n
+  b. a Denver ski club.\n
+  c. a bar in East L. A.\n
+  d. open to those who have\n
+       performed aerial\n
+       acrobatics inside a\n
+       plane's rest room."
+
+%message	27	
+"My sex life is best described as\n\n
+  a. non-existent and non-\n
+       contemplated.\n
+  b. what sex life?\n
+  c. none of your business!!\n
+  d. a ripening tomato."
+
+%message	28	
+"Elizabeth Taylor is\n\n
+  a. an actress.\n
+  b. creator of a line of\n
+       cosmetics.\n
+  c. celebrating her silver\n
+       wedding anniversary.\n
+  d. a singer."
+
+%message	29	
+"Joan Rivers is\n\n
+  a. the real name of\n
+       \"Dear Abby.\"\n
+  b. engaged to\n
+       Johnny Carson.\n
+  c. a former talk show\n
+       hostess.\n
+  d. polite to all\n
+       those around her."
+
+%message	30
+"Who starred in \"Bedtime for Bonzo?\"\n\n
+  a. Clint Eastwood\n
+  b. Fred Astaire\n
+  c. Cary Grant\n
+  d. Ronald Reagan"
+
+%message	31
+"Taxes should be\n\n
+  a. lower.\n
+  b. higher.\n
+  c. unchanged.\n
+  d. eliminated."
+
+%message	32
+"A moon is\n\n
+  a. an astronomical body.\n
+  b. a practical joke.\n
+  c. a form of pie.\n
+  d. all of the above."
+
+%message	33
+"Marlon Brando is\n\n
+  a. a singer.\n
+  b. an actor.\n
+  c. a politician.\n
+  d. a kind of soap."
+
+%message	34
+"I am presently\n\n
+  a. in elementary school.\n
+  b. in junior high.\n
+  c. fighting acne.\n
+  d. past puberty."
+
+%message	35
+"Herpes is\n\n
+  a. caught from toilet\n
+       seats.\n
+  b. a French dessert.\n
+  c. socially desirable.\n
+  d. fatal (if given to\n
+       your spouse)."
+
+%message	36
+"ERA is an abbreviation for\n\n
+  a. Earnest Realtors of\n
+       America.\n
+  b. Equal Rights Amendment.\n
+  c. Erogenous Readers\n
+       Association.\n
+  d. Error Recovery\n
+       Associates."
+
+%message	37
+"G. Gordon Liddy was associated with\n\n
+  a. the Mob.\n
+  b. Calvin Klein.\n
+  c. Elizabeth Taylor.\n
+  d. the Plumbers."
+
+%message	38
+"What was illegal during Prohibition?\n\n
+  a. aphrodisiacs\n
+  b. alcohol\n
+  c. abstinence\n
+  d. perversion"
+
+%message	39
+"Bonnie and\n\n
+  a. Ronnie\n
+  b. Clyde\n
+  c. Hubbard\n
+  d. Clod"
+
+%message	40	
+"Who spends the most time in Las Vegas?\n\n
+  a. Michael J. Fox\n
+  b. Wayne Newton\n
+  c. J. Paul Getty\n
+  d. Paul Volcker"
+
+%message	41
+"Which U. S. President was not elected to office?\n\n
+  a. Johnson\n
+  b. Eisenhower\n
+  c. Ford\n
+  d. Cleveland"
+
+%message	42
+"Which is not a currency?\n\n
+  a. yen\n
+  b. lira\n
+  c. fennel\n
+  d. rupee"
+
+%message	43
+"Which is not a baseball team?\n\n
+  a. Blue Jays\n
+  b. Cardinals\n
+  c. Seahawks\n
+  d. Orioles"
+
+%message	44
+"Who made a record album with a cover that looked like a pair of blue jeans,
+ complete with a working zipper?\n\n
+  a. Rolling Stones\n
+  b. Boy George\n
+  c. Olivia Newton Jean\n
+  d. Madonna"
+
+%message	45
+"The American television debut of Bob Hope,
+ Dinah Shore, Elvis, and the Beatles was on\n\n
+  a. \"The Ed Sullivan Show.\"\n
+  b. \"Your Show of Shows.\"\n
+  c. \"The Tonight Show.\"\n
+  d. \"My Mother, the Car.\""
+
+%message	46
+"Michael Doonesbury founded\n\n
+  a. the American Nazi Party.\n
+  b. Walden Puddle Commune.\n
+  c. the Young Republicans.\n
+  d. the Grace Jones\n
+       Fan Club."
+
+%message	47
+"The first baseball player to challenge the reserve clause was\n\n
+  a. Philly Jo Jones.\n
+  b. Roger Maris.\n
+  c. Curt Flood.\n
+  d. Ted Williams."
+
+%message	48
+"The first Negro to play Major League Baseball was\n\n
+  a. Jackie Robinson.\n
+  b. Joe DiMaggio.\n
+  c. Benny Goodman.\n
+  d. Satchel Paige."
+
+%message	49
+"Former Congressman Wilbur Mills went for a dip in the Tidal Basin with\n\n
+  a. nothing on but his\n
+       pride.\n
+  b. a stripper named Fanne.\n
+  c. his dog Spot.\n
+  d. a 20-year-old secretary."
+
+%message	50
+"Martha Mitchell was\n\n
+  a. a porno star.\n
+  b. a famous author.\n
+  c. the outspoken wife of an\n
+       Attorney General.\n
+  d. All of the above."
+
+%message	51
+"The G-Spot is supposed to be\n\n
+  a. Ground Zero at a nuclear\n
+       blast.\n
+  b. a female erogenous zone.\n
+  c. an unexplained astro-\n
+       nomical discovery.\n
+  d. the place where the FBI\n
+       was first established."
+
+%message	52
+"Hugh Hefner is usually photographed in\n\n
+  a. the nude.\n
+  b. a hot tub.\n
+  c. his current lover's\n
+       arms.\n
+  d. pajamas."
+
+%message	53
+"The 1973 album \"Dark Side of the Moon\" was recorded by\n\n
+  a. Pink Floyd.\n
+  b. Deep Purple.\n
+  c. Bad News.\n
+  d. the Grateful Dead."
+
+
+
+
+%message	60
+"Dynamic logic = 3."
+
+%message	61
+"a"
+
+%message	62
+"b"
+
+%message	63
+"c"
+
+%message	64
+"d"
+
+%message	65
+"So far, so good.\n\n
+Now for the final question."
+
+%message	66
+"Question #%v96. Correct answer is %v93."
+
+%message	67
+"Please answer a, b, c, or d: "
+
+%message	69
+"So far, so good.\n\n
+Now for the final question."

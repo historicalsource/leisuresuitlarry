@@ -1,0 +1,243 @@
+[messages for room 42 -- rmSecurityDesk
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"%m14 A beautiful security guard sits behind a desk."
+
+%message	2
+"She takes one look at the bottle of Spanish Fly and says,
+ \"Boy, thanks! How did you know that I love this stuff?!\"
+ She tosses down a couple of pills, then a few more,
+ and finally gulps the whole bottle!
+ Her breathing becomes faster and faster until she begins to pant."
+
+%message	3
+"She is a knockout!
+ But that pair of pistols slung around her hips brings a sense
+ of foreboding to your gut."
+
+%message	4
+"(Looks like tonight's your lucky night, Larry.)"
+
+%message	5
+"Whee!"
+
+%message	6
+"The rumors were right. You are quick on the trigger, Larry!"
+
+%message	7
+"\"strangers in the night, da da da dee da...\""
+
+%message	8
+"\"Try it, and I'll blow your head off.\""
+
+%message	9
+"There are buttons labeled \"one\" through \"eight.\""
+
+%message	10
+"Evidently, this exit is for employees only. You'd better use the elevator."
+
+%message	11
+"The beautiful security guard is sitting at the desk.
+ A pair of large pistols are in a holster around her slim waist.
+ She looks friendly, but quick on the trigger."
+
+%message	12
+"Since you're no longer staring at Faith's ample weapons,
+ you notice an unlabeled button on her desk."
+
+%message	13
+"Oh, oh. Where are we goin' now, Larry?"
+
+%message	14
+"You are at the top floor of the hotel."
+
+%message	15
+"%m14 That desk is where you lost your Faith, remember?
+ (So glad there was a chance to use THAT line!)"
+
+%message	16
+"A brass plate near the elevator says: \"Private.\""
+
+%message	17
+"\"Hi, my name's Faith. Nice suit!\""
+
+%message	18
+"\"Bad breath's one thing, Mister;
+ but, you could knock a buzzard off a manure truck!\""
+
+%message	19
+"\"Touch that button, and you're dead meat, White-Suit!\""
+
+%message	20
+"\"So long!\" Faith says.
+ \"I've got to find my boy friend before this stuff wears off!\""
+
+%message	21
+"The penthouse elevator doors glide open."
+
+%message	22
+"The doors are securely closed. %m16 There is no button nearby."
+
+%message	23
+"Type a word, like \"one\" or \"two.\""
+
+%message	24
+"It's a door just like all the others."
+
+%message	25
+"They almost look real, don't they?"
+
+%message	26
+"You contemplate expec- toration, but remember that discretion is the better
+ part of valium."
+
+%message	27
+"...or helium,"
+
+%message	28
+"...or something."
+
+%message	29
+"You run to the nearest door, and rap your knuckles loudly.
+ You run right back to where you were."
+
+%message	30
+"You seem surprised that the door is locked."
+
+%message	31
+"(She is, of course, referring to the use of her gun, Larry.)"
+
+%message	32
+"\"Larry,\" you reply, getting your hopes aroused (among other things)."
+
+%message	33
+"It appears Faith IS true to her name.
+ Twisting her key in the lock, she disappears down the employee stairs."
+
+%message	34
+"The doors are open. Go on in."
+
+%message	35
+"She might listen to you, if you can establish eye contact."
+
+%message	36
+"\"Hi ya, Baby. I think I loves ya!!\""
+
+%message	37
+"\"May I help you in some way, Sir?\" she responds in a pleasant, but
+ businesslike voice."
+
+%message	38
+"\"My name is Larry,\" you offer. \"Larry Laffer.\""
+
+%message	39
+"\"Say, Larry,\" she says with a smile,
+ \"Is that a roll of dimes in your pocket, or are you just glad to see me?\""
+
+%message	40
+"\"Hey, sweetheart. What's your sign?\" you ask her."
+
+%message	41
+"\"'EXIT,\" she replies. \"Try using it!\""
+
+%message	42
+"\"What's your name, beautiful?\" you ask."
+
+%message	43
+"\"Faith,\" she replies."
+
+%message	44
+"Hmmm. Unusual name."
+
+%message	45
+"\"I'm only in town for one night,\" you try again.
+ \"How about we get together when you get off duty?\""
+
+%message	46
+"She smiles and says, \"Oh, I could never be unfaithful to my boyfriend.\""
+
+%message	47
+"(Larry, it seems this one's gonna require outside assistance.)"
+
+%message	48
+"Try looking at the girl first."
+
+%message	49
+"They are a beautiful pair, aren't they?"
+
+%message	50
+"Not now, you're busy."
+
+%message	51
+"Her sweater reveals she's built like a brick shipyard."
+
+%message	52
+"\"Stop staring there,\" she says softly."
+
+%message	53
+"\"Really? I'm not that kind of girl.\""
+
+%message	54
+"Evidently the rooms on this floor are all unoccupied."
+
+%message	55
+"Her eyes are as sensuous as her lips."
+
+%message	56
+"You're a man of the world, Larry.
+ Perhaps some sort of medical stimulant would help."
+
+%message	57
+"She waves back."
+
+%message	58
+"The glass elevator only goes down from here. How about you?"
+
+%message	59
+"\"I'm sorry, but I can't.\""
+
+%message	60
+"It's no good. The door resists all of your efforts."
+
+%message	61
+"You can't. There's no key in this game!"
+
+%message	62
+"Suicide is illegal here."
+
+%message	63
+"There's no need to do that."
+
+%message	64
+"\"Usually when I'm with someone romantic!\" she replies."
+
+%message	65
+"\"You know, I'm supposed to be working!\""
+
+%message	66
+"Her hair is thick and beautiful, falling in cascades around her delicate
+ shoulders."
+
+%message	67
+"\"So what?\""	
+
+%message	68
+"Her lips are moist and inviting, but then, you also felt that way
+ about old Mr. Weissenborn, your high school shop teacher!"
+
+%message	69
+"I'm sorry,\" Faith replies, \"but you don't know me that well!\""
+
+%message	70
+"\"Well, now. Isn't THAT special!\""
+
+%message	71
+"\"Perhaps,\" she says, \"but right now, I'm working.\""
+
+%message	72
+"\"I'll be here all night.\""
+

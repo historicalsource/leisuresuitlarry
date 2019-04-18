@@ -1,0 +1,394 @@
+[logics for room 8 -- rmWorkshop
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm8.msg"
+%include	"gamedefs.h"
+
+
+
+[	%view	vWorkshopDeadEgo		185	[	death workshop views
+[	%view	vWorkshopStuff			186
+#define	L_HEADLESS_EGOS	0
+#define		C_3_EGOS		0
+#define		C_5_EGOS		1
+#define		C_4_EGOS		2		[	first guy missing
+#define	L_PLATFORM_RIGHT	1
+#define		C_WITHOUT_EGO	0
+#define		C_WITH_EGO	1
+#define	L_SHAFTS			2
+#define		C_SHORT_SHAFT	0
+#define		C_LONG_SHAFT	1
+#define	L_HEAD_RACK		3
+#define		C_FULL		0
+#define		C_MISSING_ONE	1
+
+[	%view	vWorkshopScientist		187
+[define	L_WALKING_RIGHT	0		[	covered by "vHotTubGirl" define
+#define	L_WALKING_LEFT		1
+#define	L_WITH_HEAD		2
+#define	L_SCREWING_HEAD	3
+#define	L_AT_CONTROL_PANEL	4
+
+[	%view	vWorkshopMen			188
+#define	L_DRAGON			0
+#define	L_MAN			1
+#define	L_WOMAN			2
+#define	L_GRAHAM			3
+
+[	%view	vWorkshopLogo			189
+
+
+%define	manToggle				lf0
+%define	testerToggle			lf1
+%define	cavinAtPanel		lf3
+%define	cavinCycling		lf4
+
+
+%define	manCycles				lv0
+%define	womanCycles			lv1
+%define	testerCycles			lv2
+%define	cavinCycles			lv3
+
+
+%object	aPlatformLeft			1
+%object	aPlatformRight			2
+%object	aShaftLeft			3
+%object	aShaftRight			4
+%object	aCavin				5
+%object	aEgos				6
+%object	aHeadRack				7
+%object	aMan					8
+%object	aWoman				9
+%object	aGraham				10
+%object	aDroid				11
+
+
+if (initLog)
+	{
+	SetHorizon( 1);
+	Set( noPromptRestart);
+	currentStatus = RECYCLING;
+
+	LoadView( vEgo);
+	LoadView( vWorkshopDeadEgo);		[	view.185
+	LoadView( vWorkshopStuff);		[	view.186
+	LoadView( vWorkshopScientist);	[	view.187
+	LoadView( vWorkshopMen);			[	view.188
+	LoadView( vWorkshopLogo);		[	view.189
+	LoadView( vWorkshopDroid);		[	view.190
+
+
+	LoadPic( currentRoom);
+	DrawPic( currentRoom);
+	DiscardPic( currentRoom);
+
+	AddToPic( vWorkshopLogo,        0, 0, 56,  42, 4, 4);
+	AddToPic(  vWorkshopMen, L_DRAGON, 0, 17, 154, 0, 4);
+			[view, loop, cel, x, y, obj priority, box priority
+
+
+	AnimateObj( aPlatformLeft);
+	IgnoreObjs( aPlatformLeft);
+	IgnoreBlocks( aPlatformLeft);
+	SetView( aPlatformLeft, vWorkshopDeadEgo);
+	SetLoop( aPlatformLeft, 0);
+	FixLoop( aPlatformLeft);
+	SetCel( aPlatformLeft, 0);
+	SetPriority( aPlatformLeft, 5);
+	StopCycling( aPlatformLeft);
+	CycleTime( aPlatformLeft, two);
+	Position( aPlatformLeft, 56, 28);
+	Draw( aPlatformLeft);
+	MoveObj( aPlatformLeft, 56, 59, 1, scriptDone);
+
+	AnimateObj( aShaftLeft);
+	IgnoreObjs( aShaftLeft);
+	IgnoreBlocks( aShaftLeft);
+	SetView( aShaftLeft, vWorkshopStuff);
+	SetLoop( aShaftLeft, L_SHAFTS);
+	FixLoop( aShaftLeft);
+	SetCel( aShaftLeft, C_SHORT_SHAFT);
+	SetPriority( aShaftLeft, 4);
+	StopCycling( aShaftLeft);
+	Position( aShaftLeft, 74, 80);
+	Draw( aShaftLeft);
+	MoveObj( aShaftLeft, 74, 111, 1, done);
+
+
+	AnimateObj( aPlatformRight);
+	IgnoreObjs( aPlatformRight);
+	IgnoreBlocks( aPlatformRight);
+	SetView( aPlatformRight, vWorkshopStuff);
+	SetLoop( aPlatformRight, L_PLATFORM_RIGHT);
+	FixLoop( aPlatformRight);
+	SetCel( aPlatformRight, C_WITHOUT_EGO);
+	SetPriority( aPlatformRight, 6);
+	StopCycling( aPlatformRight);
+	Position( aPlatformRight, 79, 111);
+	Draw( aPlatformRight);
+	StopUpdate( aPlatformRight);
+
+	AnimateObj( aShaftRight);
+	IgnoreObjs( aShaftRight);
+	IgnoreBlocks( aShaftRight);
+	SetView( aShaftRight, vWorkshopStuff);
+	SetLoop( aShaftRight, L_SHAFTS);
+	FixLoop( aShaftRight);
+	SetCel( aShaftRight, C_SHORT_SHAFT);
+	SetPriority( aShaftRight, 5);
+	StopCycling( aShaftRight);
+	Position( aShaftRight, 84, 167);
+	Draw( aShaftRight);
+	StopUpdate( aShaftRight);
+
+
+	AnimateObj( aCavin);
+	IgnoreObjs( aCavin);
+	SetView( aCavin, vWorkshopScientist);
+	SetLoop( aCavin, L_AT_CONTROL_PANEL);
+	FixLoop( aCavin);
+	Position( aCavin, 36, 111);
+	Draw( aCavin);
+	Set( cavinAtPanel);
+
+	AnimateObj( aEgos);
+	IgnoreObjs( aEgos);
+	SetView( aEgos, vWorkshopStuff);
+	SetLoop( aEgos, L_HEADLESS_EGOS);
+	FixLoop( aEgos);
+	SetCel( aEgos, C_3_EGOS);
+	SetPriority( aEgos, 6);
+	StopCycling( aEgos);
+	Position( aEgos, 128, 105);
+	Draw( aEgos);
+	StopUpdate( aEgos);
+
+
+	AnimateObj( aHeadRack);
+	IgnoreObjs( aHeadRack);
+	SetView( aHeadRack, vWorkshopStuff);
+	SetLoop( aHeadRack, L_HEAD_RACK);
+	SetCel( aHeadRack, C_FULL);
+	Position( aHeadRack, 38, 121);
+	Draw( aHeadRack);
+	StopCycling( aHeadRack);
+	StopUpdate( aHeadRack);
+
+	AnimateObj( aMan);
+	SetView( aMan, vWorkshopMen);
+	SetLoop( aMan, 1);
+	Position( aMan, 88, 133);
+	Draw( aMan);
+	StopCycling( aMan);
+	Random( 26, 56, manCycles);
+
+	AnimateObj( aGraham);
+	SetView( aGraham, vWorkshopMen);
+	SetLoop( aGraham, L_GRAHAM);
+	Position( aGraham, 103, 149);
+	Draw( aGraham);
+	Random( 17, 33, testerCycles);
+
+	AnimateObj( aWoman);
+	SetView( aWoman, vWorkshopMen);
+	SetLoop( aWoman, L_WOMAN);
+	Position( aWoman, 116, 149);
+	Draw( aWoman);
+	StopCycling( aWoman);
+
+	AnimateObj( aDroid);
+	SetView( aDroid, vWorkshopDroid);
+	Position( aDroid, 56, 155);
+	Draw( aDroid);
+	Wander( aDroid);
+	CycleTime( aDroid, two);
+	StepTime( aDroid, two);
+
+
+	Set( programControl);
+
+	ShowPic( );
+
+	Return( );
+
+	}							[	end initLOG
+
+
+
+[*****
+:handleInput
+[*****
+
+if (haveInput)
+	{
+	Set( haveMatch);
+	Print( 1);
+	}
+
+
+[*****
+:noInput
+[*****
+
+if (cavinAtPanel)
+	{
+	--cavinCycles;
+	if (cavinCycles == 1)
+		{
+		Toggle( cavinCycling);
+		if (cavinCycling)
+			{
+			StartCycling( aCavin);
+			Random( 4, 11, cavinCycles);
+			}
+		else
+			{
+			StopCycling( aCavin);
+			Random( 11, 22, cavinCycles);
+			}
+		}
+	}
+
+--manCycles;
+if (manCycles == 1)
+	{
+	Random( 0, 2, work);
+	SetCelV( aMan, work);
+	Random( 11, 33, manCycles);
+	}
+
+
+--testerCycles;
+if (testerCycles == 1)
+	{
+	Random( 7, 22, testerCycles);
+	Toggle( testerToggle);
+	if (testerToggle)
+		{
+		StartCycling( aWoman);
+		
+		StopCycling( aGraham);
+		SetCel( aGraham, 0);
+		}
+	else
+		{
+		StartCycling( aGraham);
+
+		StopCycling( aWoman);
+		SetCel( aWoman, 0);
+		}
+	}
+
+
+
+if (scriptDone)
+	{
+	Reset( scriptDone);
+	++script;
+
+	if (script == 1)
+		{
+		EndOfLoop( aPlatformLeft, scriptDone);
+		}
+
+	if (script == 2)
+		{
+		Print( 3);
+		
+		StopCycling( aPlatformLeft);
+		MoveObj( aPlatformLeft, 56, 80, 1, scriptDone);
+		MoveObj( aShaftLeft, 74, 132, 1, done);
+		}
+
+	if (script == 3)
+		{
+		StopUpdate( aPlatformLeft);
+		StopUpdate( aShaftLeft);
+
+		StartUpdate( aEgos);
+		MoveObj( aEgos, 103, 105, 1, scriptDone);
+		}
+
+	if (script == 4)
+		{
+		SetCel( aEgos, C_5_EGOS);
+		MoveObj( aEgos, 82, 105, 1, scriptDone);
+		}
+
+	if (script == 5)
+		{
+		StopUpdate( aEgos);
+
+		StartCycling( aCavin);
+		SetLoop( aCavin, L_WALKING_RIGHT);
+		MoveObj( aCavin, 49, 117, 1, scriptDone);
+		Reset( cavinAtPanel);
+
+		Print( 4);
+		}
+
+	if (script == 6)
+		{
+		SetCel( aHeadRack, C_MISSING_ONE);
+		ForceUpdate( aHeadRack);
+
+		SetLoop( aCavin, L_WITH_HEAD);
+		MoveObj( aCavin, 62, 111, 1, scriptDone);
+		}
+
+	if (script == 7)
+		{
+		MoveObj( aCavin, 78, 111, 1, scriptDone);
+		}
+
+	if (script == 8)
+		{
+		SetLoop( aCavin, L_SCREWING_HEAD);
+		scriptCycles = 21;
+		}
+
+	if (script == 9)
+		{
+		SetLoop( aCavin, L_WALKING_LEFT);
+		MoveObj( aCavin, 36, 111, 1, scriptDone);
+
+		SetCel( aPlatformRight, C_WITH_EGO);
+
+		SetCel( aEgos, C_4_EGOS);
+		ForceUpdate( aEgos);
+		}
+
+	if (script == 10)
+		{
+		SetLoop( aCavin, L_AT_CONTROL_PANEL);
+		Set( cavinAtPanel);
+		cavinCycles = 3;
+
+		StartUpdate( aPlatformRight);
+		MoveObj( aPlatformRight, 79, 40, 1, scriptDone);
+
+		StartUpdate( aShaftRight);
+		MoveObj( aShaftRight, 84, 108, 1, scriptDone);
+		}
+
+	if (script == 11)
+		{
+		SetCel( aShaftRight, C_LONG_SHAFT);
+		RepositionTo( aShaftRight, 84, 147);
+		MoveObj( aShaftRight, 84, 116, 1, done);
+	 
+		Print( 5);
+		}
+
+	if (script == 12)
+		{
+		RestartGame();
+		}
+	}
+	
+
+
+[*****
+:exit							[	test for leaving the room
+[*****

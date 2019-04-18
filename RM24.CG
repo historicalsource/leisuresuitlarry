@@ -1,0 +1,898 @@
+[logics for room 24 -- rmInsideDisco
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm24.msg"
+%include	"gamedefs.h"
+
+
+[	must be seated to see closeup of face, and give her stuff.
+[	normal cel if nothing happens, else happy cel if gift, or said something
+[nice.  "Pouty" face if said something nasty, or bad breath.
+[	To return to long shot, say leave table, or dance with Fawn
+
+[	if says something rude, add.to.pic mean look, change rooms, and she walks
+[away.  He has to leave, then enter again.
+
+
+
+
+[	%flag	gaveFawnFlowers	71	[	These are pertinent globals.
+[	%flag	gaveFawnCandy		72
+[	%flag	gaveFawnRing		73
+[	%flag	dancedWithFawn		74
+
+#define	L_DANCE_FLOOR			0
+#define	L_LIGHTS				1
+
+#define	TALK_TIME				4
+
+#define	L_FAWN_SITTING			0
+#define	L_EGO_SITTING			1
+
+#define	L_HEAD_RIGHT			1
+#define	L_HEAD_UP				2
+
+%define	cutToLongShot			lf0
+%define	nearChair				lf1
+%define	nearFawn				lf2
+%define	fawnAtTable			lf3
+%define	fawnCycling			lf4
+%define	lookingAtFawn			lf5
+%define	fawnOnDanceFloor		lf6
+%define	cutToCloseup			lf8
+%define	nearFawnChair			lf10
+%define	fawnLeaving			lf11
+%define	fawnScriptDone			lf12
+%define	turnHeadsToFloor		lf13
+%define	turnHeadsToTable		lf14
+
+
+%define	fawnCycles			lv0
+%define	fawnScript			lv8
+
+
+%object	aFloor				1
+%object	aLights				2
+%object	aFawn				5
+
+
+
+if (initLog)
+	{
+	SetHorizon( 1);
+	AcceptInput();
+
+	LoadPic( currentRoom);
+	DrawPic( currentRoom);
+	DiscardPic( currentRoom);
+
+	LoadView( vEgo);
+	LoadView( vEgoAndFawnSitting);
+	LoadView( vDiscoCustomers);
+	LoadView( vFawn);
+
+
+	[	Add the tables, and customer-bodies.
+	AddToPic( vDiscoCustomers, 0, 0, 115, 120, 11, 0);
+	AddToPic( vDiscoCustomers, 0, 1,  24, 132,  0, 0);
+	AddToPic( vDiscoCustomers, 0, 2,  24, 159,  0, 0);
+	AddToPic( vDiscoCustomers, 0, 3, 105, 108,  4, 4);
+	AddToPic( vDiscoCustomers, 0, 4,  49, 158,  0, 0);
+	AddToPic( vDiscoCustomers, 0, 5,  98, 108,  4, 4);
+				[view, loop, cel, x, y, obj priority, box priority
+
+	[	Add the customers-heads.
+	AddToPic( vDiscoCustomers, L_HEAD_RIGHT, 1,  24, 112, 12, 4);
+	AddToPic( vDiscoCustomers, L_HEAD_RIGHT, 2,  24, 139, 14, 4);
+	AddToPic( vDiscoCustomers, L_HEAD_RIGHT, 3, 105,  89,  4, 4);
+	AddToPic( vDiscoCustomers, L_HEAD_RIGHT, 4,  49, 138, 14, 4);
+	AddToPic( vDiscoCustomers, L_HEAD_RIGHT, 5,  98,  90,  4, 4);
+					
+
+	if (makeFawnDance)				[	This is it!
+		{
+		LoadSound( mDisco);
+		LoadView( vEgoDiscoing1);
+		LoadView( vEgoDiscoing2);
+		LoadView( vEgoFlingingFawn);
+		LoadView( vFawnDancing);
+		LoadView( vDiscoInterior);
+
+		AnimateObj( aFloor);
+		IgnoreBlocks( aFloor);
+		IgnoreObjs( aFloor);
+		SetView( aFloor, vDiscoInterior);
+		SetLoop( aFloor, L_DANCE_FLOOR);
+		SetCel( aFloor, 0);
+		Position( aFloor, 34, 123);
+		SetPriority( aFloor, 3);
+
+		AnimateObj( aLights);
+		SetView( aLights, vDiscoInterior);
+		SetLoop( aLights, L_LIGHTS);
+		SetPriority( aLights, 15);
+		Position( aLights, 47, 24);
+		}
+
+	
+	AnimateObj( aFawn);
+	SetView( aFawn, vFawn);
+	ReleasePriority( aFawn);
+	StartCycling( aFawn);
+	CycleTime( aFawn, one);
+	Position( aFawn, 130, 122);
+
+	if  (!gaveFawnEverything &&
+		!noFawnInDisco &&
+		!makeFawnDance &&
+		!makeFawnSplit)			[	Sit her ass down!
+		{
+		Set( fawnAtTable);
+		SetView( aFawn, vEgoAndFawnSitting);
+		SetLoop( aFawn, L_FAWN_SITTING);
+		SetPriority( aFawn, 11);
+		Position( aFawn, 129, 119);
+		Draw( aFawn);
+		CycleTime( aFawn, two);
+		StopCycling( aFawn);
+		Random( 22, 44, fawnCycles);
+		}
+
+
+	if (previousRoom == rmFawnCloseup)
+		{
+		SetView( ego, vEgoAndFawnSitting);
+		SetLoop( ego, L_EGO_SITTING);
+		SetPriority( ego, 11);
+		StopMotion( ego);
+		Set( programControl);
+		currentStatus = SITTING;
+		egoX = 116;
+		egoY = 119;
+
+		if (makeFawnSplit)
+			{
+			Reset( makeFawnSplit);
+			Draw( aFawn);
+
+			Set( fawnScriptDone);
+			fawnScript = 100;
+			fawnCycles = 0;
+			}
+
+		if (makeFawnDance)
+			{
+			Reset( makeFawnDance);
+			Draw( aFawn);
+			
+			Set( scriptDone);
+			script = 3;
+			}
+		}
+	else
+		{
+		moneyTimer = 0;
+		egoX = 76;
+		egoY = 167;
+		}
+	PositionV( ego, egoX, egoY);
+	Draw( ego);
+
+	ShowPic( );
+
+	Return( );
+
+	}							[	end initLOG
+
+
+
+Reset( nearChair);
+if (Posn( ego, 112, 121, 123, 124))
+	{
+	Set( nearChair);
+	}
+
+Reset( nearFawnChair);
+if (Posn( ego, 124, 121, 141, 124))
+	{
+	Set( nearFawnChair);
+	}
+
+Reset( nearFawn);
+if (fawnAtTable)
+	{
+	if ((currentStatus == SITTING ||
+		Posn( ego, 120, 112, 142, 130)))
+		{
+		Set( nearFawn);
+		Set( nearPerson);
+		}
+	}
+
+
+
+[*****
+:handleInput
+[*****
+
+if (!haveInput)			{goto noInput;}
+
+if ((Said( sit) ||					[	Can only sit or stand if 
+	Said( sit, with, girl, rol) ||	[	Fawn baby is dancing.
+	Said( sit, down, rol) ||
+	Said( sit, chair, rol) ||
+	Said( sit, table, rol)))
+	{
+	if (currentStatus == SITTING)
+		{
+		Print( 38);
+		}
+	else
+		{
+		if (nearFawnChair)
+			{
+			if (!fawnAtTable)
+				{
+				Print( 62);
+				}
+			else
+				{
+				Print( 66);
+				}
+			}
+		else
+			{
+			if (!nearChair)
+				{
+				Set( notCloseEnough);
+				}
+			else
+				{
+				if (!fawnAtTable)
+					{
+					Print( 53);
+					}
+				else
+					{
+					if (satWithFawn)
+						{
+						Set( OK);
+						}
+					else
+						{
+						Set( satWithFawn);
+						currentScore += 1;
+						Print( 29);
+						Print( 30);
+						Print( 31);
+						}
+				    	}
+
+				SetView( ego, vEgoAndFawnSitting);
+				SetLoop( ego, L_EGO_SITTING);
+				RepositionTo( ego, 116, 119);
+				SetPriority( ego, 11);
+				ForceUpdate( ego);
+				StopMotion( ego);
+				Set( programControl);
+				currentStatus = SITTING;
+				}
+			}
+		}
+	}
+
+
+if ((Said( stand) ||
+	Said( get$up, rol) ||
+	Said( get, off, chair) ||
+	Said( stop, looking, fawn) ||
+	Said( look, away) ||
+	Said( look, away, from, fawn) ||
+	Said( leave, rol) ||
+	Said( stand, up, rol)))
+	{
+	if (currentStatus != SITTING)
+		{
+		Print( 39);
+		}
+	else
+		{
+		Set( OK);
+		Set( makeEgoRise);
+		}
+	}
+
+if (!haveMatch &&
+	fawnOnDanceFloor)				[	This catches all other messages
+	{							[	if Fawn is dancing.
+	Print( 2);
+	Set( haveMatch);
+	}
+
+
+
+if ((Said( order, drink) ||
+	Said( buy, whiskey) ||
+	Said( buy, wine) ||
+	Said( buy, booze) ||
+	Said( buy, girl, drink)))
+	{
+	Print( 57);
+	}
+
+if ((Said( talk, men) ||
+	Said( talk, man)))
+	{
+	Print( 63);
+	}
+
+if (fawnAtTable &&
+    (Said( look, fawn, rol) ||
+	Said( establish$eye$contact, rol)))
+	{
+	if (script)
+		{
+		Print( 6);
+		}
+	else
+		{
+		if (currentStatus != SITTING)
+			{
+			Print( 44);
+			}
+		else
+			{
+			Set( cutToCloseup);
+			}
+		}
+	}
+
+if (noFawnInDisco)
+	{
+	if (Said( dance, rol))
+		{
+		Print( 54);
+		}
+
+	if ((Said( girl, rol) ||
+		Said( anyword, girl, rol)))
+		{
+		Print( 55);
+		}
+	}
+
+if ((Said( look) ||
+	Said( look, room) ||
+	Said( look, tables) ||
+	Said( look, tables) ||
+	Said( look, disco)))
+	{
+	if (nearFawn)
+		{
+		Print( 61);
+		}
+	else
+		{
+		Print( 1);
+		}
+	}
+
+if ((Said( look, dance, floor) ||
+	Said( look, floor)))
+	{
+	Print( 40);
+	}
+
+if ((Said( look, men) ||
+	Said( look, man)))
+	{
+	if (noFawnInDisco)
+		{
+		Print( 5);
+		}
+	else
+		{
+		Print( 41);
+		}
+	}
+
+if (Said( look, dj))
+	{
+	Print( 42);
+	}
+
+if (fawnAtTable)
+	{
+	if ((Said( talk, fawn) ||
+		Said( say, anyword, fawn)))
+		{
+		if (currentStatus != SITTING)
+			{
+			Print( 44);
+			}
+		else
+			{
+			Print( 45);
+			}
+		}
+
+	if  (nearFawn &&
+	    (Said( touch, faith, rol) ||
+		Said( eat, faith, rol) ||
+		Said( hump, faith, rol) ||
+		Said( kiss, faith, rol) ||
+		Said( touch, tit, rol)))
+		{
+		Print( 60);
+		}
+	
+	if ((Said( dance) ||
+		Said( dance, fawn) ||
+		Said( dance, me) ||
+		Said( dance, with, me) ||
+		Said( dance, with, fawn) ||
+		Said( you, dance, fawn) ||
+		Said( you, dance, me) ||
+		Said( you, dance, with, me) ||
+		Said( you, dance, with, fawn) ||
+		Said( enjoy, dance) ||
+		Said( enjoy, dance, with, me) ||
+		Said( you, enjoy, dance, rol) ||
+		Said( ask, dance, fawn) ||
+		Said( ask, fawn, dance) ||
+		Said( ask, fawn, dance, rol) ||
+		Said( start, dance)))
+		{
+		if (dancedWithFawn)
+			{
+			Print( 59);
+			}
+		else
+			{
+			if (currentStatus != SITTING)
+				{
+				Print( 44);
+				}
+			else
+				{
+				Print( 45);
+				}
+			}
+		}
+
+
+	if ((Said( give, fawn, rose) ||
+		Said( give, rose, fawn)))
+		{
+		if (!Has( iRose))
+			{
+			Set( dontHaveIt);
+			}
+		else
+			{
+			if (currentStatus != SITTING)
+				{
+				Print( 44);
+				}
+			else
+				{
+				Print( 45);
+				}
+			}
+		}
+
+
+	if ((Said( give, fawn, candy) ||
+		Said( give, candy, fawn)))
+		{
+		if (!Has( iCandy))
+			{
+			Set( dontHaveIt);
+			}
+		else
+			{
+			if (currentStatus != SITTING)
+				{
+				Print( 44);
+				}
+			else
+				{
+				Print( 45);
+				}
+			}
+		}
+
+
+	if ((Said( give, fawn, ring) ||
+		Said( give, ring, fawn)))
+		{
+		if (!Has( iRing))
+			{
+			Set( dontHaveIt);
+			}
+		else
+			{
+			if (currentStatus != SITTING)
+				{
+				Print( 44);
+				}
+			else
+				{
+				Print( 45);
+				}
+			}
+		}
+
+
+	if ((Said( give, fawn, money) ||
+		Said( give, one, money, fawn) ||
+		Said( give, fawn, one, dollars) ||	[	this makes one hundred work
+		Said( give, money, fawn)))
+		{
+		if (currentStatus != SITTING)
+			{
+			Print( 44);
+			}
+		else
+			{
+			Print( 45);
+			}
+		}
+	}
+
+
+
+[*****
+:noInput
+[*****
+
+if (makeEgoRise)
+	{
+	Reset( makeEgoRise);
+	SetView( ego, vEgo);
+	SetLoop( ego, FACING_RIGHT);
+	RepositionTo( ego, 116, 121);
+	ReleasePriority( ego);
+	StartMotion( ego);
+	Reset( programControl);
+	currentStatus = NORMAL;
+	}
+
+
+if (script == 6 && onWater)			[	Larry finally got out there!
+	{
+	Set( scriptDone);
+	}
+
+
+if (aSecondPassed)
+	{
+	--moneyTimer;
+	if (moneyTimer == 15)
+		{
+		Print( 21);
+		}
+
+	if (moneyTimer == 1)
+		{
+		Print( 22);
+		Set( noFawnInDisco);		[	She's pissed.
+		Set( fawnScriptDone);
+		fawnScript = 100;
+		}
+	}
+
+
+
+if (scriptDone)
+	{
+	Reset( scriptDone);
+	++script;
+
+	if (script == 4)
+		{
+		MoveObj( aFawn, 97, 143, 1, scriptDone);
+		}
+
+	if (script == 5)
+		{
+		MoveObj( aFawn, 67, 113, 1, scriptDone);
+		}
+
+	if (script == 6)				[	She's on the dance floor.
+		{
+		Set( fawnOnDanceFloor);
+		Set( turnHeadsToFloor);
+		ObjectOnWater( aFawn);
+		SetView( aFawn, vFawnDancing);
+		Wander( aFawn);
+
+		Draw( aFloor);
+		Draw( aLights);
+		Set( musicDone);
+	
+		if (!onWater)				[	Larry's lagging behind
+			{
+			Print( 8);
+			}
+		else
+			{
+			script = 7;
+			}
+		}
+
+	if (script == 7)				[	Larry finally got there, too.
+		{
+		ObserveObjs( aFawn);
+		Set( handsOff);
+		Set( keepCycling);
+		SetView( ego, vEgoDiscoing1);
+		Set( programControl);
+		PreventInput();
+		Wander( ego);
+		currentStatus = DANCING;
+		scriptTimer = 10;			[	Dance a while.
+		}
+
+	if (script == 8)				[	Get Larry in place for the toss.
+		{
+		MoveObj( ego, 53, 110, 1, scriptDone);
+		}
+
+	if (script == 9)				[	Get her in place, too.
+		{
+		IgnoreObjs( aFawn);
+		MoveObj( aFawn, 58, 110, 1, scriptDone);
+		}
+
+	if (script == 10)				[	Grab her, and toss her.
+		{
+		SetView( ego, vEgoFlingingFawn);
+		SetLoop( ego, 0);
+		SetCel( ego, 0);
+		RepositionTo( ego, 50, 110);
+		CycleTime( ego, three);
+		EndOfLoop( ego, scriptDone);
+
+		Erase( aFawn);
+		ObjectOnAnything( aFawn);
+		SetView( aFawn, vEgoFlingingFawn);
+		SetLoop( aFawn, 1);
+		FixLoop( aFawn);
+		SetCel( aFawn, 0);
+		StopCycling( aFawn);
+		Position( aFawn, 50, 80);	[	draw later
+		}
+
+	if (script == 11)				[	Draw her over his head. Go up!
+		{
+		SetLoop( ego, 2);
+		CycleTime( ego, one);
+
+		Draw( aFawn);
+		MoveObj( aFawn, 50, 16, 6, scriptDone);
+		}
+
+	if (script == 12)				[She's in ceiling. He can let loose.
+		{
+		SetView( ego, vEgoDiscoing2);
+		Wander( ego);
+
+		Erase( aFawn);
+		SetCel( aFawn, 1);
+		scriptTimer = 12;
+		}
+
+	if (script == 13)				[	Get in place for the catch.
+		{
+		MoveObj( ego, 53, 110, 1, scriptDone);
+		}
+
+	if (script == 14)				[	Here she comes!
+		{
+		SetView( ego, vEgoFlingingFawn);
+		SetLoop( ego, 2);
+		RepositionTo( ego, 50, 110);
+
+		Draw( aFawn);
+		MoveObj( aFawn, 50, 80, 6, scriptDone);
+		}
+
+	if (script == 15)				[	Got her!!
+		{
+		SetLoop( ego, 0);
+		LastCel( ego, work);
+		SetCelV( ego, work);
+		BeginningOfLoop( ego, scriptDone);
+
+		Erase( aFawn);
+		ObjectOnWater( aFawn);
+		SetView( aFawn, vFawnDancing);
+		ReleaseLoop( aFawn);
+		StartCycling( aFawn);
+		Position( aFawn, 59, 110);
+		ObserveObjs( aFawn);
+		}
+
+	if (script == 16)				[	Dance together a little while.
+		{
+		SetView( ego, vEgoDiscoing1);
+		RepositionTo( ego, 51, 110);
+		Wander( ego);
+
+		Draw( aFawn);
+		Wander( aFawn);
+		scriptTimer = 8;
+		}
+
+	if (script == 17)				[	It's over.
+		{
+		StopUpdate( aFloor);
+		Erase( aLights);
+		StopSound();
+		Reset( musicDone);
+
+		Reset( keepCycling);
+		SetView( ego, vEgo);
+		NormalMotion( ego);
+		StartMotion( ego);
+		Reset( programControl);
+		currentStatus = NORMAL;
+
+		ObjectOnAnything( aFawn);
+		SetView( aFawn, vFawn);
+		MoveObj( aFawn, 67, 113, 1, scriptDone);
+		Reset( fawnOnDanceFloor);
+		}
+
+	if (script == 18)				[	"Please return to your seats!"
+		{
+		Reset( handsOff);
+		MoveObj( aFawn, 97, 143, 1, scriptDone);
+		}
+
+	if (script == 19)
+		{
+		MoveObj( aFawn, 119, 121, 1, scriptDone);
+		}
+
+	if (script == 20)
+		{
+		MoveObj( aFawn, 130, 121, 1, scriptDone);
+		}
+
+	if (script == 21)				[	Sit and wiggle that leg, baby!
+		{
+		Set( turnHeadsToTable);
+		SetView( aFawn, vEgoAndFawnSitting);
+		SetLoop( aFawn, L_FAWN_SITTING);
+		RepositionTo( aFawn, 129, 119);
+		SetPriority( aFawn, 11);
+		CycleTime( aFawn, two);
+		Random( 22, 44, fawnCycles);
+		script = 0;
+		AcceptInput();
+		Set( fawnAtTable);
+		if (!dancedWithFawn)
+			{
+			Set( dancedWithFawn);
+			currentScore += 5;
+			}
+		}
+	}
+
+
+if (fawnScriptDone)
+	{
+	Reset( fawnScriptDone);
+	++fawnScript;
+
+	if (fawnScript == 101)			[	This takes the fawn out the door.
+		{
+		Set( handsOff);
+		Reset( fawnAtTable);
+
+		SetView( aFawn, vFawn);
+		ReleasePriority( aFawn);
+		StartCycling( aFawn);
+		StartMotion( aFawn);
+		fawnCycles = 0;
+		CycleTime( aFawn, one);
+		IgnoreObjs( aFawn);
+		RepositionTo( aFawn, 130, 123);
+		ForceUpdate( aFawn);
+		MoveObj( aFawn, 122, 123, 1, fawnScriptDone);
+		}
+
+	if (fawnScript == 102)
+		{
+		MoveObj( aFawn, 77, 167, 1, fawnScriptDone);
+		}
+
+	if (fawnScript == 103)
+		{
+		Reset( handsOff);
+		fawnScript = 0;
+		Erase( aFawn);
+		AcceptInput();
+		if (gaveFawnEverything)
+			{
+			Print( 19);
+			}
+		
+		if (noFawnInDisco)
+			{
+			Print( 56);
+			}
+		}
+	}
+
+
+if (!fawnLeaving &&
+	fawnAtTable)
+	{
+	--fawnCycles;					[	Kick that leg
+	if (fawnCycles == 1)
+		{
+		Toggle( fawnCycling);
+		if (fawnCycling)
+			{
+			StartCycling( aFawn);
+			Random( 5, 22, fawnCycles);
+			}
+		else
+			{
+			StopCycling( aFawn);
+			Random( 22, 44, fawnCycles);
+			}
+		}
+	}
+
+if (currentStatus == DANCING)			[	leave this section below script!
+	{
+	ObjectOnWater( ego);
+	}
+else
+	{
+	ObjectOnAnything( ego);
+	}
+
+if (musicDone)
+	{
+	Sound( mDisco, musicDone);
+	}
+
+if (turnHeadsToTable)
+	{
+	Reset( turnHeadsToTable);
+	AddToPic( vDiscoCustomers, L_HEAD_RIGHT, 1,  24, 112, 12, 4);
+	AddToPic( vDiscoCustomers, L_HEAD_RIGHT, 2,  24, 136, 14, 4);
+	AddToPic( vDiscoCustomers, L_HEAD_RIGHT, 3, 105,  89,  4, 4);
+	AddToPic( vDiscoCustomers, L_HEAD_RIGHT, 4,  49, 136, 14, 4);
+	AddToPic( vDiscoCustomers, L_HEAD_RIGHT, 5,  98,  90,  4, 4);
+	}
+if (turnHeadsToFloor)	{
+	AddToPic( vDiscoCustomers, L_HEAD_UP,    1,  24, 112, 12, 4);
+	AddToPic( vDiscoCustomers, L_HEAD_UP,    2,  24, 136, 14, 4);
+	AddToPic( vDiscoCustomers, L_HEAD_UP,    3, 105,  89,  4, 4);
+	AddToPic( vDiscoCustomers, L_HEAD_UP,    4,  49, 136, 14, 4);
+	AddToPic( vDiscoCustomers, L_HEAD_UP,    5,  98,  90,  4, 4);
+	Reset( turnHeadsToFloor);
+	}
+
+
+[*****
+:exit							[	test for leaving the room
+[*****
+
+if (edgeEgoHit == BOTTOM)		{newRoom = rmOutsideDisco;}
+if (cutToCloseup)
+	{
+	newRoom = rmFawnCloseup;
+	if (!lookedAtFawn)
+		{
+		Set( lookedAtFawn);
+		currentScore += 1;
+		}
+	}

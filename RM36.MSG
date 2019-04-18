@@ -1,0 +1,383 @@
+[messages for room 36 -- rmLounge
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"This looks like a great place to be from."
+
+%message	2
+"(You wonder where they keep the lizards.)"
+
+%message	3
+"You are sitting."
+
+%message	4
+"You are standing."
+
+%message	5
+"You can't. The card on the table says \"Reserved.\""
+
+%message	6
+"Looks like you won't have any trouble getting a seat tonight!"
+
+%message	7
+"You wonder who invented that little plastic net surrounding the glass."
+
+%message	8
+"And, how come it doesn't melt?"
+
+%message	9
+"Evidently, HE thinks he's funny!"
+
+%message	10
+"Wouldn't you think they'd get tired of just going left and right?"
+
+%message	11
+"You think they look like men?"
+
+%message	12
+"Do you know something about his sexual habits that the rest of us don't?"
+
+%message	13
+"You shout to the comedian, \"This ain't funny!\""
+
+%message	14
+"The comedian retorts, \"But you are!!\""
+
+%message	15
+"The Lizard Lounge."
+
+%message	16
+"You're not seated."
+
+%message	17
+"There's no one to take your order."
+
+%message	18
+"It's a living."
+
+%message	19
+"You whistle loudly at the comic."
+
+%message	20
+"\"Hey, buddy, will ya hold it down?\" says the comic.
+ \"I'm tryin' to earn a living up here!\""
+
+%message	21
+"\"Whaddsa' matter, folks? Am I keeping you up?\""
+
+%message	22
+"\"You know, folks, it just don't get much better than this!\""
+
+%message	23
+"\"Waddaya out there, a painting?\""
+
+%message	24
+"\"Tough crowd. Tough crowd.\""
+
+%message	25
+"\"I shoulda never given up my day gig!\""
+
+%message	26
+"\"Waddaya waitin' for folks? This IS the 'A' stuff!\""
+
+%message	27
+"\"I just flew in from Coarsegold...\""
+
+%message	28
+"\"...and, boy, are my arms tired!\""
+
+%message	29
+"\"I told my doctor my sex life was boring.
+ He said 'You need to add the element of surprise.
+ Go right home this afternoon, grab your wife,
+ and immediately make love to her, no matter what she's doing.' So I did!\""
+
+%message	30
+"\"It was still the same old boring stuff;
+ but her bridge club got a tremendous kick out of it!!\""
+
+%message	31
+"\"You know how I can tell when my wife has an orgasm?\""
+
+%message	32
+"\"She drops her nail file!!\""
+
+%message	33
+"\"My wife is so ugly...\""
+
+%message	34
+"\"...the picture of her in my wallet is an X-ray!\""
+
+%message	35
+"\"I told my psychiatrist 'Nobody pays any attention to me.'\""
+
+%message	36
+"\"He looks at me and says, 'When did you get here?'\""
+
+%message	37
+"\"Didja hear about the clumsy female lawyer?\""
+
+%message	38
+"\"She dropped her briefs!\""
+
+%message	39
+"\"A man walks into a doctor's office with a frog on his head.
+ The doctor says, 'May I help you?'\""
+
+%message	40
+"\"The frog says, 'Yeah, doc, take this wart off my butt!\""
+
+%message	41
+"\"Did you hear about the new, chocolate-flavored, contraceptive,
+ breakfast drink?\""
+
+%message	42
+"\"It's called Ovumteen.\""
+
+%message	43
+"\"My secretary is both ambitious and horny. Today she asked me for a salary
+ on next week's advance.\""
+
+%message	44
+"\"Down the street there's a new, live gay sex show.\""
+
+%message	45
+"\"It's called 'Anus and Andy.'\""
+
+%message	46
+"\"Have ya seen that new R-rated movie about midgets.
+ It features full runtal nudity.\""
+
+%message	47
+"\"My uncle is a hit man for the Mob. What a great job!
+ He only goes to work when it's time to knock off.\""
+
+%message	48
+""
+
+%message	49
+"\"When I got married I asked my bride, 'Do you perform fellatio?'\""
+
+%message	50
+"\"She says it depends on the fella.\""
+
+%message	51
+"\"Have you been by the wedding chapel next door?
+ They've got this impotent flasher out front.
+ We just call him our 'public futility.'\""
+
+%message	52
+"\"I hear the pimp at Lefty's won't let his girls perform oral sex.
+ They call him the 'Headless Whoresman.'\""
+
+%message	53
+"\"What do lesbians like most about their kind of sex?\""
+
+%message	54
+"\"Tastes great.\""
+
+%message	55
+"\"Less filling.\""
+
+%message	56
+"\"Tastes great!\""
+
+%message	57
+"\"Less filling!\""
+
+%message	58
+"\"Why don't sharks attack divorce lawyers?\""
+
+%message	59
+"\"Professional courtesy.\""
+
+%message	60
+"\"My wife and I have a new system: if she wants sex, she reaches over 
+and strokes me once.\""
+
+%message	61
+"\"If she doesn't, she reaches over and strokes me 300 times.\""
+
+%message	62
+"\"My son just got kicked out of his co-ed college boarding house."
+
+%message	63
+"\"My daughter came home from school today and tells me,
+ 'Eli Whitney invented the cotton gin.'\""
+
+%message	64
+"\"I said, 'Who wants a fluffy martini?'\""
+
+%message	65
+"\"The shop teacher asked the high school girl if she knew the difference
+ between a screw, a nail and a bolt. She told him she'd never been bolted.\""
+
+%message	66
+"\"Have you heard about the new urologist's training film?\""
+
+%message	67
+"\"It's called, 'E.T., the Extra Testicle.'\""
+
+%message	68
+"\"Have you heard about the new film for marching band musicians?\""
+
+%message	69
+"\"It's called, 'Desperately Seeking Sousa.'\""
+
+%message	70
+"\"My son has a problem with compulsive masturbation.
+ His psychiatrist says he's gone completely whacky.\""
+
+%message	71
+"\"My grandpa, the farmer, finally got himself one of those latex ladies.
+ I heard him singing about it the other day:
+ 'The farmer in the doll, the farmer in the doll...'\""
+
+%message	72
+"\"Our local inventor just came up with a new, vibrating tampon.\""
+
+%message	73
+"\"He says if women have to be miserable once a month,
+ they might as well enjoy it.\""
+
+%message	74
+"\"My wife just loves going to the movies to watch
+ teenagers get laid for the first time.\""
+
+%message	75
+"At least the comic's whoopie cushion doesn't smell!"
+
+%message	76
+"\"He got caught spreading roomers.\""
+
+%message	77
+"This must be a \"No Smoking\" lounge."
+
+%message	78
+"You whistle loudly at the girls."
+
+%message	79
+"You're not sure, but you suppose they enjoy it."
+
+%message	80
+"You're no star!"
+
+%message	81
+"You toss the rose on the stage.
+ It falls where you will not be able to retrieve it."
+
+%message	82
+"\"And, now, ladi... uh, gentleman,\" announces the comic,
+ \"we're proud to present the Magic portion of our act.\""
+
+%message	83
+"\"Let me just pick someone at random from our audience...\""
+
+%message	84
+"\"How about you,\" he says looking directly at you.
+ \"Would you like to participate in a little experiment in telepathy?\""
+
+%message	85
+"(Of course he's looking at you! You're the only one here!)
+ You're game, so you answer, \"Sure.\""
+
+%message	86
+"\"Great! Now Paul, my drummer and musical conductor for all these many years,
+ will read your mind,\" says the comic.
+ \"Come on, Paul, show him your stuff!\""
+
+%message	87
+"\"I want you to concentrate on your billfold,\" Paul says.
+ \"Clear your mind, and think solely about the contents of your wallet.\""
+
+%message	88
+"Since clearing your mind is no problem for you, Larry,
+ you do so easily."
+
+%message	89
+"\"I'm getting a message... I see something...\""
+
+%message	90
+"\"I've GOT IT!\" he exclaims. \"If you open your billfold
+ you'll discover some wrinkled business cards, lots of notes,
+ some credit cards (which won't work in this game),
+ and exactly $%v90.00 in cash!!\""
+
+%message	91
+"\"Ladi... uh, GENTLEMAN!\" shouts the comic.
+ \"PAUL THE MAGNIFICENT has done it again!!\""
+
+%message	92
+"Just to make sure, you take out your wallet and look inside..."
+
+%message	93
+"\"Sometimes, she even watches the screen!\""
+
+%message	94
+"\"I asked my wife,
+ 'How come you never tell me when you're having an orgasm?'\""
+
+%message	95
+"\"She replied, 'Cause you're never around!\""
+
+%message	96
+"\"My wife just loves to experiment.
+ Last week she mixed speed with her Midol.\""
+
+%message	97
+"\"She had her period six times in one day!\""
+
+%message	98
+"\"My wife is a lot like Halley's Comet.\""
+
+%message	99
+"\"They both come once every 76 years!\""
+
+%message	100
+"Remember: you can't get it!"
+
+%message	101
+"\"My son is becoming a real computer wiz!\""
+
+%message	102
+"\"His teacher called him a 'master byter.'\""
+
+%message	103
+"\"My uncle, the inventor, crossed a cucumber with a Mexican jumping bean.\""
+
+%message	104
+"\"He calls it the world's first organic vibrator!\""
+
+%message	105
+"\"Last week, I got arrested by a female cop.
+ She asked me, 'Are you carrying a concealed weapon?'\""
+
+%message	106
+"\"I replied, 'Keep frisking me, and I soon will be!'\""
+
+%message	107
+"\"My best sexual encounter was in the South Sea Islands...\""
+
+%message	108
+"\"I pushed a volcano into a virgin!\""
+
+%message	109
+"\"Didja hear about the copier company that bought out
+ a musical instrument maker?\""
+
+%message	110
+"\"They're gonna market a new, reproductive organ!\""
+
+%message	111
+"\"Thank you, thank you!\""
+
+%message	112
+"The girls' smiles beam!"
+
+%message	113
+"\"Well, that's all I know, folks,\" the comic says.
+ \"Come back for the next show, and you can hear 'em all again!\""
+

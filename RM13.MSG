@@ -1,0 +1,143 @@
+[messages for room 13 -- rmToilet
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"You are in Lefty's one and only restroom.
+ The stench is overpowering, there is graffiti on the walls, and you
+ doubt that the sink was clean even when it was installed.
+ Even roaches can't survive in this place!"
+
+%message	2
+"%m8Scott me up, Beamie!\""
+
+%message	3
+"Ahhhhhhh."
+
+%message	4
+"%m8Attention arcade game players: please don't eat the urinal cakes!\""
+
+%message	5
+"%m8It takes leather balls to play rugby!\""
+
+%message	6
+"Funny. No one knocks back."
+
+%message	7
+"NOW??"
+
+%message	8
+"You see many messages. One is:\n\n\""
+
+%message	9
+"You see a handsome, dashing, macho, sexy, young man.
+ (Obviously, this mirror has quite a bit of distortion!)"
+
+%message	10
+"You grab an ancient copy of the \"Ball Street Journal,\"
+ and settle in to \"sit and think!\""
+
+%message	11
+"You feel a great relief!"
+
+%message	12
+"Why, look!
+ Some woman removed her diamond ring to wash her hands,
+ and forgot to take it with her."
+
+%message	13
+"Got it!\n\n
+You briefly consider an attempt to find the ring's owner,
+ but return to your normal self and pocket it instead."
+
+%message	14
+"A small, neatly lettered sign reminds you:\n\n
+\"Since we can't clean up after every customer,
+ please rinse out this sink when you are finished.\""
+
+%message	15
+"Evidently, you are the first customer who can read."
+
+%message	16
+"My, my. Aren't we the little sick-o!"
+
+%message	17
+"Say, here's an interesting one:\n\n
+\"The password is: 'Ken sent me.'\""
+
+%message	18
+"Bad idea, eh Larry?"
+
+%message	19
+"Your life passes before your eyes."
+
+%message	20
+"You doze briefly."
+
+%message	21
+"What's that aroma?"
+
+%message	22
+"Ok."
+
+%message	23
+"It's not a pretty sight!"
+
+%message	24
+"Say, there's no soap."
+
+%message	25
+"There's no towels."
+
+%message	26
+"Move closer to the handle."
+
+%message	27
+"Your hands are still dirty, but now they're wet!"
+
+%message	28
+"The toilet paper is only there for official purposes."
+
+%message	29
+"Carefully finishing your duties,
+ you wipe and toss the newspaper behind the toilet for the next user."
+
+%message	30
+"You only read while \"enthroned.\""
+
+%message	31
+"Your face is still dirty, but at least it's now dripping with water."
+
+%message	32
+"Ok. You're dry (but your keyboard is still damp)!"
+
+%message	33
+"Realizing your mistake, you quickly jiggle the handle,
+ attempting to stem the onrushing tide of water."
+
+%message	34
+"It doesn't work."
+
+%message	35
+"It's nice of you to try, but this sink is too far gone to save!"
+
+%message	36
+"No one would drink from ANY fixture in here!"
+
+%message	37
+"Nice idea, but the mirror is firmly attached to the wall."
+
+%message	38
+"Yuck!"
+
+%message	39
+"Lefty must be running low on air freshener."
+
+%message	40
+"No wonder your eyesight is so bad!"
+
+%message	41
+"Been drinking Lefty's liquor again, eh?"
+

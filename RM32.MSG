@@ -1,0 +1,75 @@
+[messages for room 32 -- rmOutsideCasino
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"It's a casino!"
+
+%message	2
+"\"Hello, sir.
+ Would you help out a poor unfortunate by purchasing an apple?\""
+
+%message	3
+"\"The price is reasonable: only $1.00.\""
+
+%message	4
+"\"I take that as a 'No,'\" he says pleasantly.
+ \"Very well then, perhaps some other time.\""
+
+%message	5
+"He's yet another poor soul who donated his everything so the shrine
+ of Lost Wages could continue to flourish."
+
+%message	6
+"\"My pleasure was always the slot machines,\" he says.
+ \"Say, are we going to stand here and chitchat all night,
+ or am I going to make a sale?\""
+
+%message	7
+"\"Why, Steve. Nice of you to ask,\" he responds."
+
+%message	8
+"\"Well, my friends call me 'Woz,' but I don't consider you a friend.\""
+
+%message	9
+"\"Thank you very much, sir.
+ Please call again, whenever you are in the neighborhood,\"
+ says the man. And with that, he walks away into the night."
+
+%message	10
+"\"Hey, come back!\" says the man.
+ \"Are you sure you don't want to buy an apple?\""
+
+%message	11
+"\"You know,\" says the man, peering deep into his barrel,
+ \"I'm all out! But thank you for your continued interest.\""
+
+%message	12
+"\"Ok, be that way!\" he says, and disappears into the night."
+
+%message	13
+"\"Oh no, you don't!\" exclaims the man."
+
+%message	14
+"\"Say, you really did lose everything,\" you tell the man."
+
+%message	15
+"They are nicely manicured, but of no help to you."
+
+%message	16
+"They're automatic. Get closer."
+
+%message	17
+"Pretty flashy, eh?"
+
+%message	18
+"\"Apples. Apples! APPLES for sale!!\""
+
+%message	19
+"\"Thanks a lot. See you later, pal.\""
+
+%message	20
+"Isn't it wonderful what can be done with a few light bulbs?"
+

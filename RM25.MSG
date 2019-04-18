@@ -1,0 +1,210 @@
+[messages for room 25 -- rmInsideDisco
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"The disco is filled with remarkably similar guys, all looking for girls."
+
+%message	2
+"What a knock-out!
+ She has bright blue eyes, and a dazzling smile.
+ Your eyes roam her body, and what you see, you like.
+ She's sensational!!"
+
+%message	3
+"Larry, this MUST be love!"
+
+%message	4
+"\"Please,\" she says coyly, \"stop staring there.\""
+
+%message	5
+"Perhaps they're waiting for Fawn to return."
+
+%message	6
+"Not now, you're busy."
+
+%message	7
+"%m52dancing. I thought you'd never ask! Come on!!\""
+
+%message	8
+""
+
+%message	9
+"%m52roses.\""
+
+%message	10
+"%m52candy.\""
+
+%message	11
+"%m52diamonds.\""
+
+%message	12
+"It appears Fawn has caught you a \"little short,\" Larry.
+ Better try the casino, and hope for a run of good luck!"
+
+%message	13
+"\"Well, really. I'm not that kind of girl!!\""
+
+%message	14
+"%m52money.\""
+
+%message	15
+"\"Thanks, Larry. You won't regret this.
+ Meet me at the Marriage Chapel near the Casino in a few minutes.
+ I'll get us a room. Hurry, Larry, I can hardly wait!\""
+
+%message	16
+"\"Oooh, you're so sweet. I just LOVE you!
+ Larry, I want you to make wild, passionate love to me!\""
+
+%message	17
+"(All right, Larry. At last, you're gonna get lucky!!)"
+
+%message	18
+"She continues, \"But first, we must get married.
+ I could never make love to a man not my husband.
+ If you would loan me a hundred dollars,
+ I'd rent the Honeymoon Suite at the Casino Hotel for us.
+ Then, after we're married, we'll celebrate there.\""
+
+%message	19
+"\"You seem like a sweet, old-fashioned kind of guy,\"
+ she says with a beautiful smile."
+
+%message	20
+"\"What! At a time like this?!\""
+
+%message	21
+"\"Either give me some money, or I'll leave without you.\""
+
+%message	22
+"\"That's it! See ya later, chump!\""
+
+%message	23
+"\"Hi ya, Baby. What say you and me get it on?\""
+
+%message	24
+"Those beautiful eyes tell you this doll requires
+ more than your usual smooth talk."
+
+%message	25
+"\"Bad breath's one thing, Larry, but you could knock a buzzard off
+ a manure truck!!\""
+
+%message	26
+"She smiles and says, \"I'm just a girl who can't say no..."
+
+%message	27
+"(All right, Larry; this is what you've been waiting for!)"
+
+%message	28
+"\"...to nice presents,\" she concludes."
+
+%message	29
+"Her hair is beautiful, not thinning like some people we know."
+
+%message	30
+"\"So what?\""	
+	
+%message	31
+"Her lips are moist and inviting, but remember that you also thought that
+ about old Mrs. Bradley, your homeroom teacher!"
+
+%message	32
+"\"What's your name, beautiful?\" you ask."
+
+%message	33
+"\"Fawn,\" she replies."
+
+%message	34
+"Somehow you knew that."
+
+%message	35
+"\"I'm sorry, but I'll need at least a hundred dollars,\"
+ she says with a coy smile."
+
+%message	36
+"You fervently hope she'll wait for your return."
+
+%message	37
+"Conveniently, she offers, \"I'll wait right here until you return.\""
+
+%message	38
+"I AM the marrying type, but you must convince me."
+
+%message	39
+"\"How nice,\" she says, \"I love me, too.\""
+
+%message	40
+"The dance floor is lit from below with brightly colored lights.
+ It is presently unused."
+
+%message	41
+"Evidently every guy here has been turned down by the only
+ girl in the place.
+ Her beauty has them frozen in their tracks."
+
+%message	42
+"There isn't one. This place is run by computer.
+ (Besides, at this time of night DJ should be home with Chris.)"
+
+%message	43
+"\"Say, Larry,\" she chuckles, glancing downward,
+ \"is that a pez dispenser in your pocket, or are you just lonely?\""
+
+%message	44
+"\"Perhaps we shall,\" she replies, \"if you play your cards right!\""
+
+
+%message	46
+"\"Get lost, creep.\""
+
+%message	47
+"\"Hey, sweetheart. What's your sign?\" you ask her."
+
+%message	48
+"\"Octagonal,\" she replies. \"Like in 'STOP!'\""
+
+%message	49
+"\"My name is Larry,\" you offer. \"Larry Laffer.\""
+
+%message	50
+"\"I'd really like to get to know you better,\" you say.
+ \"What kind of girl are you, anyway?\""
+
+%message	51
+"(Oops.)"
+
+%message	52
+"\"Oooh, you're so sweet. I just love "
+	
+
+%message	57
+"Funny, this is a dry club."
+
+%message	58
+"\"So, how about it, Larry?\" Fawn says in her petite voice.
+ \"May I have a measly hundred bucks, or not?\""
+
+%message	59
+"\"Not again. That trip through the ceiling gave me a headache!\""
+
+%message	60
+"SLAP!"
+
+%message	61
+"SLAP!\n\n
+SLAP!!"
+
+
+%message	63
+"They seem to be staring at something they all want."
+
+%message	64
+"\"Uh, gosh, Fawn,\" you mumble. \"I've only got %v90 bucks on me!\""
+
+%message	65
+"Gee, Larry, this is working out swell."
+

@@ -1,0 +1,1444 @@
+[
+[	words.txt
+[
+[		LEISURE-SUIT LARRY IN THE LAND OF THE LOUNGE LIZARDS WORD LIST
+[
+[	Sunday, May 31, 1987 at 8:38 p.m.
+[	Wednesday, June 17, 1987 at 11:32 a.m.
+
+[
+[.i = .ignore
+[.d = .define
+[.s = .synonym
+[
+[	"A" and "I" are now automatically ignored.
+[
+[.d	anyword		1	[	anyword must remain as word #1 && undefined.
+
+.d	rol					9999
+
+
+
+.i	an							[	articles
+.i	the
+
+.i	mine							[	pronouns
+.i	my
+.i	we
+.i	us
+.i	it
+.i	its
+.i	this
+.i	his
+.i	hers
+.i	that
+.i	these
+.i	those
+.i	would
+
+.i	around						[	prepositions
+.i	another
+.i	more
+.i	about
+.i	of
+.i	oh
+.i	if
+.i	to
+.i   is
+.i	in
+.i	through
+.i	into
+.i	at
+.i	have
+.i	been
+.i	until
+.i	for
+.i	every
+.i	and
+.i   will
+
+.i	hot	  						[	adjectives
+.i	cold
+.i	employee
+.i	till
+.i	good
+.i	bad
+.i	black
+.i	security
+.i	wedding
+.i	marriage
+.i	naugahyde
+.i	membership
+.i	beautiful
+.i	hundred
+.i	ten
+.i	twenty
+.i	thirty
+.i	lovely
+.i	quiki
+.i	mart
+.i	wed
+.i	cute
+.i	whoopie
+.i	cheap
+.i	plastic
+.i	gorgeous
+.i	front
+.i   little
+.i	big
+.i	small
+.i	large
+.i	young
+.i	utility
+.i	spanish
+.i	sleazy
+.i	funky
+.i	quickie
+.i	main
+.i	ajax
+.i	convenience
+.i	grocery
+.i	living
+.i	unit
+.i	long$stemmed
+.i	trench
+.i	red
+.i	inflatable
+.i	glass$of
+.i	bottle$of
+.i	son$of$a
+.i	shit$for
+
+.i	slowly						[	adverbs
+.i	quickly
+.i	soon
+.i	later
+.i	hurry
+.i	please
+.i	some
+.i	what
+.i	want
+.i	when
+.i	now
+.i	then
+.i	why
+.i	ken
+.i	sent
+
+
+
+
+.d	look					2		[	Real words start here.
+.s	show			look
+.s	see			look
+.s	read			look
+.s	examine		look
+.s	view			look
+.s	look$on		look
+.s	looking		look
+.s	gaze			look
+.s	stare		look
+
+.d	look$in				3
+.s	look$inside	look$in
+.s	look$into		look$in
+
+.d	do					4
+
+.d	up					5
+
+.d	down					6
+
+.d	dance				7
+.s	get$down		dance
+.s	dancing		dance
+.s	date			dance
+
+.d	flush				8
+
+.d	balcony				9
+.s	fire$escape	balcony
+.s	railing		balcony
+.s	rail			railing
+
+.d	lobby				10
+
+.d	abuse				11
+.s	play$with		abuse
+
+.d	suite				12
+.s	honeymoon$suite suite
+
+.d	penthouse				13
+.s	penthouse$suite penthouse
+
+.d	tub					14
+.s	spa			tub
+.s	pool			tub
+.s	jacuzzi		tub
+.s	hottub		tub
+.s	hot$tub		tub
+
+.d	marry				15
+.s	married		marry
+.s	propose		marry
+
+.d	play					16
+.s	playing		play
+
+.d	get					17
+.s	take			get
+.s	pick			get
+.s	pick$up		get
+.s	grab			get
+.s	catch		get
+.s	hail			get
+.s	whistle		get
+.s	hey			get
+.s	yo			get
+
+.d	bye					18
+.s	goodbye		bye
+.s	good$bye		bye
+.s	so$long		bye
+
+.d	button				19
+.s	knob			button
+
+.d	bedroom				20
+
+.d	phone				21
+.s	telephone		phone
+
+.d	hall					22
+.s	hallway		hall
+
+.d	drinks				23
+.s	round$of$drinks drinks
+.s	round		drinks
+
+.d	peephole				24
+.s	hole			peephole
+
+.d	cigarette				25
+.s	cigarettes	cigarette
+.s	smokes		cigarette
+
+.d	street				26
+
+.d	yes					27
+.s	y			yes
+.s	ok			yes
+
+.d	no					28
+.s	n			no
+
+.d	wallet				29
+.s	billfold		wallet
+
+.d	bag					30
+
+.d	floor				31
+.s	ground		floor
+.s	earth		floor
+.s	sidewalk		floor
+.s	curb			floor
+
+.d	nothing				32
+
+.d	stair				33
+.s	stairs		stair
+.s	upstairs		stair
+.s	steps		stair
+.s	stairway		stair
+.s	staircase		stair
+
+.d	window				34
+.s	glass		window
+.s	glasses		window
+.s	pane			window
+.s	windows		window
+
+.d	body					35
+
+.d	open					36
+.s	lift			open
+.s	raise		open
+.s	increase		open
+
+.d	move					37
+.s	shove		move
+.s	push			move
+.s	pull			move
+.s	press		move
+.s	turn			move
+.s	replace		move
+
+.d	go					38
+.s	enter		go
+.s	walk			go
+.s	exit			go
+.s	leave		go
+.s	get$out		go
+.s	get$in		go
+.s	get$into		go
+.s	board		go
+
+.d	climb				39
+.s	climb$on		climb
+
+.d	count				40
+
+.d	talk					41
+.s	speak		talk
+.s	say			talk
+.s	call			talk
+.s	ask			talk
+
+.d	hi					42
+.s	hello		hi
+
+.d	mirror				43
+
+.d	trash				44
+.s	garbage		trash
+.s	garbage$bin	trash
+.s	trash$bin		trash
+.s	trash$can		trash
+.s	dumpster		trash		
+.s	rubbish		trash
+.s	bin			trash
+.s	can			trash
+
+.d	bed					45
+
+.d	ledge				46
+.s	window$ledge	ledge
+
+.d	under				47
+.s	below		under
+.s	beneath		under
+
+.d	over					48
+.s	top$of		over
+.s	above		over
+.s	across		over
+
+.d	present				49
+
+.d	cabinet				50
+.s	cupboard		cabinet
+.s	closet		cabinet
+.s	wardrobe		cabinet
+
+.d	drawer				51
+.s	drawers		drawer
+
+.d	rug					52
+.s	carpet		rug
+.s	bear			rug
+.s	bearskin		rug
+
+.d	out					53
+.s	outside		out
+
+.d	key					54
+
+.d	last					55
+
+.d	put					56
+.s	hide			put
+.s	conceal		put
+.s	set			put
+.s	place		put
+.s	return		put
+.s	drop			put
+.s	add			put
+.s	give			put
+.s	serve		give
+.s	offer		give
+.s	loan			give
+
+.d	lie					57
+.s	lie$down		lie
+
+.d	shake				58
+.s	wave			shake
+.s	point		shake
+.s	aim			shake
+.s	swing		shake
+.s	touch		shake
+
+.d	top					59
+
+.d	empty				60
+.s	remove		empty
+.s	take$off		remove
+.s	drain		empty
+.s	spill		empty
+.s	pour			empty
+
+.d	find					61
+.s	search		find
+.s	locate		find
+.s	where		find
+.s	wheres		find
+
+.d	behind				62
+.s	back			behind
+
+.d	door					63
+.s	doors		door
+.s	doorway		door
+.s	doorways		door
+
+.d	clothes				64
+.s	clothing		clothes
+.s	underwear		clothes
+.s	bra			clothes
+.s	bras			clothes
+.s	underpants	clothes
+.s	pants		clothes
+.s	panties		clothes
+.s	coat			clothes
+.s	trenchcoat	clothes
+.s	raincoat		clothes
+.s	stockings		clothes
+.s	nylons		clothes
+.s	pocket		clothes
+.s	pockets		clothes
+.s	lingerie		clothes
+
+.d	lock					65
+.s	latch		lock
+.s	bolt			lock
+
+.d	break				66
+.s	smash		break
+.s	shatter		break
+.s	tear			break
+.s	rip			break
+.s	destroy		break
+.s	bust			break
+
+.d	dresser				67
+.s	bureau		dresser
+.s	chest		dresser
+.s	waist		dresser
+
+.d	smoke				68
+
+.d	hear					69
+.s	listen		hear
+.s	hearing		hear
+.s	listening		hear
+
+.d	table				70
+.s	desk			table
+.s	tables		table
+
+.d	shelf				71
+.s	shelves		shelf
+.s	rack			shelf
+
+.d	book					72
+.s	books		book
+.s	page			book
+
+.d	thanks				73
+.s	thank$you		thanks
+
+.d	name					74
+
+.d	casino				75
+.s	hotel		casino
+
+.d	crate				76
+.s	crates		crate
+.s	box			crate
+.s	boxes		crate
+
+.d	long					77
+.s	length		long
+
+.d	jump					78
+.s	leap			jump
+
+.d	girl					79
+.s	girls		girl
+.s	dealer		girl
+.s	fawn			girl
+.s	fawns		girl
+.s	faith		girl
+.s	faiths		girl
+.s	guard		girl
+.s	woman		girl
+.s	women		girl
+.s	blond		girl
+.s	blonde		girl
+.s	eve			girl
+.s	eves			girl
+.s	hooker		girl
+.s	hookers		girl
+.s	whore		girl
+.s	whores		girl
+.s	prostitute	girl
+.s	prostitutes	girl
+.s	slut			girl
+.s	lady			girl
+.s	broad		girl
+.s	she			girl
+.s	her			girl
+
+.d	fireplace				80
+
+.d	man					81
+.s	men			man
+.s	guy			man
+.s	guys			man
+.s	storekeeper	man
+.s	shopkeeper	man
+.s	clerk		man
+.s	bum			man
+.s	pimp			man
+.s	dude			man
+.s	drunk		man
+.s	wino			man
+.s	cabbie		man
+.s	cab$driver	man
+.s	driver		man
+.s	bouncer		man
+.s	comic		man
+.s	comedian		man
+.s	minister		man
+.s	preacher		man
+.s	him			man
+.s	he			man
+.s	flasher		man
+.s	pervert		man
+.s	steve		man
+.s	cop			man
+.s	policeman		man
+
+.d	start				82
+.s	begin		start
+
+.d	light				83
+.s	lite			light
+.s	ignite		light
+.s	candle		light
+.s	candles		light
+.s	burn			light
+.s	lamp			light
+
+.d	fire					84
+.s	flame		fire
+.s	flames		fire
+
+.d	pot					85
+
+.d	counter				86
+.s	meter		counter
+
+.d	mouth				87
+.s	lips			mouth
+.s	smile		mouth
+
+.d	basket				88
+.s	baskets		basket
+.s	wastebasket	basket
+.s	waste$basket	basket
+
+.d	buy					89
+.s	purchase		buy
+.s	spend		buy
+.s	order		buy
+.s	pay			buy
+
+.d	ceiling				90
+
+.d	wine					91
+.s	champagne		wine
+
+.d	beer					92
+
+.d	food					93
+.s	meal			food
+.s	gum			food
+
+.d	bread				94
+
+.d	apple				95
+
+.d	steal				96
+.s	rob			steal
+.s	swipe		steal
+
+.d	eat					97
+.s	swallow		eat
+.s	drink		eat
+.s	taste		eat
+.s	lick			eat
+.s	suck			eat
+.s	bite			eat
+
+.d	there				98
+.s	here			there
+
+.d	knife				99
+.s	pocket$knife	knife
+
+.d	cut					100
+.s	slice		cut
+
+.d	basin				101
+.s	sink			basin
+.s	wash$basin	basin
+
+.d	broom				102
+
+.d	sit					103
+.s	sit$down		sit
+.s	rest			sit
+
+.d	town					104
+.s	city			town
+
+.d	business				105
+
+.d	hit					106
+.s	punch		hit
+.s	strike		hit
+.s	kick			hit
+.s	beat			hit
+.s	hurt			hit
+.s	pound		hit
+
+.d	knock				107
+.s	bang			knock
+.s	knock$on		knock
+
+.d	lid					108
+.s	cork			lid
+.s	stopper		lid
+.s	cover		lid
+.s	cap			lid
+
+.d	jar					109
+.s	jars			jar
+.s	bottle		jar
+.s	bottles		jar
+
+.d	tv					110
+.s	television	tv
+
+.d	wear					111
+.s	put$on		wear
+
+.d	ashtray				112
+.s	ash$tray		ashtray
+.s	container		ashtray
+
+.d	bill					113
+.s	tab			bill
+
+.d	card					114
+.s	cards		card
+.s	pass			card
+.s	disco$pass	card
+
+.d	ladder				115
+
+.d	vial					116
+.s	vials		vial
+.s	capsule		vial
+.s	capsules		vial
+
+.d	deal					117
+.s	bargain		deal
+.s	negotiate		deal
+
+.d	flower				118
+.s	flowers		flower
+.s	rose			flower
+
+.d	elevator				119
+
+.d	machine				120
+
+.d	paper				121
+.s	newspaper		paper
+
+.d	ken$sent$me			122
+.s	al$sent$me	ken$sent$me
+
+.d	wake					123
+.s	wake$up		wake
+
+.d	kill					124
+.s	murder		kill
+.s	stab			kill
+.s	fight		kill
+
+.d	head					125
+
+.d	throw				126
+.s	toss			throw
+
+.d	smell				127
+.s	sniff		smell
+
+.d	heat					128
+.s	cook			heat
+.s	warm			heat
+.s	boil			heat
+
+.d	cup					129
+
+.d	ball					130
+.s	balls		ball
+.s	nuts			ball
+.d	gimme				131
+
+.d	chair				132
+.s	chairs		chair
+.s	seat			chair
+.s	stool		chair
+.s	sofa			chair
+.s	couch		chair
+.s	pew			chair
+.s	pews			chair
+.s	bench		chair
+.s	benches		chair
+
+.d	fur					133
+
+.d	number				134
+
+.d	skin					135
+
+.d	inside				136
+
+.d	breath				137
+
+.d	hand					138
+.s	hands		hand
+.s	fingers		hand
+.s	handful		hand
+.s	hand$full		hand
+
+.d	corner				139
+
+.d	wall					140
+.s	walls		wall
+.s	sign			wall
+.s	graffiti		wall
+.s	brick		wall
+.s	bricks		wall
+
+.d	make					141
+
+.d	room					142
+.s	area			room
+.s	lounge		room
+.s	backroom		room
+
+.d	furniture				143
+.s	furnishings	furniture
+
+.d	use					144
+.s	with			use
+.s	using		use
+
+.d	money				145
+.s	dollars		money
+.s	dollar		money
+.s	bucks		money
+.s	coin			money
+.s	cash			money
+
+.d	status				146
+
+.d	hold					147
+.s	carry		hold
+.s	reach		hold
+.s	grasp		hold
+.s	lean			hold
+.s	hang			hold
+
+.d	close				148
+.s	shut			close
+
+.d	me					149
+.s	self			me
+.s	myself		me
+.s	i'm			me
+.s	larry		me
+.s	larry$laffer	me
+
+.d	from					150
+
+.d	unlock				151
+.s	unlatch		unlock
+.s	unbolt		unlock
+
+.d	people				152
+.s	customers		people
+.s	gamblers		people
+.s	dancers		people
+
+.d	rub					153
+.s	pet			rub
+.s	pat			rub
+.s	feel			rub
+.s	caress		rub
+.s	fondle		rub
+.s	pinch		rub
+.s	stroke		rub
+
+.d	kiss					154
+.s	hug			kiss
+.s	embrace		kiss
+
+.d	bartender				155
+.s	lefty		bartender
+
+.d	cab					156
+.s	taxi			cab
+.s	taxicab		cab
+.s	car			cab
+.s	cars			cab
+
+.d	sleep				157
+.s	sleeping		sleep
+
+.d	pills				158
+.s	aphrodisiac	pills
+.s	fly			pills
+.s	pill			pills
+.s	pill$bottle	pills
+
+.d	hammer				159
+
+.d	water				160
+.s	liquid		water
+
+.d	rope					161
+.s	ropes		rope
+
+.d	ring					162
+.s	diamond$ring	ring
+
+.d	blow					163
+.s	blow$up		blow
+.s	inflate		blow
+
+.d	untie				164
+.s	unfasten		untie
+.s	release		untie
+.s	let$go		untie
+.s	let$go$of		untie
+
+.d	finger				165
+
+.d	booze				166
+.s	rum			booze
+.s	rye			booze
+.s	scotch		booze
+.s	liquor		booze
+.s	bourbon		booze
+.s	gin			booze
+.s	vodka		booze
+.s	pina$colada	booze
+.s	mai$tai		booze
+.s	white$russian	booze
+
+.d	remote				167
+.s	remote$control	remote
+.s	control		remote
+.s	TV$control	remote
+
+.d	rubber				168
+.s	rubbers		rubber
+.s	lubber		rubber
+.s	lubbers		rubber
+.s	condom		rubber
+.s	condoms		rubber
+.s	prophylactic	rubber
+.s	prophylactics	rubber
+.s	protection	rubber
+.s	sheath		rubber
+
+.d	whiskey				169
+.s	whisky		whiskey
+.s	shot			whiskey
+
+.d	fill					170
+
+.d	toilet				171
+.s	bathroom		toilet
+.s	restroom		toilet
+.s	bowl			toilet
+.s	john			toilet
+
+.d	away					172
+
+.d	mat					173
+.s	doormat		mat
+.s	welcome$mat	mat
+
+.d	radio				174
+
+.d	notes				175
+.s	note			notes
+
+.d	wash					176
+.s	clean		wash
+.s	brush		wash
+.s	rinse		wash
+
+.d	candy				177
+.s	box$of$candy	candy
+.s	candy$box		candy
+
+.d	doll					178
+.s	dolls		doll
+
+.d	magazine				179
+.s	jugs			magazine
+.s	jugs$magazine	magazine
+.s	magazines		magazine
+.s	centerfold	magazine
+
+.d	used					180
+.s	old			used
+
+.d	building				181
+.s	store		building
+.s	shop			building
+
+.d	alley				182
+
+.d	one					183
+.d	two					184
+.d	three				185
+.d	four					186
+.d	five					187
+.d	six					188
+.d	seven				189
+.d	eight				190
+.d	nine					191
+
+.d	stand				192
+.s	rise			stand
+.s	get$up		stand
+
+.d	change				193
+.s	switch		change
+.s	alter		change
+
+.d	channel				194
+.s	station		channel
+.s	stations		channel
+.s	channels		channel
+
+.d	jukebox				195
+.s	juke$box		jukebox
+.s	jute$box		jukebox
+.s	jutebox		jukebox
+.s	juke			jukebox
+.s	jute			jukebox
+
+.d	wipe					196
+.s	dry			wipe
+
+.d	tie					197
+.s	fasten		tie
+.s	attach		tie
+
+.d	line					198
+.s	clothesline	line
+.s	clothes$line	line
+
+.d	lower				199
+.s	decrease		lower
+
+.d	spray				200
+.s	breath$spray	spray
+.s	breathspray	spray
+
+.d	hanging				201
+
+.d	action				202
+
+.d	tavern				203
+.s	bar			tavern
+.s	leftys		tavern
+
+.d	disco				204
+
+.d	chapel				205
+.s	parlor			chapel
+.s	church			chapel
+
+.d	lint					206
+.s	fuzz			lint
+.s	pocket$lint	lint
+
+.d	blackjack				207
+.s	twenty$one	blackjack
+.s	black$jack	blackjack
+
+.d	slot					208
+.s	slot$machine	slot
+.s	slot$machines	slot
+.s	slots		slot
+
+.d	dog					209
+.s	doggy		dog
+.s	pup			dog
+.s	puppy		dog
+
+.d	along				210
+
+.d	sing					211
+
+.d	side					212
+
+.d	pole					213
+.s	telephone$pole	pole
+.s	light$pole	pole
+
+.d	deliver				214
+
+.d	smooth				215
+
+.d	ribbed				216
+.s	libbed		ribbed
+
+.d	colored				217
+
+.d	plain				218
+
+.d	lubricated			219
+
+.d	rough				220
+.s	roughcut		rough
+
+.d	striped				221
+
+.d	plaid				222
+
+.d	peppermint			223
+
+.d	spearmint				224
+
+.d	stage				225
+
+.d	plant				226
+.s	plants		plant
+.s	bush			plant
+.s	bushes		plant
+.s	planter		plant
+.s	planters		plant
+.s	dirt			plant
+
+.d	heckle				227
+.s	boo			heckle
+.s	hiss			heckle
+
+.d	music				228
+.s	sound		music
+.s	sounds		music
+.s	song			music
+.s	songs		music
+.s	record		music
+.s	recording		music
+.s	tune			music
+
+.d	cola					229
+.s	dwinkies		cola
+.s	wallowars		cola
+.s	loritos		cola
+.s	coffee		cola
+.s	junk$food		cola
+
+.d	loosen				230
+
+.d	bet					231
+.s	wager		bet
+.s	gamble		bet
+.d	handle				232
+.s	lever		handle
+
+.d	double				233
+
+.d	split				234
+.s	split$pair	split
+
+.d	surrender				235
+
+.d	rules				236
+.s	rule			rules
+.s	house$rules	rules
+
+.d	new					237
+
+.d	odds					238
+
+.d	towel				239
+.s	swim$suit		towel
+.s	swimming$suit	towel
+.s	bikini		towel
+
+.d	lost					240
+
+.d	moose				241
+.s	moosehead		moose
+
+.d	love					242
+
+.d	room$service			243
+
+.d	naked				244
+.s	nude			naked
+.s	strip		naked
+.s	undress		naked
+.s	undressed		naked
+
+.d	dress				245
+.s	dressed		dress
+
+.d	way					246
+
+.d	painting				247
+.s	paintings		painting
+.s	picture		painting
+.s	pictures		painting
+.s	art			painting
+.s	artwork		painting
+.s	art$work		painting
+.s	artworks		painting
+.s	art$works		painting
+
+.d	fan					248
+.s	ceiling$fan	fan
+
+.d	barrel				249
+
+.d	you					250
+.s	your			you
+.s	youre		you
+.s	yours		you
+.s	yourself		you
+
+.d	fireplug				251
+.s	fire$plug		fireplug
+.s	fire$hydrant	fireplug
+.s	hydrant		fireplug
+
+.d	enjoy				252
+.s	like			enjoy
+
+.d	dj					253
+.s	disc$jockey	dj
+
+.d	garden				254
+.s	roof			garden
+.s	roof$top		garden
+.s	rooftop		garden
+.s	terrace		garden
+
+.d	gun					255
+.s	guns			gun
+.s	pistol		gun
+.s	pistols		gun
+.s	weapon		gun
+.s	weapons		gun
+
+.d	time					256
+
+.d	on					257
+.s	onto			on
+.s	on$to		on
+
+.d	off					258
+
+.d	fence				259
+
+.d	sky					260
+
+.d	tank					261
+
+.d	altar				262
+
+.d	person				263
+.s	player		person
+
+.d	drummer				264
+
+.d	radiator				265
+
+.d	watch				266
+.s	wrist$watch		watch
+.s	wristwatch		watch
+.s	bracelet			watch
+
+.d	waiter				267
+.s	waitress		waiter
+
+.d	heart				268
+
+.d	spit					269
+.s	expectorate	spit
+
+.d	come					270
+
+.d	yell					271
+.s	scream		yell
+.s	screams		yell
+.s	shout		yell
+.s	holler		yell
+
+.d	dive					272
+.s	muff$dive		dive
+
+.d	underwater			273
+.s	under$water	underwater
+
+.d	laugh				274
+
+.d	piece				275
+
+.d	establish$eye$contact	276
+
+.d	vows					277
+
+.d	bucket				278
+.s	wine$bucket	bucket
+.s	ice$bucket	bucket
+
+.d	leg					279
+.s	legs			leg
+.s	ankle		leg
+.s	ankles		leg
+.s	thigh		leg
+.s	thighs		leg
+.s	calf			leg
+.s	calves		leg
+
+.d	bubbles				280
+.s	jets			bubbles
+
+.d	credit$card			281
+.s	credit$cards	credit$card
+
+.d	pillow				282
+
+.d	home					283
+
+.d	answer				284
+
+.d	dial					285
+
+.d	tip					286
+
+.d	east					287
+
+.d	west					288
+
+.d	pause				289
+.s	pause$game	pause
+
+.d	password				290
+
+.d	suit					291
+.s	leisure$suit	suit
+
+.d	bribe				292
+
+.d	cooler				293
+.s	refrigerator	cooler
+.s	icebox		cooler
+
+.d	operator				294
+.s	information	operator
+.s	directory$assistance operator
+
+.d	clap					295
+.s	applaud		clap
+.s	cheer		clap
+
+.d	face					296
+
+.d	eyes					297
+
+.d	hair					298
+
+.d	flirt				299
+.s	wink			flirt
+
+.d	deflate				300
+
+.d	help					301		[	controller words
+.s	hint			help
+
+.d	save					302
+
+.d	restore				303
+
+.d	restart				304
+
+.d	game					305
+
+.d	quit					306
+.s	fold			quit
+.s	stop			quit
+.s	done			quit
+
+.d	slow					307
+
+.d	normal				308
+
+.d	fast					309
+.s	faster		fast
+
+.d	fastest				310
+
+.d	inventory				311
+.s	things		inventory
+.s	inv			inventory
+.s	item			inventory
+.s	items		inventory
+.s	object		inventory
+.s	objects		inventory
+.s	stuff		inventory
+.s	all			inventory
+.s	everything	inventory
+.s	belongings	inventory
+
+
+
+
+.d	position				321		[	debug words
+
+.d	priority				322
+
+.d	sp					323
+.s	xy			sp
+
+.d	tp					324
+
+.d	reset				325
+
+.d	var					326
+
+.d	flag					327
+
+
+
+
+.d	pussy				341		[	dirty words
+.s	cunt			pussy
+.s	slit			pussy
+.s	snatch		pussy
+.s	clit			pussy
+.s	clitoris		pussy
+.s	crack		pussy
+.s	cracks		pussy
+.s	piece$of$ass	pussy
+.s	piece$of$tail	pussy
+
+.d	shit					342
+.s	crap			shit
+.s	dump			shit
+
+.d	piss					343
+.s	pee			piss
+.s	urinate		piss
+.s	leak			piss
+
+.d	hump					344
+.s	seduce		hump
+.s	sleep$with	hump
+.s	make$love		hump
+.s	jump$her$bones	hump
+.s	lay			hump
+.s	screw		hump
+.s	fuck			hump
+.s	copulate		hump
+.s	fucking		hump
+.s	mount$up		hump
+.s	mount		hump
+.s	sex			hump
+
+.d	fart					345
+.s	cut$one		fart
+
+.d	dirty$word			346
+.s	fucker		dirty$word
+.s	mother$fucker	dirty$word
+.s	asshole		dirty$word
+.s	dick$head		dirty$word
+.s	faggot		dirty$word
+.s	fag			dirty$word
+.s	bitch		dirty$word
+.s	what$the$fuck	dirty$word
+.s	shithead		dirty$word
+.s	bullshit		dirty$word
+.s	dyke			dirty$word
+
+.d	tit					347
+.s	tits			tit
+.s	breast		tit
+.s	breasts		tit
+.s	boob			tit
+.s	boobs		tit
+.s	knocker		tit
+.s	knockers		tit
+.s	nipple		tit
+.s	nipples		tit
+
+.d	ass					348
+.s	butt			ass
+.s	rearend		ass
+
+.d	sixtynine				349
+.s	cunnilingus	sixtynine
+
+.d	blow$job				350
+.s	suck$me		blow$job
+
+.d	dick					351
+.s	cock			dick
+.s	prick		dick
+.s	dong			dick
+
+.d	damn					352
+.s	god$damn		damn
+.s	dam			damn
+.s	god$dam		damn
+.s	go$to$hell	damn
+.s	damn$it		damn
+.s	dam$it		damn
+.s	bull$shit		damn
+.s	sit$on$it		damn
+.s	up$your		damn
+.s	up$yours		damn
+.s	fuck$off		damn
+.s	fuck$you		damn
+.s	jesus$christ	damn
+.s	christ		damn
+
+.d	masturbate			353
+.s	jack$off		masturbate
+.s	jerk$off		masturbate
+
+.d	business$card			400
+.s	business$cards	business$card
+
+.d	work					401
+.s	duty			work
+
+.d	sierra				402
+

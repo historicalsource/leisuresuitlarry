@@ -1,0 +1,672 @@
+[logics for room 25 -- rmFawnCloseup
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm25.msg"
+%include	"gamedefs.h"
+
+
+[	must be seated to see closeup of face, and give her stuff.
+[	normal cel if nothing happens, else happy cel if gift, or said something
+[nice.  "Pouty" face if said something nasty, or bad breath.
+[	To return to long shot, say leave table, or dance with Fawn
+
+[	if says something rude, add.to.pic mean look, change rooms, and she walks
+[away.  He has to leave, then enter again.
+
+
+
+
+[	%flag	gaveFawnFlowers	71	[	These are pertinent globals.
+[	%flag	gaveFawnCandy		72
+[	%flag	gaveFawnRing		73
+[	%flag	dancedWithFawn		74
+
+#define	L_MOUTH				0
+	#define	C_NORMAL		0		[	mouth cells
+	#define	C_SMILE		1
+	#define	C_FROWN		2
+	#define	DONE			255
+#define	L_EYES				1
+
+#define	TALK_TIME				4
+
+
+%define	cutToLongShot			lf0
+%define	nearFawn				lf2
+%define	eyesCycling			lf6
+%define	fawnLeaving			lf11
+%define	turnHeadsToFloor		lf13
+%define	turnHeadsToTable		lf14
+
+
+%define	eyeCycles				lv2
+%define	breathLineTimer		lv3
+%define	lookCount				lv4
+%define	mouthTimer			lv6
+%define	mouth				lv7
+%define	fawnScript			lv8
+
+
+%object	aMouth				3
+%object	aEyes				4
+
+
+
+if (initLog)
+	{
+	SetHorizon( 1);
+
+	LoadPic( currentRoom);
+	DrawPic( currentRoom);
+	DiscardPic( currentRoom);
+
+	LoadView( vFawnFace);
+
+    	Set( handsOff);
+
+	AnimateObj( aMouth);
+	SetView( aMouth, vFawnFace);
+	SetLoop( aMouth, L_MOUTH);
+	SetCel( aMouth, 0);
+	SetPriority( aMouth, 4);
+	Position( aMouth, 56, 93);
+	StopCycling( aMouth);
+
+	AnimateObj( aEyes);
+	SetView( aEyes, vFawnFace);
+	SetLoop( aEyes, L_EYES);
+	SetCel( aEyes, 0);
+	SetPriority( aEyes, 5);
+	Position( aEyes, 62, 49);
+	StopCycling( aEyes);
+	CycleTime( aEyes, three);
+
+	if (!mouthOK)
+		{
+		SetCel( aMouth, C_FROWN);
+		breathLineTimer = TALK_TIME;
+		}
+	else
+		{
+		SetCel( aMouth, C_NORMAL);
+		Draw( aEyes);
+		Random( 6, 19, eyeCycles);
+		Reset( eyesCycling);
+		}
+	Draw( aMouth);
+	mouth = DONE;
+	StopUpdate( aMouth);
+
+	ShowPic( );
+
+	Return( );
+
+	}							[	end initLOG
+
+
+
+Set( nearFawn);
+Set( nearPerson);
+
+
+[*****
+:handleInput
+[*****
+
+if (!haveInput)			{goto noInput;}
+
+if ((Said( order, drink) ||
+	Said( buy, whiskey) ||
+	Said( buy, wine) ||
+	Said( buy, booze) ||
+	Said( buy, girl, drink)))
+	{
+	Print( 57);
+	}
+
+if ((Said( talk, men) ||
+	Said( talk, man)))
+	{
+	Print( 63);
+	}
+
+if ((Said( look, fawn, rol) ||
+	Said( establish$eye$contact, rol) ||
+	Said( look$in, fawn, rol)))
+	{
+	++lookCount;
+	if (lookCount == 1)
+		{
+		Print( 2);
+		Print( 3);
+		}
+
+	if (lookCount == 2)
+		{
+		Print( 24);
+		}
+
+	if (lookCount > 2)
+		{
+		Print( 4);
+		mouth = C_SMILE;
+		}
+	}
+
+if ((Said( stand) ||
+	Said( get$up, from, chair) ||
+	Said( get, off, chair) ||
+	Said( stop, looking, fawn) ||
+	Said( look, me) ||
+	Said( look, away) ||
+	Said( look, away, from, fawn) ||
+	Said( leave, chair, rol) ||
+	Said( leave) ||
+	Said( leave, table, rol) ||
+	Said( stand, up, rol)))
+	{
+	Set( makeEgoRise);
+	Set( cutToLongShot);
+	Set( OK);
+	}
+
+if ((Said( look) ||
+	Said( look, room) ||
+	Said( look, tables) ||
+	Said( look, disco)))
+	{
+	Print( 1);
+	}
+
+if ((Said( look, dance, floor) ||
+	Said( look, floor)))
+	{
+	Print( 40);
+	}
+
+if ((Said( look, men) ||
+	Said( look, man)))
+	{
+	if (noFawnInDisco)
+		{
+		Print( 5);
+		}
+	else
+		{
+		Print( 41);
+		}
+	}
+
+if (Said( look, dj))
+	{
+	Print( 42);
+	}
+
+if (Said( use, spray))
+	{
+	Reset( haveMatch);
+	mouth = C_SMILE;
+	Random( 6, 19, eyeCycles);
+	Reset( eyesCycling);
+	}
+
+if ((Said( talk, fawn) ||
+	Said( say, anyword, fawn)))
+	{
+	++fawnTalkCount;
+	if (fawnTalkCount == 1)
+		{
+		if (!talkedToFawn)
+			{
+			Set( talkedToFawn);
+			currentScore += 1;
+			}
+		Print( 23);
+		Print( 46);
+		mouth = C_FROWN;
+		}
+
+	if (fawnTalkCount == 2)
+		{
+		Print( 47);
+		Print( 48);
+		mouth = C_FROWN;
+		}
+
+	if (fawnTalkCount == 3)
+		{
+		Print( 49);
+		Print( 43);
+		}
+
+	if (fawnTalkCount == 4)
+		{
+		Print( 32);
+		Print( 33);
+		Print( 34);
+		mouth = C_SMILE;
+		}
+
+	if (fawnTalkCount > 4)
+		{
+		if (askedForMoney)
+			{
+			Print( 58);
+			}
+		else
+			{
+			Print( 50);
+			Print( 26);
+			Print( 27);
+			Print( 28);
+			Print( 51);
+			mouth = C_SMILE;
+			}
+		}
+	}
+
+if (Said( come, with, me))
+	{
+	Print( 44);
+	mouth = C_SMILE;
+	}
+
+if ((Said( talk, her, love) ||
+	Said( love, you) ||
+	Said( take, her, hand)))
+	{
+	Print( 39);
+	mouth = C_SMILE;
+	}
+
+if ((Said( look, mouth) ||
+	Said( look, girl, mouth)))
+	{
+	Print( 31);
+	}
+
+if ((Said( ask, name) ||
+	Said( ask, her, name) ||
+	Said( ask, name, girl)))
+	{
+	Print( 33);
+	Print( 34);
+	mouth = C_SMILE;
+	}
+
+if ((Said( larry) ||
+	Said( leisure$suit, larry)))
+	{
+	Print( 30);
+	}
+
+if ((Said( look, her, hair) ||
+	Said( look, hair) ||
+	Said( touch, hair) ||
+	Said( stroke, hair) ||
+	Said( rub, hair) ||
+	Said( rub, her, hair)))
+	{
+	Print( 29);
+	mouth = C_SMILE;
+	}
+
+if ((Said( smile) ||
+	Said( smile, girl) ||
+	Said( hold, hand) ||
+	Said( take, her, hand) ||
+	Said( touch, girl) ||
+	Said( touch, her) ||
+	Said( ask, date)))
+	{
+	Print( 19);
+	mouth = C_SMILE;
+	}
+
+if ((Said( look, eyes) ||
+	Said( look$in, eyes) ||
+	Said( flirt, with, her) ||
+	Said( wink, girl) ||
+	Said( give, girl, kiss) ||
+	Said( kiss, girl)))
+	{
+	mouth = C_SMILE;
+	}
+
+if ((Said( dance) ||
+	Said( dance, fawn) ||
+	Said( dance, me) ||
+	Said( dance, with, me) ||
+	Said( dance, with, fawn) ||
+	Said( you, dance, fawn) ||
+	Said( you, dance, me) ||
+	Said( you, like, dance, rol) ||
+	Said( you, dance, with, me) ||
+	Said( you, dance, with, fawn) ||
+	Said( enjoy, dance) ||
+	Said( enjoy, dance, with, me) ||
+	Said( you, enjoy, dance) ||
+	Said( you, enjoy, dance, with, me) ||
+	Said( you, enjoy, dance, with, fawn) ||
+	Said( ask, dance, fawn) ||
+	Said( ask, fawn, dance) ||
+	Said( ask, fawn, dance, with, me) ||
+	Said( ask, fawn, dance, me) ||
+	Said( start, dance)))
+	{
+	if (dancedWithFawn)
+		{
+		Print( 59);
+		}
+	else
+		{
+		if (moneyTimer)
+			{
+			Print( 20);
+			moneyTimer = 17;
+			}
+		else
+			{
+			Set( makeFawnDance);
+			Set( scriptDone);
+			script = 0;
+			}
+		}
+	}
+
+
+if ((Said( give, fawn, rose) ||
+	Said( give, rose) ||
+	Said( give, rose, fawn)))
+	{
+	if (!Has( iRose))
+		{
+		Set( dontHaveIt);
+		}
+	else
+		{
+		currentScore += 5;
+		Print( 9);
+		Set( gaveFawnRose);
+		Drop( iRose);
+		mouth = C_SMILE;
+		}
+	}
+
+
+if ((Said( give, fawn, candy) ||
+	Said( give, candy) ||
+	Said( give, candy, fawn)))
+	{
+	if (!Has( iCandy))
+		{
+		Set( dontHaveIt);
+		}
+	else
+		{
+		currentScore += 5;
+		Print( 10);
+		Set( gaveFawnCandy);
+		Drop( iCandy);
+		mouth = C_SMILE;
+		}
+	}
+
+
+if ((Said( give, fawn, ring) ||
+	Said( give, ring) ||
+	Said( give, ring, fawn)))
+	{
+	if (!Has( iRing))
+		{
+		Set( dontHaveIt);
+		}
+	else
+		{
+		currentScore += 5;
+		Print( 11);
+		Set( gaveFawnRing);
+		Drop( iRing);
+		mouth = C_SMILE;
+		}
+	}
+
+
+if ((Said( give, fawn, money) ||
+	Said( give, money) ||
+	Said( pay, girl, money) ||
+	Said( pay, money) ||
+	Said( pay, girl, one, money) ||
+	Said( pay, girl) ||
+	Said( give, one, money, fawn) ||
+	Said( give, fawn, one, dollars) ||	[	this makes one hundred work
+	Said( give, money, fawn)))
+	{
+	if (!askedForMoney)
+		{
+		Print( 13);
+		mouth = C_FROWN;
+		}
+	else
+		{
+		if (dollars < 100)
+			{
+			Print( 64);
+			Print( 35);
+			Print( 12);
+			Print( 36);
+			Print( 37);
+			Print( 65);
+			moneyTimer = 0;
+			}
+		else
+			{
+			currentScore += 7;
+			Print( 14);
+			Print( 15);
+			mouth = C_SMILE;
+
+			moneyTimer = 0;
+			dollars -= 100;
+			Set( makeFawnSplit);
+			Set( gaveFawnEverything);
+			Set( cutToLongShot);
+			}
+		}
+	}
+
+if ((Said( girl, marry, me) ||
+	Said( marry, me) ||
+	Said( marry, girl) ||
+	Said( ask, girl, get, married) ||
+	Said( ask, girl, marry, me) ||
+	Said( talk, about, marriage) ||
+	Said( propose, her)))
+	{
+	Print( 38);
+	mouth = C_SMILE;
+	}
+
+if ((Said( touch, fawn, rol) ||
+	Said( eat, fawn, rol) ||
+	Said( hump, fawn, rol) ||
+	Said( kiss, fawn, rol) ||
+	Said( grab, girl) ||
+	Said( feel, girl) ||
+	Said( lick, girl) ||
+	Said( touch, girl, under, table) ||
+	Said( feel, under, table) ||
+	Said( grab, leg) ||
+	Said( touch, leg) ||
+	Said( feel, her, leg) ||
+	Said( feel, her, leg, under, table) ||
+	Said( grab, her, leg) ||
+	Said( touch, tit, rol)))
+	{
+	Print( 60);
+	mouth = C_FROWN;
+	}
+
+if ((Said( undress, her) ||
+	Said( ask, girl, for, sex) ||
+	Said( have, sex, with, me) ||
+	Said( hump, rol) ||
+	Said( make, girl) ||
+	Said( anyword, pussy, rol) ||
+	Said( lick, her, she, screams) ||
+	Said( anyword, tits, rol) ||
+	Said( play, with, her, boobs) ||
+	Said( grab, tits) ||
+	Said( fondle, breasts)))
+	{
+	Print( 60);
+	Print( 61);
+	mouth = C_FROWN;
+	}
+
+if ((Said( look, girl, tits) ||
+	Said( look, tits, rol) ||
+	Said( look, body) ||
+	Said( stare) ||
+	Said( stare, boobs)))
+	{
+	Print( 4);
+	mouth = C_SMILE;
+	}
+
+
+
+[*****
+:noInput
+[*****
+
+--eyeCycles;					[	bat them eyes
+if (eyeCycles == 1)
+	{
+	Toggle( eyesCycling);
+	if (eyesCycling)
+		{
+		StartCycling( aEyes);
+		Random( 6, 18, eyeCycles);
+		}
+	else
+		{
+		StopCycling( aEyes);
+		SetCel( aEyes, 0);
+		Random( 11, 33, eyeCycles);
+		}
+	}
+
+if (aSecondPassed)
+	{
+	--breathLineTimer;
+	if (breathLineTimer == 1)	[	Lay that zinger on him
+		{
+		Print( 25);
+		}
+
+	--mouthTimer;
+	if (mouthTimer == 1)		[	Resume after frown/smile
+		{
+		mouth = NORMAL;
+		}
+
+	if (mouth != DONE)
+		{
+		if (mouth == NORMAL)
+			{
+			eyeCycles = 2;		[	Restart eyes.
+			}
+
+		if (mouth == C_SMILE)
+			{
+			mouthTimer = SMILE_SECONDS;
+			Set( eyesCycling);
+			eyeCycles = 22;	[	Bat 'em, baby.
+			StartCycling( aEyes);
+			}
+
+		if (mouth == C_FROWN)
+			{
+			mouthTimer = FROWN_SECONDS;
+			Reset( eyesCycling);
+			eyeCycles = 0;		[	Stare him down, Fawnie.
+			StopCycling( aEyes);
+			SetCel( aEyes, 0);
+			}
+
+		SetCelV( aMouth, mouth);
+		ForceUpdate( aMouth);
+		mouth = DONE;
+		}
+	}
+
+
+
+[	He's done damn near everything for her; what more could that bitch want?!
+
+if  (gaveFawnRose		&&
+	gaveFawnCandy		&&
+	gaveFawnRing		&&
+	dancedWithFawn)
+	{
+	if (!askedForMoney)
+		{
+		Set( askedForMoney);
+		Print( 16);
+		Print( 17);
+		Print( 18);
+		moneyTimer = 30;
+		}
+	}
+
+
+if (aSecondPassed)
+	{
+	--moneyTimer;
+	if (moneyTimer == 15)
+		{
+		Print( 21);
+		}
+
+	if (moneyTimer == 1)
+		{
+		Print( 22);
+		Set( cutToLongShot);
+		Set( makeFawnSplit);
+		}
+	}
+
+
+
+if (scriptDone)
+	{
+	Reset( scriptDone);
+	++script;
+
+	if (script == 1)				[	Do the "Airplane" sequence.
+		{
+		mouth = C_SMILE;
+		Print( 7);
+		scriptTimer = 6;
+		}
+
+	if (script == 2)
+		{
+		Set( cutToLongShot);
+		}
+	}
+
+
+[*****
+:exit							[	test for leaving the room
+[*****
+
+if (edgeEgoHit == BOTTOM)		{newRoom = rmOutsideDisco;}
+if (cutToLongShot)
+	{
+	Reset( handsOff);
+	newRoom = rmInsideDisco;
+	}
+

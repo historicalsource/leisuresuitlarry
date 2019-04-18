@@ -1,0 +1,570 @@
+[logics for room 35 -- rmElevators
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm35.msg"
+%include	"gamedefs.h"
+
+
+
+
+[	There is an ashtray near the planter. Look ash tray. "get passcard" 
+
+[	script ==   0 begins the raise elevator sequence;
+[	script == 100 lowers the elevator to the bottom and releases ego.
+
+[	#define	L_EMPTY			0
+[	#define	L_FLOOR			1
+[	#define	L_DOORS			2
+[	#define	L_WITH_EGO		3
+
+%define	CEILING_Y				37
+%define	FLOOR_Y				118
+
+%define	inElevator			lf0
+%define	nearAshTray			lf1
+%define	elevatorMoving			lf4
+%define	nearBrokenPhone		lf5
+
+%object	aElevator				1
+%object	aDoor				2
+%object	aFloor				3
+%object	aNumber				4
+%object	aAshtray				5
+
+
+
+if (initLog)
+	{
+	SetHorizon( 1);
+
+	LoadPic( currentRoom);
+	DrawPic( currentRoom);
+	DiscardPic( currentRoom);
+
+	LoadView( vElevator);
+	LoadView( vElevatorNumbers);
+	LoadView( vEgoPushingElevator);
+	LoadView( vEgo);
+	LoadView( vAshtray);
+[	LoadView( v);
+
+	AnimateObj( aAshtray);
+	IgnoreBlocks( aAshtray);
+	SetView( aAshtray, vAshtray);
+	if (ObjInRoom( iDiscoPass, currentRoom))
+		{
+		SetCel( aAshtray, 0);
+		}
+	else
+		{
+		SetCel( aAshtray, 1);
+		}
+	Position( aAshtray, 77, 159);
+	StopCycling( aAshtray);
+	Draw( aAshtray);
+	StopUpdate( aAshtray);
+
+	AnimateObj( aNumber);
+	IgnoreBlocks( aNumber);
+	IgnoreObjs( aNumber);
+	SetView( aNumber, vElevatorNumbers);
+	SetPriority( aNumber, 5);
+	Position( aNumber, 73, 91);
+	SetCel( aNumber, 1);
+	StopCycling( aNumber);
+
+	AnimateObj( aDoor);
+	IgnoreBlocks( aDoor);
+	IgnoreObjs( aDoor);
+	SetView( aDoor, vElevator);
+	SetLoop( aDoor, L_DOORS);
+	FixLoop( aDoor);
+	SetPriority( aDoor, 4);
+	Position( aDoor, 73, 108);
+	work = DOOR_CYCLE_TIME;
+	CycleTime( aDoor, work);
+
+	AnimateObj( aFloor);
+	IgnoreBlocks( aFloor);
+	IgnoreObjs( aFloor);
+	SetView( aFloor, vElevator);
+	SetLoop( aFloor, L_FLOOR);
+	FixLoop( aFloor);
+	Position( aFloor, 73, 118);
+	SetPriority( aFloor, 5);
+
+	AnimateObj( aElevator);
+	IgnoreBlocks( aElevator);
+	IgnoreObjs( aElevator);
+	SetView( aElevator, vElevator);
+	SetPriority( aElevator, 11);
+	FixLoop( aElevator);
+	StepSize( aElevator, two);
+	if (currentStatus == IN_ELEVATOR)
+		{
+		Set( elevatorMoving);
+		currentStatus = IN_ELEVATOR;
+
+		SetLoop( aElevator, L_WITH_EGO);
+		LastCel( aElevator, work);
+		SetCelV( aElevator, work);
+		StopCycling( aElevator);
+		Position( aElevator, 73, 36);
+		Draw( aElevator);
+		MoveObj( aElevator, 73, 118, 2, scriptDone);
+		script = 100;
+
+		Draw( aDoor);
+		StopUpdate( aDoor);
+
+		Draw( aNumber);
+
+		SetView( ego, vEgo);
+		SetLoop( ego, FACING_FRONT);
+		SetPriority( ego, 12);
+		egoX = 75;
+		egoY = 119;
+		[	Don't Draw ego!
+		}
+	else
+		{
+		Draw( aFloor);
+		StopUpdate( aFloor);
+
+		SetLoop( aElevator, L_EMPTY);
+		SetCel( aElevator, 0);
+		Position( aElevator, 73, 118);
+		Draw( aElevator);
+		StopUpdate( aElevator);
+
+		if (previousRoom == rmLounge)
+			{
+			egoX = 128;
+			egoY = 104;
+			SetLoop( ego, FACING_LEFT);
+			PositionV( ego, egoX, egoY);
+			Draw( ego);
+			StartMotion( ego);
+			}
+		else
+			{
+			if (!previousRoom)
+				{
+				egoX = 75;
+				egoY = 115;
+				}
+			PositionV( ego, egoX, egoY);
+			Draw( ego);
+			}
+	 	}
+
+	IgnoreObjs( ego);
+
+	ShowPic( );
+
+	Return( );
+
+	}							[	end initLOG
+
+
+
+Reset( inElevator);
+if (Posn( ego, 70, 110, 83, 120))
+	{
+	Set( inElevator);
+	}
+
+Reset( nearBrokenPhone);
+if (Posn( ego, 96, 101, 111, 106))
+	{
+	Set( nearBrokenPhone);
+	}
+
+Reset( nearAshTray);
+if (Posn( ego, 62, 155, 87, 163))
+	{
+	Set( nearAshTray);
+	}
+
+if (egoY > 119 && egoY < 133)
+	{
+	SetPriority( ego, 12);
+	}
+else
+	{
+	ReleasePriority( ego);
+	}
+
+
+[*****
+:handleInput
+[*****
+
+if (!haveInput)			{goto noInput;}
+
+if (elevatorMoving && !haveMatch)
+	{
+	if ((Said( listen) ||
+		Said( sing) ||
+		Said( sing, along)))
+		{
+		Print( 7);
+		}
+	else
+		{
+		Set( haveMatch);
+		Print( 5);
+		}
+	}
+
+if ((Said( up) ||
+	Said( down)))
+	{
+	Print( 4);
+	}
+
+if ((Said( look) ||
+	Said( look, room) ||
+	Said( look, wall) ||
+	Said( look, elevator)))
+	{
+	if (inElevator)
+		{
+		Print( 2);
+		Print( 3);
+		}
+	else
+		{
+		Print( 1);
+		}
+	}
+
+if (Said( look$in, plants))
+	{
+	if (inElevator)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 10);
+		}
+	}
+
+if (Said( look, plants))
+	{
+	if (inElevator)
+		{
+		Print( 6);
+		Print( 8);
+		}
+	else
+		{
+		Print( 10);
+		}
+	}
+
+if (Said( close, door))
+	{
+	if (inElevator)
+		{
+		Print( 15);
+		}
+	else
+		{
+		Print( 16);
+		}
+	}
+
+
+if ((Said( look, ashtray) ||
+	Said( look$in, ashtray)))
+	{
+	if (egoY < 150)
+		{
+		Print( 14);
+		}
+	else
+		{
+		if (ObjInRoom( iDiscoPass, currentRoom))
+			{
+			Print( 12);
+			}
+		else
+			{
+			Print( 13);
+			}
+		}
+	}
+
+if (Said( anyword, ashtray))
+	{
+	if (egoY < 150)
+		{
+		Print( 14);
+		}
+	else
+		{
+		if (ObjInRoom( iDiscoPass, currentRoom))
+			{
+			Print( 12);
+			}
+		else
+			{
+			Print( 18);
+			}
+		}
+	}
+
+if ((Said( get, pass) ||
+	Said( get, card)))
+	{
+	if (!nearAshTray)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		if (!ObjInRoom( iDiscoPass, currentRoom))
+			{
+			Set( alreadyGotIt);
+			}
+		else
+			{
+			SetCel( aAshtray, 1);
+			ForceUpdate( aAshtray);
+			Get( iDiscoPass);
+			currentScore += 1;
+			Set( OK);
+			}
+		}
+	}
+
+if ((Said( look, phone) ||
+	Said( use, phone) ||
+	Said( make, phone, call) ||
+	Said( dial, phone)))
+	{
+	if (!nearBrokenPhone)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 21);
+		}
+	}
+
+if ((Said( get, gum) ||
+	Said( remove, gum)))
+	{
+	if (!nearBrokenPhone)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 22);
+		}
+	}
+
+if ((Said( look, phone, book) ||
+	Said( look, book)))
+	{
+	if (!nearBrokenPhone)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 20);
+		}
+	}
+
+if ((Said( answer, phone) ||
+	Said( get, phone) ||
+	Said( answer)))
+	{
+	if (!nearBrokenPhone)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 19);
+		}
+	}
+
+
+if (!script && inElevator)
+	{
+	if ((Said( press, one) ||
+		Said( press, button, one) ||
+		Said( one)))
+		{
+		destinationFloor = 1;
+		Set( scriptDone);
+		}
+
+	if ((Said( press, two) ||
+		Said( press, button, two) ||
+		Said( two)))
+		{
+		destinationFloor = 2;
+		Set( scriptDone);
+		}
+
+	if ((Said( press, three) ||
+		Said( press, button, three) ||
+		Said( three)))
+		{
+		destinationFloor = 3;
+		Set( scriptDone);
+		}
+
+	if ((Said( press, four) ||
+		Said( press, button, four) ||
+		Said( four)))
+		{
+		destinationFloor = 4;
+		Set( scriptDone);
+		}
+
+	if ((Said( press, five) ||
+		Said( press, button, five) ||
+		Said( five)))
+		{
+		destinationFloor = 5;
+		Set( scriptDone);
+		}
+
+	if ((Said( press, six) ||
+		Said( press, button, six) ||
+		Said( six)))
+		{
+		destinationFloor = 6;
+		Set( scriptDone);
+		}
+
+	if ((Said( press, seven) ||
+		Said( press, button, seven) ||
+		Said( seven)))
+		{
+		destinationFloor = 7;
+		Set( scriptDone);
+		}
+
+	if ((Said( press, eight) ||
+		Said( press, button, eight) ||
+		Said( eight)))
+		{
+		destinationFloor = 8;
+		Set( scriptDone);
+		}
+
+	if ((Said( push, rol) ||
+		Said( push, button, rol)))
+		{
+		Print( 4);
+		}
+	}
+
+
+[*****
+:noInput
+[*****
+
+if (scriptDone)
+	{
+	Reset( scriptDone);
+	++script;
+
+	if (script == 1)
+		{
+		Set( elevatorMoving);
+		currentStatus = IN_ELEVATOR;
+		StopMotion( ego);
+		Set( programControl);
+		SetView( ego, vEgoPushingElevator);
+		SetCel( ego, 0);
+		RepositionTo( ego, 76, 117);
+		CycleTime( ego, three);
+		Set( keepCycling);
+		EndOfLoop( ego, scriptDone);
+		}
+
+	if (script == 2)
+		{
+		Erase( ego);
+		SetView( ego, vEgo);
+
+		SetLoop( aElevator, L_WITH_EGO);
+		SetCel( aElevator, 0);
+		CycleTime( aElevator, three);
+		EndOfLoop( aElevator, scriptDone);
+		}
+
+	if (script == 3)
+		{
+		Erase( aFloor);
+		Draw( aDoor);
+		Draw( aNumber);
+
+		StopCycling( aElevator);
+		if (destinationFloor == 1)
+			{
+			Print( 9);
+			script = 101;			[	We'll catch it immediately.
+			}
+		else
+			{
+			MoveObj( aElevator, 73, 36, 2, scriptDone);
+			}
+		}
+
+	if (script == 4)
+		{
+		newRoom = rmElevators;
+		}
+
+
+	if (script == 101)				[	He's at bottom; let him out.
+		{
+		Erase( aDoor);
+		Erase( aNumber);
+
+		CycleTime( aElevator, two);
+		StartCycling( aElevator);
+		BeginningOfLoop( aElevator, scriptDone);
+		}
+
+	if (script == 102)
+		{
+		Reset( elevatorMoving);
+		currentStatus = NORMAL;
+		destinationFloor = 0;
+		script = 0;
+		SetLoop( aElevator, L_EMPTY);
+
+		Draw( aFloor);
+
+		SetView( ego, vEgo);
+		SetLoop( ego, FACING_FRONT);
+		SetCel( ego, 0);
+		Position( ego, 76, 116);
+		Draw( ego);
+		StartMotion( ego);
+		Reset( programControl);
+		CycleTime( ego, one);
+		Reset( keepCycling);
+		}
+	}
+
+
+[*****
+:exit							[	test for leaving the room
+[*****
+
+if (edgeEgoHit == BOTTOM)			{newRoom = rmInsideCasino;}
+if (Posn( ego, 131, 101, 132, 106))	{newRoom = rmLounge;}

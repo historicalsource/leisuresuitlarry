@@ -1,0 +1,357 @@
+[logics for room 23 -- rmOutsideDisco
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm23.msg"
+%include	"gamedefs.h"
+
+
+
+%define	nearBouncer			lf0
+%define	readMessage			lf1
+%define	preventBouncer			lf2
+%define	stopBouncer			lf3
+%define	bouncerWorking			lf4
+
+%object	aSign1				1
+%object	aSign2				2
+%object	aSign3				3
+%object	aBouncer				4
+
+
+
+if (initLog)
+	{
+	if  (watchHours > 4 &&			[	Anything after 5 am.
+		watchHours < 10)
+		{
+		NewRoom( rmSunrise);
+		}
+
+	SetHorizon( 76);
+
+	LoadLogics( lgcStreet);
+
+	LoadPic( currentRoom);
+	DrawPic( currentRoom);
+	DiscardPic( currentRoom);
+
+	LoadView( vDiscoExterior);
+	LoadView( vDiscoBouncer);
+
+	if (slowProcessor)
+		{
+		AddToPic( vDiscoExterior, 0, 1, 64, 59, 15, 4);
+			[view, loop, cel, x, y, obj priority, box priority
+		}
+	else
+		{
+		AnimateObj( aSign1);
+		IgnoreHorizon( aSign1);
+		SetView( aSign1, vDiscoExterior);
+		SetLoop( aSign1, 0);
+		Position( aSign1, 64, 59);
+		SetPriority( aSign1, 15);
+		Draw( aSign1);
+		}
+
+	AnimateObj( aSign2);
+	IgnoreHorizon( aSign2);
+	SetView( aSign2, vDiscoExterior);
+	SetLoop( aSign2, 1);
+	SetCel( aSign2, 0);
+	Position( aSign2, 39, 66);
+	CycleTime( aSign2, two);
+	Draw( aSign2);
+
+	AnimateObj( aSign3);
+	IgnoreHorizon( aSign3);
+	SetView( aSign3, vDiscoExterior);
+	SetLoop( aSign3, 1);
+	SetCel( aSign3, 1);
+	Position( aSign3, 103, 66);
+	CycleTime( aSign3, two);
+	Draw( aSign3);
+
+	AnimateObj( aBouncer);
+	IgnoreBlocks( aBouncer);
+	SetView( aBouncer, vDiscoBouncer);
+	SetCel( aBouncer, 0);
+
+	if (previousRoom == rmInsideDisco)
+		{
+		IgnoreBlocks( ego);
+		Set( preventBouncer);
+		Position( aBouncer, 73, 120);
+
+		egoX = 77;
+		egoY = 83;
+		}
+	else
+		{
+		Position( aBouncer, 76, 120);
+		ObserveBlocks( ego);
+
+		if  (previousRoom != rmOutside7_11 &&
+			previousRoom != rmDarkAlley)
+			{
+			egoX = 77;
+			egoY = 146;
+			}
+	 	}
+	PositionV( ego, egoX, egoY);
+	Draw( ego);
+
+	Draw( aBouncer);
+	StopUpdate( aBouncer);
+
+	Call( lgcStreet);
+
+	ShowPic( );
+
+	Return( );
+
+	}							[	end initLOG
+
+
+
+Reset( nearBouncer);
+if (Posn( ego, 65, 120, 91, 127))
+	{
+	Set( nearBouncer);
+	Set( nearPerson);
+	}
+
+
+[*****
+:handleInput
+[*****
+
+if (!haveInput)			{goto noInput;}
+
+if ((Said( look) ||
+	Said( look, building) ||
+	Said( look, room) ||
+	Said( look, disco)))
+	{
+	Print( 1);
+	}
+
+if (Said( look, light))
+	{
+	Print( 16);
+	}
+
+if (Said( look, fireplug))
+	{
+	Print( 24);
+	}
+
+if (Said( look, building))
+	{
+	Print( 14);
+	Print( 15);
+	}
+
+
+
+[	Here's the bouncer's stuff:
+
+if ((Said( talk, man) ||
+	Said( talk)))
+	{
+	if (!nearBouncer)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		if (preventBouncer)
+			{
+			Print( 7);
+			}
+		else
+			{
+			Print( 2);
+			Print( 5);
+			}
+		}
+	}
+
+if ((Said( look, man) ||
+	Said( look)))
+	{
+	if (preventBouncer)
+		{
+		Print( 10);
+		}
+	else
+		{
+		Print( 11);
+		}
+	}
+
+if ((Said( move, man) ||
+	Said( push, man)))
+	{
+	if (!nearBouncer)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 17);
+		}
+	}
+
+
+if ((Said( hit, man) ||
+	Said( kill, man)))
+	{
+	Print( 12);
+	Print( 13);
+	}
+
+if ((Said( offer, bouncer, money) ||
+	Said( offer, money, bouncer) ||
+	Said( bribe, bouncer)))
+	{
+	if (!nearBouncer)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 22);
+		Print( 23);
+		}
+	}
+
+if ((Said( buy, card, from, man) ||
+	Said( pay, man) ||
+	Said( ask, man, about, card) ||
+	Said( ask, man, card)))
+	{
+	if (!nearBouncer)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 20);
+		Print( 21);
+		}
+	}
+
+if ((Said( show, pass) ||
+	Said( give, pass, man) ||
+	Said( give, man, pass) ||
+	Said( give, pass) ||
+	Said( show, man, pass) ||
+	Said( show, pass, man)))
+	{
+	if (!Has( iDiscoPass))
+		{
+		Print( 6);
+		}
+	else
+		{
+		if (!nearBouncer)
+			{
+			Set( notCloseEnough);
+			}
+		else
+			{
+			if (preventBouncer)
+				{
+				Print( 8);
+				}
+			else
+				{
+				Print( 4);
+				Print( 3);
+				Set( preventBouncer);
+				StartUpdate( aBouncer);
+				SetCel( aBouncer, 0);
+				RepositionTo( aBouncer, 73, 120);
+				StopUpdate( aBouncer);
+				ForceUpdate( aBouncer);
+				IgnoreBlocks( ego);
+				if (!shownPassToBouncer)
+					{
+					Set( shownPassToBouncer);
+					currentScore += 5;
+					}
+
+				}
+			}
+		}
+	}
+
+
+
+[	Errors, but still I'm gracious enough to handle them...
+
+if ((Said( open, door) ||
+	Said( knock) ||
+	Said( knock, on, door) ||
+	Said( knock, door)))
+	{
+	if (nearTaxi)
+		{
+		Reset( haveMatch);
+		}
+	else
+		{
+		Print( 19);
+		}
+	}
+
+
+[*****
+:noInput
+[*****
+
+if (!preventBouncer)
+	{
+	if (nearBouncer && !bouncerWorking)
+		{
+		Set( bouncerWorking);
+		StartUpdate( aBouncer);
+		EndOfLoop( aBouncer, stopBouncer);
+		}
+	else
+		{
+		if (!nearBouncer && bouncerWorking)
+			{
+			Reset( bouncerWorking);
+			SetCel( aBouncer, 0);
+			ForceUpdate( aBouncer);
+			Set( stopBouncer);
+			}
+		}
+
+	if (stopBouncer)
+		{
+		Reset( stopBouncer);
+		StopUpdate( aBouncer);
+
+		if (!readMessage)
+			{
+			Set( readMessage);
+			Print( 9);
+			}
+		}
+	}
+
+
+
+[*****
+:exit							[	test for leaving the room
+[*****
+
+Call( lgcStreet);
+
+if (edgeEgoHit == LEFT)			{newRoom = rmOutside7_11;}
+if (edgeEgoHit == TOP)			{newRoom = rmInsideDisco;}
+if (edgeEgoHit == RIGHT)			{newRoom = rmDarkAlley;}

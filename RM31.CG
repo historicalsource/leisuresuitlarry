@@ -1,0 +1,302 @@
+[logics for room 31 -- rmInsideCasino
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm31.msg"
+%include	"gamedefs.h"
+
+
+
+%define	L_21_PLAYERS			0
+%define	L_21_GIRL				1
+%define	L_SLOT_PLAYERS			2
+%define	L_SLOT_WINNER			3
+
+
+%define	nearWrong21			lf0
+%define	near21				lf1
+%define	nearSlots				lf2
+%define	dealing				lf3
+[%define	lf4
+[%define	lf5
+
+
+%define	bjTimer				lv0
+%define	slotTimer				lv1
+[%define	lv2
+[%define	lv3
+[%define	lv4
+
+
+%object	a21Game				1
+%object	aSlotWinner			2
+[%object	a	3
+
+
+
+if (initLog)
+	{
+	SetHorizon( 91);
+
+	LoadPic( currentRoom);
+	DrawPic( currentRoom);
+	DiscardPic( currentRoom);
+
+	LoadView( vCasinoPatrons);
+[	LoadView( v);
+
+	AnimateObj( a21Game);
+	IgnoreBlocks( a21Game);
+	IgnoreObjs( a21Game);
+	SetView( a21Game, vCasinoPatrons);
+	SetLoop( a21Game, L_21_PLAYERS);
+	SetCel( a21Game, 0);
+	SetPriority( a21Game, 12);
+	Position( a21Game, 39, 121);
+	Draw( a21Game);
+	StopUpdate( a21Game);
+	bjTimer = 21;
+
+	AnimateObj( aSlotWinner);
+	SetView( aSlotWinner, vCasinoPatrons);
+	SetLoop( aSlotWinner, L_SLOT_WINNER);
+	SetCel( aSlotWinner, 0);
+	Position( aSlotWinner, 113, 128);
+	Draw( aSlotWinner);
+	StopUpdate( aSlotWinner);
+	slotTimer = 0;
+
+	LoadView( vCasinoInterior);
+	AddToPic( vCasinoInterior, 0, 0,  92, 116, 11, 4);
+	AddToPic( vCasinoInterior, 0, 0, 111, 140, 13, 4);
+	DiscardView( vCasinoInterior);
+
+	AddToPic( vCasinoPatrons, L_SLOT_PLAYERS, 0, 101, 128, 11, 0);
+	AddToPic( vCasinoPatrons, L_SLOT_PLAYERS, 1, 138, 153, 13, 0);
+	AddToPic( vCasinoPatrons, L_SLOT_PLAYERS, 2, 125, 153, 13, 0);
+	AddToPic( vCasinoPatrons, L_SLOT_PLAYERS, 3, 107, 104, 11, 4);
+	AddToPic( vCasinoPatrons, L_SLOT_PLAYERS, 4, 123, 126, 13, 4);
+	AddToPic( vCasinoPatrons, L_SLOT_PLAYERS, 5, 114, 105, 11, 4);
+
+	AddToPic( vCasinoPatrons, L_21_GIRL, 0, 35, 127, 13, 4);
+			[view, loop, cel, x, y, obj priority, box priority
+
+
+	if (previousRoom == rmElevatorBottom)
+		{
+		egoX = 75;
+		egoY = 93;
+		}
+	else
+		{
+		if ((previousRoom == rmSlots ||
+			previousRoom == rmBlackjack))
+			{
+			egoX = sourceX;
+			egoY = sourceY;
+			}
+		else
+			{
+			egoX = 77;
+			egoY = 167;
+			}
+	 	}
+	PositionV( ego, egoX, egoY);
+	Draw( ego);
+
+	ShowPic( );
+
+	Return( );
+
+	}							[	end initLOG
+
+
+Reset( nearSlots);
+if ((Posn( ego, 106, 137, 140, 143) ||
+	Posn( ego, 108, 153, 120, 157) ||
+	Posn( ego,  89, 128,  98, 133) ||
+	Posn( ego,  88, 116,  98, 119)))
+	{
+	Set( nearSlots);
+	Set( nearPerson);
+	}
+
+Reset( near21);
+if (Posn( ego, 18, 133, 47, 154))
+	{
+	Set( near21);
+	Set( nearPerson);
+	}
+
+Reset( nearWrong21);
+if (Posn( ego, 31, 121, 60, 136))
+	{
+	Set( nearWrong21);
+	Set( nearPerson);
+	}
+
+
+[*****
+:handleInput
+[*****
+
+if (!haveInput)				{goto noInput;}
+
+if ((Said( look) ||
+	Said( look, room) ||
+	Said( look, casino) ||
+	Said( look, hall)))
+	{
+	Print( 1);
+	}
+
+if ((Said( talk, man) ||
+	Said( talk, women) ||
+	Said( talk, people)))
+	{
+	if (near21)
+		{
+		Print( 10);
+		}
+	else
+		{
+		Print( 9);
+		}
+	}
+
+if ((Said( look, man) ||
+	Said( look, women) ||
+	Said( look, people)))
+	{
+	Print( 6);
+	}
+
+if ((Said( talk, blackjack, man) ||
+	Said( talk, blackjack, women) ||
+	Said( talk, blackjack, people) ||
+	Said( look, blackjack, table) ||
+	Said( look, blackjack, man) ||
+	Said( look, blackjack, women) ||
+	Said( look, blackjack, people)))
+	{
+	Print( 8);
+	}
+
+
+if ((Said( look, table) ||
+	Said( look, blackjack) ||
+	Said( look, blackjack, table)))
+	{
+	if (nearWrong21)
+		{
+		Print( 3);
+		}
+	else
+		{
+		Print( 2);
+		}
+	}
+
+if (Said( look, slots))
+	{
+	Print( 5);
+	}
+
+
+if ((Said( bet, money) ||
+	Said( play) ||
+	Said( gamble, rol)))
+	{
+	Print( 7);
+	}
+
+if ((Said( play, blackjack) ||
+	Said( sit) ||
+	Said( sit, stool) ||
+	Said( sit, down)))
+	{
+	if (nearWrong21)
+		{
+		Print( 3);
+		}
+	else
+		{
+		if (!near21)
+			{
+			Set( notCloseEnough);
+			}
+		else
+			{
+			Set( OK);
+			sourceX = egoX;
+			sourceY = egoY;
+			newRoom = rmBlackjack;
+			}
+		}
+	}
+
+if ((Said( use, slot) ||
+	Said( pull, handle) ||
+	Said( put, money, slot) ||
+	Said( put, money, machine) ||
+	Said( play, slots)))
+	{
+	if (!nearSlots)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Set( OK);
+		sourceX = egoX;
+		sourceY = egoY;
+		newRoom = rmSlots;
+		}
+	}
+
+
+
+[*****
+:noInput
+[*****
+
+--slotTimer;
+if (slotTimer == 1)
+	{
+	SetCel( aSlotWinner, 0);
+	StopUpdate( aSlotWinner);
+	ForceUpdate( aSlotWinner);
+	Random( 33, 77, bjTimer);
+	}
+
+if (slotTimer == 21)
+	{
+	StartUpdate( aSlotWinner);
+	}
+
+
+--bjTimer;
+if (bjTimer == 1)
+	{
+	Toggle( dealing);
+	if (!dealing)
+		{
+		SetCel( a21Game, 0);
+		StopUpdate( a21Game);
+		ForceUpdate( a21Game);
+		Random( 55, 222, slotTimer);
+		}
+	else
+		{
+		StartUpdate( a21Game);
+		Random( 11, 33, bjTimer);
+		}
+	}
+
+
+[*****
+:exit							[	test for leaving the room
+[*****
+
+if (edgeEgoHit == BOTTOM)		{newRoom = rmOutsideCasino;}
+if (edgeEgoHit == TOP)			{newRoom = rmElevatorBottom;}

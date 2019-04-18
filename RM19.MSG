@@ -1,0 +1,21 @@
+[messages for room 19 -- rmSunrise
+[	"Leisure-Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+%message	1
+"Oh, no!\n\n
+Stepping outside, you see the sun rising in the east.
+ Glancing at your watch, you realize the terrible truth..."
+
+%message	2
+"...your night in Sierra World is over,
+ and (technically speaking) you're still..."
+
+%message	3
+"a"
+
+%message	4
+"\n\n
+VIRGIN!!!\n\n"
+

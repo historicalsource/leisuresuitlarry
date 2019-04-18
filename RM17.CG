@@ -1,0 +1,1079 @@
+[logics for room 17 -- rmHooker
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm17.msg"
+%include	"gamedefs.h"
+
+
+
+[	"remove rubber", or get arrested when you go outside.
+
+[	"look window" "go window"  If go back down stairs, does
+[pimp do anything?
+
+
+
+#define	L_AFTER_HUMPING		  0
+#define	L_BEFORE_HUMPING		  1
+#define	HUMP_X				 31
+#define	HUMP_Y				146
+#define	HUMP_TIME				 20	[	seconds
+#define	L_MOUTH				  0
+#define	L_EYES				  1
+
+
+%define	hookerCycling			lf0
+%define	smokeDone				lf1
+%define	nearBed				lf2
+%define	nearWindow			lf3
+%define	egoOutWindow			lf4
+%define	nearTable				lf5
+%define	onStairs				lf6
+%define	lookingAtCloseup		lf7
+%define	windowOpen			lf8
+%define	eyesBlinking			lf9
+%define	mouthChewing			lf10
+%define	egoNaked				lf11
+%define	humpOver				lf12
+%define	cutToCloseup			lf13
+%define	cutToLongShot			lf14
+%define	inFrontOfBed			lf15
+%define	egoDressed			lf16
+
+
+%define	humpTimer				lv0
+%define	humpCycles			lv1
+%define	hookerCycles			lv2
+%define	mouthCycles			lv3
+%define	eyeCycles				lv4
+%define	closeupLineTimer		lv5
+%define	action				lv6
+
+
+%object	aHooker				1
+%object	aEyes				2
+%object	aMouth				3
+%object	aWindow				4
+%object	aCandy				5
+
+
+
+if (initLog)
+	{
+	SetHorizon( 44);
+
+	picture = picHookerCloseup;
+	LoadPic( picture);
+
+	LoadPic( currentRoom);
+	DrawPic( currentRoom);
+
+	LoadView( vHooker);
+	LoadView( vHookerFace);
+	LoadView( vHookerWindow);
+	LoadView( vEgoWithHooker);
+	LoadView( vEgoUndressing);
+	LoadView( vEgoLeavingWindow);
+	LoadView( vCandy);
+
+
+	if (ObjInRoom( iCandy, currentRoom))
+		{
+		AnimateObj( aCandy);
+		SetView( aCandy, vCandy);
+		Position( aCandy, 135, 137);
+		Draw( aCandy);
+		StopUpdate( aCandy);
+		}
+
+	AnimateObj( aMouth);
+	SetView( aMouth, vHookerFace);
+	SetLoop( aMouth, L_MOUTH);
+	SetCel( aMouth, 0);
+	Position( aMouth, 56, 86);
+
+	AnimateObj( aEyes);
+	IgnoreHorizon( aEyes);
+	SetView( aEyes, vHookerFace);
+	SetLoop( aEyes, L_EYES);
+	SetCel( aEyes, 0);
+	Position( aEyes, 50, 42);
+	CycleTime( aEyes, three);
+	StopCycling( aEyes);
+
+
+	AnimateObj( aHooker);
+	IgnoreHorizon( aHooker);
+	IgnoreBlocks( aHooker);
+	IgnoreObjs( aHooker);
+	SetView( aHooker, vHooker);
+	if (!scoredHooker)
+		{
+		Position( aHooker, 23, 131);
+		SetLoop( aHooker, L_BEFORE_HUMPING);
+		}
+	else
+		{
+		Position( aHooker, 14, 131);
+		SetLoop( aHooker, L_AFTER_HUMPING);
+		}
+	SetCel( aHooker, 0);
+	Draw( aHooker);
+	StopCycling( aHooker);
+
+	AnimateObj( aWindow);
+	IgnoreBlocks( aWindow);
+	IgnoreObjs( aWindow);
+	SetView( aWindow, vHookerWindow);
+	SetPriority( aWindow, 5);
+	if (hookerWindowOpen)
+		{
+		LastCel( aWindow, work);
+		SetCelV( aWindow, work);
+		}
+	else
+		{
+		SetCel( aWindow, 0);
+		}
+	Position( aWindow, 129, 100);
+	Draw( aWindow);
+	CycleTime( aWindow, three);
+	StopUpdate( aWindow);
+
+
+	if (previousRoom == rmAlley)
+		{
+		egoX = 123;
+		egoY = 126;
+		}
+	else
+		{
+		Set( onStairs);
+		SetPriority( ego, 9);
+		Set( ignoreSpecial);
+		ObserveBlocks( ego);
+
+		egoX = 54;
+		egoY = 116;
+	 	}
+	SetLoop( ego, FACING_LEFT);
+	PositionV( ego, egoX, egoY);
+	Draw( ego);
+
+
+	ShowPic( );
+
+	Random( 44, 111, hookerCycles);
+
+	Return( );
+
+	}							[	end initLOG
+
+
+
+if (onWater)						[	P3 water is the divider between 
+	{							[		stairs and room.
+	if ((egoDir == EGO_DOWN ||
+		egoDir == EGO_DOWN_LEFT ||
+		egoDir == EGO_DOWN_RIGHT))
+		{
+		Reset( onStairs);
+		}
+	else
+		{
+		Set( onStairs);
+		}
+	}
+
+if (onStairs)						[	He's in the hole (of stairwell).
+	{
+	SetPriority( ego, 9);
+	Set( ignoreSpecial);
+	ObserveBlocks( ego);
+	}
+else
+	{
+	if (currentStatus == NORMAL)		[	He's walkin' around the room.
+		{
+		ReleasePriority( ego);
+		IgnoreBlocks( ego);
+		Reset( ignoreSpecial);
+		}
+	}
+
+if (hitSpecial)					[	Bounce him back to where he was
+	{							[		last frame, if he tries to
+	Reset( hitSpecial);				[		walk through the railing.
+	RepositionToV( ego, oldEgoX, oldEgoY);
+	StartMotion( ego);
+	}
+
+
+Reset( inFrontOfBed);
+if (Posn( ego, 11, 144, 48, 151))
+	{
+	Set( inFrontOfBed);
+	Set( nearPerson);
+	}
+
+Reset( nearBed);
+if (Posn( ego, 11, 127, 48, 151))
+	{
+	Set( nearBed);
+	Set( nearPerson);
+	}
+
+Reset( nearWindow);
+if (Posn( ego, 116, 118, 137, 139))
+	{
+	Set( nearWindow);
+	}
+
+Reset( nearTable);
+if (Posn( ego, 124, 138, 139, 155))
+	{
+	Set( nearTable);
+	}
+
+
+[*****
+:handleInput
+[*****
+
+if (!haveInput)				{goto noInput;}
+
+if ((Said( look) ||
+	Said( look, wall) ||
+	Said( look, room)))
+	{
+	Print( 1);
+	Print( 19);
+	Print( 38);
+	}
+
+if ((Said( look, window) ||
+	Said( look, out, window)))
+	{
+	Print( 29);
+	}
+
+if (Said( look, radiator, rol))
+	{
+	Print( 32);
+	}
+
+if (Said( turn, on, radiator))
+	{
+	Print( 35);
+	}
+
+if ((Said( use, hammer, on, radiator) ||
+	Said( hit, radiator, with, hammer) ||
+	Said( hit, radiator, hammer) ||
+	Said( hammer, radiator)))
+	{
+	if (!Has( iHammer))
+		{
+		Set( dontHaveIt);
+		}
+	else
+		{
+		Print( 43);
+		}
+	}
+
+
+if ((Said( talk, girl) ||
+	Said( talk, pussy)))
+	{
+	if (!scoredHooker)
+		{
+		Print( 20);
+		}
+	else
+		{
+		Print( 21);
+		Print( 22);
+		}
+	}
+
+if ((Said( kiss, girl) ||
+	Said( anyword, boob) ||
+	Said( anyword, ass) ||
+	Said( anyword, dirty$word) ||
+	Said( dirty$word, anyword) ||
+	Said( cunnilingus, rol)))
+	{
+	if (!nearBed)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 31);
+		}
+	}
+
+
+if (Said( look, light))
+	{
+	Print( 33);
+	}
+
+if (Said( look, under, rol))
+	{
+	Print( 34);
+	}
+
+if (Said( look, table))
+	{
+	if (ObjInRoom( iCandy, currentRoom))
+		{
+		Print( 4);
+		}
+	else
+		{
+		Print( 16);
+		}
+	}
+
+if (Said( move, table))
+	{
+	if (!nearTable)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 44);
+		}
+	}
+
+if ((Said( look, candy) ||
+	Said( look, box, candy) ||
+	Said( look, box)))
+	{
+	if (!ObjInRoom( iCandy, currentRoom))
+		{
+		Reset( haveMatch);
+		}
+	else
+		{
+		if (!nearTable)
+			{
+			Set( notCloseEnough);
+			}
+		else
+			{
+			Print( 4);
+			}
+		}
+	}
+
+if ((Said( take, candy) ||
+	Said( take, box, candy) ||
+	Said( take, box) ||
+	Said( take, piece, candy) ||
+	Said( take, piece, candy, from, box) ||
+	Said( take, piece, candy, box) ||
+	Said( take, box) ||
+	Said( take, candy, table)))
+	{
+	if (!nearTable)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		if (!ObjInRoom( iCandy, currentRoom))
+			{
+			Set( alreadyGotIt);
+			}
+		else
+			{
+			action = 1;
+			}
+		}
+	}
+
+if (!Has( iCandy) &&
+    (Said( use, candy, rol) ||
+	Said( open, box, rol) ||
+	Said( open, candy, rol) ||
+	Said( use, anyword, candy, rol) ||
+	Said( eat, anyword, candy, rol) ||
+	Said( eat, candy, rol)))
+	{
+	Set( dontHaveIt);
+	}
+
+
+if ((Said( look, girl) ||
+	Said( look, pussy) ||
+	Said( look, bed)))
+	{
+	if (scoredHooker)
+		{
+		Print( 10);
+		}
+	else
+		{
+		if (currentStatus == NAKED)
+			{
+			Print( 46);
+			}
+		else
+			{
+			Set( cutToCloseup);
+			}
+		}
+	}
+
+if ((Said( look, under, pillow) ||
+	Said( lift, pillow)))
+	{
+	Print( 39);
+	}
+
+if (Said( take, pillow))
+	{
+	Print( 40);
+	}
+
+if (Said( tie, rope, rol))
+	{
+	if (!Has( iRope))
+		{
+		Set( dontHaveIt);
+		}
+	else
+		{
+		Print( 45);
+		}
+	}
+
+if (Said( smell, rol))
+	{
+	Print( 6);
+	}
+
+if ((Said( lick, pussy) ||
+	Said( eat, girl)))
+	{
+	if (!nearBed)
+		{
+		Print( 7);
+		}
+	else
+		{
+		Print( 8);
+		Erase( ego);
+		Set( certainDeath);
+		}
+	}
+
+if ((Said( blow, me) ||
+	Said( give, head)))
+	{
+	if (!nearBed)
+		{
+		Print( 7);
+		}
+	else
+		{
+		Print( 24);
+		Set( handsOff);
+		Erase( ego);
+		Set( certainDeath);
+		}
+	}
+
+if ((Said( open, window) ||
+	Said( raise, window)))
+	{
+	if (!nearWindow)
+		{
+		Set( notCloseEnough);				
+		}
+	else
+		{
+		if (hookerWindowOpen)
+			{
+			Print( 12);
+			}
+		else
+			{
+			action = 2;
+			}
+		}
+	}
+
+
+if ((Said( close, window) ||
+	Said( lower, window)))
+	{
+	if (!nearWindow)
+		{
+		Set( notCloseEnough);				
+		}
+	else
+		{
+		Print( 13);
+		}
+	}
+
+
+if ((Said( enter, window) ||
+	Said( go, back) ||
+	Said( jump, out, window) ||
+	Said( jump, out) ||
+	Said( climb, out, window) ||
+	Said( leave, room) ||
+	Said( climb, window) ||
+	Said( climb, out) ||
+	Said( climb, out, on, railing) ||
+	Said( climb, out, railing) ||
+	Said( climb, on, railing) ||
+	Said( climb, railing) ||
+	Said( go, out, on, railing) ||
+	Said( go, out, railing) ||
+	Said( go, on, railing) ||
+	Said( go, railing) ||
+	Said( go, out, window) ||
+	Said( go, window)))
+	{
+	if (!nearWindow)
+		{
+		Set( notCloseEnough);				
+		}
+	else
+		{
+		if (!hookerWindowOpen)
+			{
+			Print( 14);
+			}
+		else
+			{
+			action = 3;
+			}
+		}
+	}
+
+
+if ((Said( get, naked) ||
+	Said( drop, pants) ||
+	Said( take, clothes, off) ||
+	Said( remove, clothes) ||
+	Said( strip) ||
+	Said( strip, naked) ||
+	Said( remove, clothes, climb, bed)))
+	{
+	if (!nearBed)
+		{
+		Set( notCloseEnough);				
+		}
+	else
+		{
+		if (!inFrontOfBed)
+			{
+			Print( 28);
+			}
+		else
+			{
+			if (scoredHooker)
+				{
+				Print( 9);
+				}
+			else
+				{
+				if (currentStatus == NAKED)
+					{
+					Print( 41);
+					}
+				else
+					{
+					action = 4;
+					}
+				}
+			}
+		}
+	}
+
+if ((Said( get, dressed) ||
+	Said( wear, pants) ||
+	Said( put$on, clothes) ||
+	Said( put, clothes, on) ||
+	Said( wear, clothes) ||
+	Said( dress) ||
+	Said( dress, clothes)))
+	{
+	if (currentStatus != NAKED)
+		{
+		Reset( haveMatch);
+		}
+	else
+		{
+		action = 6;
+		}
+	}
+
+if ((Said( take, underwear) ||
+	Said( wear, underwear) ||
+	Said( wear, underwear, from, line) ||
+	Said( wear, underwear, off, line) || 
+	Said( take, underwear, from, line) ||
+	Said( take, underwear, off, line)))
+	{
+	Print( 23);
+	}
+
+if ((Said( look, line) ||
+	Said( look, rope) ||
+	Said( look, underwear, rol)))
+	{
+	Print( 30);
+	}
+
+if ((Said( take, line) ||
+	Said( cut, line, rol) ||
+	Said( pull, rope) ||
+	Said( untie, rope) ||
+	Said( pull, line) ||
+	Said( untie, line) ||
+	Said( cut, rope, rol) ||
+	Said( take, rope)))
+	{
+	Print( 37);
+	}
+
+
+if ((Said( hump, girl) ||
+	Said( hump, pussy) ||
+	Said( sleep, girl) ||
+	Said( hump) ||
+	Said( go, bed) ||
+	Said( get, on, bed) ||
+	Said( get, bed) ||
+	Said( lie, on, bed) ||
+	Said( lie, bed) ||
+	Said( climb, on)))
+	{
+	if (currentStatus != NAKED)
+		{
+		Print( 42);
+		}
+	else
+		{
+		action = 7;
+		}
+	}
+
+
+if ((Said( use, rubber) ||
+	Said( wear, rubber)))
+	{
+	if (!Has( iRubber))
+		{
+		Set( dontHaveIt);
+		}
+	else
+		{
+		if (wearingRubber)
+			{
+			Print( 3);
+			}
+		else
+			{
+			if (scoredHooker)
+				{
+				Print( 26);
+				}
+			else
+				{
+				if (currentStatus != NAKED)
+					{
+					Print( 42);
+					}
+				else
+					{
+					action = 5;
+					}
+				}
+			}
+		}
+	}
+
+
+[*****
+:noInput
+[*****
+
+if (cutToCloseup)
+	{
+	Reset( cutToCloseup);
+	PreventInput();
+	Set( lookingAtCloseup);
+    	Set( handsOff);
+
+	UnanimateAll();				[	This command requires afterwards:
+								[		start.update();
+								[		start.motion();
+								[		start.cycling();
+								[		normal.cycle();
+								[		observe.blocks();
+								[		observe.horizon();
+								[		obj.on.anything();
+								[		release.priority();
+								[		release.loop();
+								[		observe.objects();
+
+	DrawPic( picture);
+
+	AnimateObj( aMouth);
+	SetPriority( aMouth, 4);
+	if (mouthOK)
+		{
+		SetCel( aMouth, 1);			[	smile
+		eyeCycles = 22;
+		mouthCycles = 11;
+		}
+	else
+		{
+		SetCel( aMouth, 2);			[	frown
+		}
+	Draw( aMouth);
+	StopCycling( aMouth);			[	timer may start it soon.
+
+	AnimateObj( aEyes);
+	IgnoreHorizon( aEyes);
+	SetCel( aEyes, NORMAL);
+	SetPriority( aEyes, 5);
+	Draw( aEyes);
+	CycleTime( aEyes, two);
+	StopCycling( aEyes);
+	
+	ShowPic();
+	closeupLineTimer = 9;
+	}
+
+if (cutToLongShot)
+	{
+	Reset( cutToLongShot);
+	Reset( lookingAtCloseup);
+    	Reset( handsOff);
+	AcceptInput();
+
+	UnanimateAll();
+
+	eyeCycles = 0;
+	mouthCycles = 0;
+	closeupLineTimer = 0;
+
+	DrawPic( currentRoom);
+
+	AnimateObj( aHooker);
+	IgnoreHorizon( aHooker);
+	IgnoreBlocks( aHooker);
+	IgnoreObjs( aHooker);
+	Draw( aHooker);
+	StopCycling( aHooker);
+
+	AnimateObj( ego);
+	Draw( ego);
+
+	if (ObjInRoom( iCandy, currentRoom))
+		{
+		AnimateObj( aCandy);
+		Draw( aCandy);
+		StopUpdate( aCandy);
+		}
+
+	AnimateObj( aWindow);
+	IgnoreBlocks( aWindow);
+	IgnoreObjs( aWindow);
+	SetPriority( aWindow, 5);
+	Draw( aWindow);
+	CycleTime( aWindow, three);
+	StopUpdate( aWindow);
+
+	ShowPic();
+	}
+
+
+if (egoNaked)
+	{
+	Reset( egoNaked);
+	currentStatus = NAKED;
+	StopMotion( ego);
+	Reset( keepCycling);
+	Set( programControl);
+	}
+
+if (egoDressed)
+	{
+	Reset( egoDressed);
+	currentStatus = NORMAL;
+	StartMotion( ego);
+	SetView( ego, vEgo);
+	CycleTime( ego, one);
+	Reset( keepCycling);
+	Reset( programControl);
+	}
+
+
+--humpCycles;
+if  (humpCycles == 1 &&
+	currentStatus == HUMPING_HOOKER)
+	{
+	Random( 5, 15, humpCycles);
+	Random( 0, 4, work);
+	CycleTime( ego, work);
+	}
+
+
+if (aSecondPassed)
+	{
+	--closeupLineTimer;
+	if (closeupLineTimer == 1 &&
+		lookingAtCloseup)
+		{
+		Set( cutToLongShot);
+		if (mouthOK)
+			{
+			Print( 18);
+			}
+		else
+			{
+			Print( 17);
+			}
+		}
+
+	--humpTimer;
+	if (humpTimer == 1)
+		{
+		SetView( ego, vEgoUndressing);
+		LastCel( ego, work);
+		SetCelV( ego, work);
+		RepositionTo( ego, HUMP_X, HUMP_Y);
+		ReleasePriority( ego);
+		Set( keepCycling);
+		CycleTime( ego, three);
+		BeginningOfLoop( ego, humpOver);
+
+		Position( aHooker, 14, 131);
+		SetLoop( aHooker, L_AFTER_HUMPING);
+		Draw( aHooker);
+		}
+	}
+
+
+if (humpOver)
+	{
+	Reset( humpOver);
+	SetView( ego, vEgo);
+	Reset( keepCycling);
+	StartMotion( ego);
+	Reset( programControl);
+	CycleTime( ego, one);
+
+	Set( scoredHooker);
+	currentScore += 11;
+	currentStatus = NORMAL;
+	animationInterval = oldAnimationInterval;
+	Random( 11, 22, hookerCycles);
+	Print( 5);
+
+	AcceptInput();
+	if (wearingRubber)
+		{
+		Print( 11);
+		}
+	else
+		{
+		Set( diedOfTheClap);
+		}
+	}
+
+
+--eyeCycles;
+if (eyeCycles == 1)
+	{
+	Toggle( eyesBlinking);
+	if (eyesBlinking)
+		{
+		StartCycling( aEyes);
+		Random( 6, 16, eyeCycles);
+		}
+	else
+		{
+		StopCycling( aEyes);
+		SetCel( aEyes, 0);
+		ForceUpdate( aEyes);
+		Random( 22, 33, eyeCycles);
+		}
+	}
+
+--mouthCycles;
+if (mouthCycles == 1)
+	{
+	Toggle( mouthChewing);
+	if (mouthChewing)
+		{
+		StartCycling( aMouth);
+		Random( 26, 56, mouthCycles);
+		}
+	else
+		{
+		StopCycling( aMouth);
+		SetCel( aMouth, 0);
+		Random( 7, 17, mouthCycles);
+		}
+	}
+
+
+--hookerCycles;
+if (hookerCycles == 1)
+	{
+	Toggle( hookerCycling);
+	if (hookerCycling)
+		{
+		StartCycling( aHooker);
+		}
+	else
+		{
+		StopCycling( aHooker);
+		}
+
+	if (scoredHooker)
+		{
+		Random( 44, 66, hookerCycles);
+		EndOfLoop( aHooker, smokeDone);
+		}
+	else
+		{
+		Random( 11, 22, hookerCycles);
+		}
+	}
+
+
+if (smokeDone)
+	{
+	Reset( smokeDone);
+	Reset( hookerCycling);
+	StopCycling( aHooker);
+	SetCel( aHooker, 0);
+	}
+
+if (windowOpen)
+	{
+	Reset( windowOpen);
+	StopCycling( aWindow);
+	StopUpdate( aWindow);
+	Set( hookerWindowOpen);
+	}
+
+
+if (action)
+	{
+	if (action == 1)
+		{
+		Set( OK);
+		Get( iCandy);
+		currentScore += 2;
+		StartUpdate( aCandy);
+		Erase( aCandy);
+		}
+
+	if (action == 2)
+		{
+		Set( OK);							
+		StartUpdate( aWindow);
+		EndOfLoop( aWindow, windowOpen);
+		}
+
+	if (action == 3)
+		{
+		currentStatus = LEAVING_WINDOW;
+		SetView( ego, vEgoLeavingWindow);
+		SetCel( ego, 0);
+		SetPriority( ego, 15);
+		RepositionTo( ego, 125, 125);
+		CycleTime( ego, three);
+		StopMotion( ego);
+		Set( programControl);
+		Set( keepCycling);
+		EndOfLoop( ego, egoOutWindow);
+		}
+
+	if (action == 4)
+		{
+		StopMotion( ego);
+		SetView( ego, vEgoUndressing);
+		SetCel( ego, 0);
+		CycleTime( ego, three);
+		Set( keepCycling);
+		EndOfLoop( ego, egoNaked);
+		}
+
+	if (action == 5)
+		{
+		Print( 2);
+		Set( wearingRubber);
+		Drop( iRubber);
+		Get( iUsedRubber);
+		if (!wornRubber)
+			{
+			Set( wornRubber);
+			currentScore += 10;
+			}
+		}
+
+	if (action == 6)
+		{
+		SetView( ego, vEgoUndressing);
+		LastCel( ego, work);
+		SetCelV( ego, work);
+		CycleTime( ego, three);
+		Set( keepCycling);
+		BeginningOfLoop( ego, egoDressed);
+		}
+
+	if (action == 7)
+		{
+		currentStatus = HUMPING_HOOKER;
+		humpTimer = HUMP_TIME;
+		Random( 25, 45, humpCycles);
+		oldAnimationInterval = animationInterval;
+		animationInterval = FASTEST_SPEED;
+
+		SetView( ego, vEgoWithHooker);
+		RepositionTo( ego, 15, 130);
+		SetPriority( ego, 15);
+		Set( keepCycling);
+		PreventInput();
+		StopMotion( ego);
+		Set( programControl);
+
+		Erase( aHooker);
+		Set( smokeDone);				[	setcel, stopcycling, etc.
+		}
+	action = 0;
+	}
+
+
+[*****
+:exit							[	test for leaving the room
+[*****
+
+if  (onStairs &&
+	posn( ego, 66, 132, 70, 133))
+	{
+	newRoom = rmBackroom;
+	}
+
+if (egoOutWindow)
+	{
+	currentEgoView = NORMAL;
+	newRoom = rmAlley;
+	}

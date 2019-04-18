@@ -1,0 +1,179 @@
+[logics for room 51 -- lgc.startup
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"gamedefs.h"
+%include	"contrlrs.h"
+
+
+
+%message	1	"_"
+%message	2	"]"
+%message	3	"LLLLL"
+
+
+
+SetCursorChar( 1);					[	cursor
+SetString( 0, 2);   				[	prompt
+SetGameId( 3);						[	id
+TraceInfo( lgcTrace, 2, 9);			[	sets: room, y TOP, lines tall
+SetTextAttribute( TEXT_COLOR, BG_COLOR);
+maxScore = 222;					[	set up the status line first
+if (monitorType != MONO)
+	{
+	ClearLines( 22, 24, BG_COLOR);
+	}
+
+ConfigureScreen( 1, 23, 0);
+Set( enableMenu);
+DisableItem( cDummy);
+Set( soundOn);
+egoStepSize = 1;
+egoStepTime = 1;
+egoCycleTime = 1;
+egoX = 77;
+egoY = 166;
+mouthMessage = 157;					[	First bad breath message.
+
+if ((machineType == PC		||
+	machineType == JR		||
+	machineType == TANDY	||
+	machineType == APPLEII))
+	{
+	Set( twoButtonJoystick);
+	}
+else
+	{
+	Set( mouseMachine);
+	if (machineType == ST)
+		{
+		Set( enableDoubleClick);
+		}
+	}
+
+dollars = 94;
+cabFareMin = 5;
+cabRideLength = 15;
+Set( mouthOK);
+sprayMinutes = SPRAY_INIT_MINUTES;
+watchHours = WATCH_INIT_HOURS;
+
+  one = 1;
+  two = 2;
+three = 3;
+ four = 4;
+ five = 5;
+
+[testRoom = 12;
+if (testRoom)
+	{
+[		Set( debugging);
+[		Reset( demo);
+[		Reset( programControl);
+[		AcceptInput();
+[		animationInterval = FASTEST_SPEED;
+[		Set( clockOn);
+[		Set( enableMenu);
+[		Set( passedTest);
+[		StatusLineOn();
+	}
+else
+	{
+	if (!restartInProgress)
+		{
+		Set( demo);				[	Set up for a real start!
+		Set( programControl);
+		PreventInput();
+		animationInterval = NORMAL_SPEED;
+		Reset( clockOn);
+		Reset( enableMenu);
+		StatusLineOff();
+		}
+	else
+		{
+		Reset( demo);				[	Don't do a real start.
+		StatusLineOn();
+		Set( passedTest);
+		Return();					[	Don't reassign keys.
+		}
+	}
+
+
+[	Assign keys to controller functions.
+SetKey( 0, 59, cHelp);				[F1
+SetKey( 0, 60, cSoundToggle);			[F2
+SetKey( 0, 61, cEchoLine);			[F3
+SetKey( 0, 62, cF4);				[F4
+SetKey( 0, 63, cSave);				[F5
+SetKey( 0, 64, cF6);				[F6
+SetKey( 0, 65, cRestore);			[F7
+SetKey( 0, 66, cF8);				[F8
+SetKey( 0, 67, cRestart);			[F9
+SetKey( 0, 68, cSpeed);				[F10
+
+
+[		Set control & alt keys.
+if (machineType == TANDY)
+	{
+	SetKey( 61, 0, cCrescendo);		[+
+	SetKey( 45, 0, cDecrescendo);		[-
+	SetKey( 43, 0, cCrescendo);		[+
+	}
+SetKey(  9,  0, cStatus);			[TAB
+if (machineType == AMIGA)
+	{
+	SetKey( 27,  0, cPause);			[ESC
+	}
+else
+	{
+	SetKey( 27, 0, cMenu);			[ESC
+	}
+
+SetKey(  2,  0, cBoss);				[^B
+SetKey(  3,  0, cCancelLine);			[^C
+SetKey(  5,  0, cEchoLine);			[^E
+SetKey( 10,  0, cInitJoy);			[^J
+SetKey( 18,  0, cToggleMonitor);		[^R
+SetKey( 19,  0, cSoundToggle);		[^S
+
+SetKey(  0, 32, cDebug);				[@D
+SetKey(  0, 18, cShowEgo);			[@E
+SetKey(  0, 23, cObjInfo);			[@I
+SetKey(  0, 50, cShowMem);			[@M
+SetKey(  0, 25, cShowPriority);		[@P
+SetKey(  0, 45, cSkipTest);			[@X
+SetKey(  0, 47, cVersion);			[@V
+SetKey(  0, 44, cQuit);				[@Z
+
+
+
+[		Substitute PCjr number keys as function keys.
+if (machineType == JR)				
+	{
+	SetKey( 49, 0, cHelp);			[1
+	SetKey( 50, 0, cSoundToggle);		[2
+	SetKey( 51, 0, cEchoLine);		[3
+	SetKey( 52, 0, cF4);			[4
+	SetKey( 53, 0, cSave);			[5
+	SetKey( 54, 0, cF6);			[6
+	SetKey( 55, 0, cRestore);		[7
+	SetKey( 56, 0, cF8);			[8
+	SetKey( 57, 0, cRestart);		[9
+	SetKey( 48, 0, cSpeed);			[0
+	}
+
+
+[	Set joystick controllers.
+SetKey( JOYSTICK_LOW_BYTE, BUTTON_0, cMenu);
+if (twoButtonJoystick)
+	{
+	SetKey( JOYSTICK_LOW_BYTE, BUTTON_1, cStatus);
+    [SetKey( JOYSTICK_LOW_BYTE, BUTTON_0_DOUBLE, c.doit);
+    [SetKey( JOYSTICK_LOW_BYTE, BUTTON_1_DOUBLE, c.useit);
+	}
+else {
+	if (machineType == ST)
+		{
+		SetKey( JOYSTICK_LOW_BYTE, BUTTON_0_DOUBLE, cStatus);
+		}
+	}

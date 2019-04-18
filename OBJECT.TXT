@@ -1,0 +1,40 @@
+[
+[	object.txt
+[
+[	LEISURE-SUIT LARRY IN THE LAND OF THE LOUNGE LIZARDS OBJECT TABLES
+[
+[	Thursday, May 14, 1987 at 11:06 a.m.
+[
+
+
+
+[************* ANIMATED OBJECTS
+[.numani	# of animated objects
+
+.numani	16
+
+
+
+[************* INVENTORY OBJECTS
+[.obj	object#, "Status screen name", room # at beginning of game
+
+.obj		 1, "Wallet", 		    	    255	
+.obj		 2, "Breath Spray",     	    255
+.obj		 3, "Pocket Lint", 	    	    255
+.obj		 4, "Wrist Watch",		    255
+.obj		 5, "Apple", 				32
+.obj		 6, "Diamond Ring", 		13
+.obj		 7, "Glass of Whiskey",		15
+.obj		 8, "Remote Control", 		14
+.obj		 9, "Rose", 				14
+.obj		10, "Prophylactic", 		21
+.obj		11, "Used Prophylactic", 	 0
+.obj		12, "Box of Candy", 		17
+.obj		13, "Inflatable Doll", 		45
+.obj		14, "Disco Pass", 			35
+.obj		15, "Pocket Knife", 		22
+.obj		16, "Bottle of Wine", 		21
+.obj		17, "\"Jugs\" Magazine", 	21
+.obj		18, "Hammer", 				12
+.obj		19, "Bottle of Pills", 		12
+.obj		20, "Rope", 				41

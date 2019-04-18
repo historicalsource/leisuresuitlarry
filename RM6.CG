@@ -1,0 +1,167 @@
+[logics for room 6 -- rmAgeTest
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm6.msg"
+%include	"gamedefs.h"
+
+
+%define	FIRST_QUESTION			1
+%define	LAST_QUESTION			43
+
+%define	missedOne				lf0
+
+%define	age					lv9	[	used in message 5
+%define	lgcQuestion			lv20
+
+
+if (!forceAtest &&
+	(passedTest || questionStatus == allDone))
+	{
+	Set( passedTest);
+	AcceptInput();
+	CancelLine();
+	PreventInput();
+	ClearLines( 22, 24, BG_COLOR);
+	Reset( handsOff);
+	Reset( programControl);
+	AcceptInput();
+
+	Print( 10);
+	NewRoom( rmRestart);
+	}
+
+if (initLog)
+	{
+	animationInterval = FASTEST_SPEED;
+	Set( handsOff);
+	PreventInput();
+	Reset( enableMenu);
+	StopMotion( ego);
+	Set( programControl);
+
+	LoadSound( sError);
+
+	picture = rmTitle;
+	LoadPic( picture);
+	DrawPic( picture);
+	DiscardPic( picture);
+
+	LoadView( vTitles);
+	AddToPic( vTitles, 0, 0,  4, 18, 4, 4);
+	AddToPic( vTitles, 0, 1,  4, 36, 4, 4);
+	AddToPic( vTitles, 0, 2, 46, 36, 4, 4);
+	AddToPic( vTitles, 0, 3, 11, 87, 4, 4);
+		   [view, loop, cel, x, y, obj priority, box priority
+	DiscardView( vTitles);
+
+	Random( 2, 4, lgcQuestion);
+	LoadLogicsV( lgcQuestion);
+
+	ClearLines( 22, 24, BG_COLOR);
+
+	ShowPic( );
+
+	questionStatus = askAnother;
+
+[		Set( forceAtest);
+	if (!forceAtest)
+		{
+		Print( 1);
+
+		GetNum( 2, age);
+		PreventInput();
+		AcceptInput();
+
+		if (age < 18)
+			{
+			Print( 4);			[  He's so dumb, he admits he's a kid.
+			Quit( 1);
+			}
+
+		if (age > 99)
+			{
+			Print( 12);			[	You can't be THAT old!
+			Quit( 1);
+			}
+
+		if (age > 65)
+			{
+			Print( 11);			[	You're an old fart!
+			}
+
+		Print( 3);				[	He says he's an adult.
+
+		question = 1;
+		}
+	}
+
+
+if (questionStatus == askAnother)
+	{
+	CallV( lgcQuestion);
+	}
+
+
+if (questionStatus == waiting)		[	now have answer in answer
+	{
+	CloseWindow( );
+	if ((answer == correctAnswer ||
+		!correctAnswer))
+		{
+		Set( leaveWindow);
+		Print( 8);				[	"Right
+		questionStatus = waitAwhileAlthoughCorrect;
+		scriptCycles = 8;
+		if (machineType == MAC)
+			{
+			scriptCycles = 3;
+			}
+		}
+	else
+		{
+		if (!missedOne)
+			{
+			questionStatus = askAnother;
+			Print( 5);			[	"You blew it.
+			Set( missedOne);
+			--question;
+			}
+		else
+			{
+			Print( 6);			[	"Ah Ha!!!
+			Quit( 1);
+			}
+		}
+	}
+
+
+
+if (scriptDone)
+	{
+	Reset( scriptDone);
+	if ((forceAtest ||
+		questionStatus == waitAwhileAlthoughCorrect))
+		{
+		questionStatus = askAnother;
+		}
+	else
+		{
+		ClearLines( 23, 23, BG_COLOR);
+		questionStatus = waiting;
+		}
+	}
+
+if (aSecondPassed && secondsInRoom == 5)
+	{
+	animationInterval = NORMAL_SPEED;
+	if ((passInRoom < 250 ||
+		machineType == MAC))
+		{
+		Set( slowProcessor);
+		}
+	if (forceAtest)
+		{
+		Print( 18);
+		}
+	}

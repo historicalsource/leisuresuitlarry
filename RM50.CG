@@ -1,0 +1,59 @@
+[logics for room 50 -- initLog for room 0
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"gamedefs.h"
+
+
+
+if (monitorType != MONO)
+	{
+	ClearLines( 22, 22, BG_COLOR);
+	ClearLines( 24, 24, BG_COLOR);
+	}
+
+if (!forceAtest)					[	activate close to shipping
+	{
+	Reset( debugging);
+	Reset( enableTrace);
+	}
+
+if (demo)
+	{
+	PreventInput();
+	}
+
+AnimateObj( ego);
+StepSize( ego, egoStepSize);
+StepTime( ego, egoStepTime);
+CycleTime( ego, egoCycleTime);
+GetPosn( ego, egoX, egoY);
+ObserveBlocks( ego);
+ObserveObjs( ego);
+ObserveHorizon( ego);
+
+egoLocation = 0;
+secondsInRoom = 0;
+passInRoom = 0;
+newRoom = 0;
+script = 0;
+scriptCycles = 0;
+scriptTimer = 0;
+
+Reset( outOfMemory);
+Reset( survivableFall);
+Reset( egoArrived);
+Reset( scriptDone);
+Reset( musicDone);
+Reset( soundDone);
+Reset( noScript);
+
+work = 255;
+:mrLooper						[All that remains of "Reset the world"
+ResetV( work);
+work @= 0;
+--work;
+if (work > 199)
+	{
+	goto mrLooper;
+	}

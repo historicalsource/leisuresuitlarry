@@ -1,0 +1,1413 @@
+[logics for room 42 -- rmSecurityDesk
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm42.msg"
+%include	"gamedefs.h"
+
+
+
+[	Must give Faith at the security desk the spanish fly pills to enter the
+[elevator to get to the penthouse above.
+
+[	Must "look faith" before talking to her.  Shows the picFaithCloseup.
+
+
+
+%define	L_EYES				1
+%define	L_MOUTH				0
+	#define	C_NORMAL		0		[	mouth cells
+	#define	C_SMILE		1
+	#define	C_FROWN		2
+	#define	DONE			255
+
+%define	L_SITTING				0
+%define	L_LEAVING				1
+%define	L_WALKING				2
+
+
+%define	nearDesk				lf0
+%define	nearEmployee'sExit		lf1
+%define	pentDoorsOpen			lf2
+%define	doorDone				lf3
+%define	inElevator			lf4
+%define	elevatorMoving			lf5
+%define	lookingAtFaith			lf6
+%define	eyesCycling			lf7
+%define	nearPentElevator		lf8
+%define	inPentElevator			lf9
+%define	wasInPentElevator		lf10
+%define	cutToLongShot			lf11
+%define	cutToCloseup			lf12
+
+
+%define	eyeCycles				lv0
+%define	breathLineTimer		lv1
+%define	lookCount				lv4
+%define	talkCount				lv5
+%define	mouthTimer			lv6
+%define	mouth				lv7
+
+
+%object	aElevator				1
+%object	aFaith				2
+%object	aDoor				3
+%object	aFloor				4
+%object	aMouth				5
+%object	aEyes				6
+%object	aPentElevator			7
+%object	aNumber				8
+
+
+
+if (initLog)
+	{
+	SetHorizon( 1);
+
+	LoadView( vElevator);
+	LoadView( vElevatorDoors);
+	LoadView( vElevatorNumbers);
+	LoadView( vEgoPushingElevator);
+	LoadView( vEgo);
+
+	if (!faithGone)
+		{
+		LoadView( vReceptionist);
+		LoadView( vReceptionistFace);
+
+		picture = picFaithCloseup;
+		LoadPic( picture);
+		}
+
+	LoadPic( currentRoom);
+	DrawPic( currentRoom);
+	[	DON'T DiscardPic( currentRoom);
+
+
+	AnimateObj( aPentElevator);
+	IgnoreBlocks( aPentElevator);
+	IgnoreObjs( aPentElevator);
+	SetPriority( aPentElevator, 10);
+	SetView( aPentElevator, vElevatorDoors);
+	SetCel( aPentElevator, 0);
+	Position( aPentElevator, 137, 120);
+	Draw( aPentElevator);
+	StopUpdate( aPentElevator);
+	work = DOOR_CYCLE_TIME;
+	CycleTime( aPentElevator, work);
+
+
+	if (!faithGone)
+		{
+		AnimateObj( aFaith);
+		IgnoreHorizon( aFaith);
+		IgnoreBlocks( aFaith);
+		IgnoreObjs( aFaith);
+		SetView( aFaith, vReceptionist);
+		SetLoop( aFaith, L_SITTING);
+		SetPriority( aFaith, 13);
+		StepSize( aFaith, two);
+		Position( aFaith, 128, 132);
+		Draw( aFaith);
+		StopUpdate( aFaith);
+		}
+
+
+	AnimateObj( aNumber);
+	IgnoreBlocks( aNumber);
+	IgnoreObjs( aNumber);
+	SetView( aNumber, vElevatorNumbers);
+	SetPriority( aNumber, 5);
+	Position( aNumber, 73, 100);
+	SetCel( aNumber, 8);
+	StopCycling( aNumber);
+
+	AnimateObj( aDoor);
+	IgnoreBlocks( aDoor);
+	IgnoreObjs( aDoor);
+	SetView( aDoor, vElevator);
+	SetLoop( aDoor, L_DOORS);
+	FixLoop( aDoor);
+	SetPriority( aDoor, 4);
+	Position( aDoor, 73, 120);
+	work = DOOR_CYCLE_TIME;
+	CycleTime( aDoor, work);
+
+	AnimateObj( aFloor);
+	IgnoreBlocks( aFloor);
+	IgnoreObjs( aFloor);
+	SetView( aFloor, vElevator);
+	SetLoop( aFloor, L_FLOOR);
+	FixLoop( aFloor);
+	Position( aFloor, 73, 129);
+	SetPriority( aFloor, 5);
+
+	AnimateObj( aElevator);
+	IgnoreBlocks( aElevator);
+	IgnoreObjs( aElevator);
+	SetView( aElevator, vElevator);
+	SetPriority( aElevator, 12);
+	FixLoop( aElevator);
+	StepSize( aElevator, two);
+	
+	
+	if (previousRoom == rmElevators)
+		{
+		Set( elevatorMoving);
+
+		SetLoop( aElevator, L_WITH_EGO);
+		LastCel( aElevator, work);
+		SetCelV( aElevator, work);
+		StopCycling( aElevator);
+		Position( aElevator, 73, 167);
+		Draw( aElevator);
+		MoveObj( aElevator, 73, 129, 2, scriptDone);
+		script = 100;
+
+		Draw( aDoor);
+		StopUpdate( aDoor);
+
+		Draw( aNumber);
+
+		SetView( ego, vEgo);
+		SetLoop( ego, FACING_FRONT);
+		SetPriority( ego, 11);
+		egoX = 76;
+		egoY = 127;
+		PositionV( ego, egoX, egoY);
+		[	Don't Draw ego!
+		}
+	else
+		{
+		Draw( aFloor);
+		StopUpdate( aFloor);
+
+		SetLoop( aElevator, L_EMPTY);
+		SetCel( aElevator, 0);
+		Position( aElevator, 73, 129);
+		Draw( aElevator);
+		StopUpdate( aElevator);
+
+		StopMotion( ego);
+		Set( programControl);
+		Set( wasInPentElevator);
+		SetLoop( ego, FACING_LEFT);
+		IgnoreBlocks( ego);
+		egoX = 145;
+		egoY = 117;
+		PositionV( ego, egoX, egoY);
+		Draw( ego);
+
+		script = 240;
+		Set( scriptDone);
+		}
+	IgnoreObjs( ego);
+
+	ShowPic( );
+
+	Return( );
+
+	}							[	end initLOG
+
+
+
+Reset( nearEmployee'sExit);
+if (Posn( ego, 0, 140, 20, 167))
+	{
+	Set( nearEmployee'sExit);
+	}
+
+Reset( nearDesk);
+if (Posn( ego, 117, 133, 141, 156))
+	{
+	Set( nearDesk);
+	}
+
+if (nearDesk && !faithGone)
+	{
+	Set( nearPerson);
+	}
+
+
+Reset( inElevator);
+if (Posn( ego, 73, 121, 83, 127))
+	{
+	Set( inElevator);
+	}
+
+if (inElevator)
+	{
+	SetPriority( ego, 11);
+	}
+else
+	{
+	ReleasePriority( ego);
+	}
+
+Reset( nearPentElevator);
+if (Posn( ego, 126, 112, 150, 127))
+	{
+	Set( nearPentElevator);
+	}
+
+Reset( inPentElevator);
+if (Posn( ego, 146, 111, 149, 120))
+	{
+	Set( inPentElevator);
+	Set( wasInPentElevator);
+	}
+
+if (pentDoorsOpen)
+	{
+	if (nearPentElevator)
+		{
+		IgnoreBlocks( ego);
+		}
+	else
+		{
+		ObserveBlocks( ego);
+		if (wasInPentElevator)		[	This closes the doors.
+			{
+			Reset( wasInPentElevator);
+			Set( scriptDone);
+			script = 242;
+			}
+		}
+
+	if (inPentElevator)
+		{
+		Set( scriptDone);			[	Let's go upstairs.
+		script = 250;
+		}
+	}
+
+
+[*****
+:handleInput
+[*****
+
+if (!haveInput)			{goto noInput;}
+
+[	First, do the general stuff.
+
+[	First, we'll do all the stuff pertaining to the penthouse elevator.
+
+if  (nearPentElevator &&
+    (Said( push, button) ||
+	Said( use, elevator) ||
+	Said( enter, elevator) ||
+	Said( open, elevator)))
+	{
+	Print( 22);
+	}
+
+if (faithGone &&
+    (Said( look, behind, counter) ||
+	Said( look, behind, desk) ||
+	Said( look, counter) ||
+	Said( look, desk) ||
+	Said( look, button)))
+	{
+	if (!nearDesk)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 12);
+		}
+	}
+
+if (Said( look, elevator))
+	{
+	if (inElevator)
+		{
+		Print( 9);
+		}
+	else
+		{
+		Print( 58);
+		}
+	}
+
+
+if ((Said( look, counter) ||
+	Said( look, behind, counter) ||
+	Said( look, behind, desk) ||
+	Said( look, desk)))
+	{
+	if (!nearDesk)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		if (!faithGone)
+			{
+			Print( 11);
+			}
+		else
+			{
+			Print( 12);
+			}
+		}
+	}
+
+
+if (!inElevator &&		[	Otherwise, let the elevator code below grab it.
+    (Said( press, button) ||
+	Said( open, elevator, door) ||
+	Said( open, elevator)))
+	{
+	if (!nearDesk)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		if (!faithGone)
+			{
+			Print( 19);
+			}
+		else
+			{
+			Print( 21);
+			StartUpdate( aPentElevator);
+			EndOfLoop( aPentElevator, doorDone);
+			Set( pentDoorsOpen);
+			}
+		}
+	}
+
+
+
+[	Ok, Faith, baby, here it comes:
+
+
+if (!faithGone)
+	{
+	if (lookingAtFaith)
+		{
+		if (Said( use, spray, rol))
+			{
+			Reset( haveMatch);
+			mouth = C_SMILE;
+			eyeCycles = 3;
+			Reset( eyesCycling);	[	Start 'em flappin'.
+			}
+
+		if ((Said( stop, looking, faith) ||
+			Said( look, away) ||
+			Said( look, room) ||
+			Said( look, away, from, faith) ||
+			Said( leave, rol)))
+			{
+			Set( cutToLongShot);
+			Set( OK);
+			}
+		}
+
+	if ((Said( look, faith, rol) ||
+		Said( establish$eye$contact, rol) ||
+		Said( look$in, faith, rol)))
+		{
+		if (script)
+			{
+			Print( 50);
+			}
+		else
+			{
+			if (!nearDesk)
+				{
+				Set( notCloseEnough);
+				}
+			else
+				{
+				if (!lookingAtFaith)
+					{
+					Set( cutToCloseup);
+					}
+				else
+					{
+					++lookCount;
+					if (lookCount == 1)
+						{
+						Print( 3);
+						}
+
+					if (lookCount == 2)
+						{
+						Print( 51);
+						}
+
+					if (lookCount > 2)
+						{
+						Print( 52);
+						mouth = C_SMILE;
+						}
+					}
+				}
+			}
+		}
+
+	
+	if ((Said( talk, faith, rol) ||
+		Said( ask, faith, rol) ||
+		Said( say, anyword, faith, rol)))
+		{
+		if (!nearDesk)
+			{
+			Set( notCloseEnough);
+			}
+		else
+			{
+			if (!lookingAtFaith)
+				{
+				Print( 35);
+				}
+			else
+				{
+				++talkCount;
+				if (talkCount == 1)
+					{
+					Print( 36);
+					Print( 37);
+					mouth = C_SMILE;
+					}
+
+				if (talkCount == 2)
+					{
+					Print( 38);
+					Print( 39);
+					mouth = C_SMILE;
+					}
+
+				if (talkCount == 3)
+					{
+					Print( 40);
+					Print( 41);
+					mouth = C_SMILE;
+					}
+
+				if (talkCount == 4)
+					{
+					Print( 42);
+					Print( 43);
+					Print( 44);
+					mouth = C_NORMAL;
+					}
+
+				if (talkCount == 5)
+					{
+					Print( 45);
+					Print( 46);
+					Print( 47);
+					mouth = C_SMILE;
+					}
+
+				if (talkCount > 5)
+					{
+					Print( 56);
+					}
+				}
+			}
+		}
+
+
+	if ((Said( give, faith, pills, rol) ||
+		Said( open, pills, rol) ||
+		Said( give, pills, faith, rol)))
+		{
+		if (!Has( iPills))
+			{
+			Set( dontHaveIt);
+			}
+		else
+			{
+	    		if (!nearDesk)
+				{
+				Set( notCloseEnough);
+				}
+			else
+				{
+				if (!lookingAtFaith)
+					{
+					Print( 35);
+					}
+				else
+					{
+					Set( scriptDone);
+					script = 200;
+					}
+				}
+			}
+		}
+
+
+	if ((Said( give, faith, money, rol) ||
+		Said( give, money, faith, rol)))
+		{
+    		if (!nearDesk)
+			{
+			Set( notCloseEnough);
+			}
+		else
+			{
+			if (!lookingAtFaith)
+				{
+				Print( 35);
+				}
+			else
+				{
+				Print( 53);
+				mouth = C_FROWN;
+				}
+			}
+		}
+
+	if ((Said( open, door, me) ||
+		Said( unlock, door, me)))
+		{
+    		if (!nearDesk)
+			{
+			Set( notCloseEnough);
+			}
+		else
+			{
+			Print( 59);
+			}
+		}
+
+	if ((Said( look, guns, rol) ||
+		Said( look, girl, boobs) ||
+		Said( look, boobs, rol) ||
+		Said( look, body) ||
+		Said( stare) ||
+		Said( stare, boobs) ||
+		Said( look, boobs, rol)))
+		{
+		if (!nearDesk)
+			{
+			Set( notCloseEnough);
+			}
+		else
+			{
+			if (!lookingAtFaith)
+				{
+				Print( 48);
+				}
+			else
+				{
+				Print( 49);
+				}
+			}
+		}
+
+
+	if ((Said( look, eyes, rol) ||
+		Said( look, mouth, rol)))
+		{
+		if (!nearDesk)
+			{
+			Set( notCloseEnough);
+			}
+		else
+			{
+			if (!lookingAtFaith)
+				{
+				Print( 48);
+				}
+			else
+				{
+				Print( 55);
+				}
+			}
+		}
+
+
+	[	The rest of these are "close up lines" only good
+	[			when "lookingatFaith."
+
+	if (lookingAtFaith)
+		{
+		if ((Said( smile) ||
+			Said( smile, girl) ||
+			Said( hold, hand) ||
+			Said( take, her, hand) ||
+			Said( touch, girl) ||
+			Said( touch, her) ||
+			Said( ask, date)))
+			{
+			Print( 65);
+			mouth = C_SMILE;
+			}
+
+		if ((Said( look, eyes) ||
+			Said( look$in, eyes) ||
+			Said( flirt, with, her) ||
+			Said( wink, girl) ||
+			Said( give, girl, kiss) ||
+			Said( kiss, girl)))
+			{
+			mouth = C_SMILE;
+			}
+
+		if ((Said( look, her, hair) ||
+			Said( look, hair) ||
+			Said( stroke, hair) ||
+			Said( rub, hair) ||
+			Said( rub, her, hair)))
+			{
+			Print( 66);
+			}
+
+		if ((Said( ask, name) ||
+			Said( ask, her, name) ||
+			Said( ask, name, girl)))
+			{
+			Print( 43);
+			Print( 44);
+			mouth = C_SMILE;
+			}
+
+		if ((Said( larry) ||
+			Said( leisure$suit, larry)))
+			{
+			Print( 67);
+			}
+
+		if ((Said( look, mouth) ||
+			Said( look, her, mouth)))
+			{
+			Print( 68);
+			}
+
+		if ((Said( girl, marry, me) ||
+			Said( marry, me) ||
+			Said( marry, girl) ||
+			Said( ask, girl, get, married) ||
+			Said( ask, girl, marry, me) ||
+			Said( talk, about, marriage) ||
+			Said( put, ring, on, her, finger) ||
+			Said( propose, her)))
+			{
+			Print( 69);
+			mouth = C_FROWN;
+			}
+
+		if ((Said( talk, her, love) ||
+			Said( love, you) ||
+			Said( take, her, hand)))
+			{
+			Print( 70);
+			}
+
+		if ((Said( touch, faith, rol) ||
+			Said( undress, her) ||
+			Said( ask, girl, for, sex) ||
+			Said( have, sex, with, me) ||
+			Said( hump, rol) ||
+			Said( make, girl) ||
+			Said( anyword, pussy, rol) ||
+			Said( lick, her, she, screams) ||
+			Said( anyword, tits, rol) ||
+			Said( play, with, her, boobs) ||
+			Said( grab, tits) ||
+			Said( fondle, breasts) ||
+			Said( grab, girl) ||
+			Said( feel, girl) ||
+			Said( lick, girl) ||
+			Said( touch, girl, under, table) ||
+			Said( feel, under, table) ||
+			Said( grab, leg) ||
+			Said( touch, leg) ||
+			Said( grab, her, leg) ||
+			Said( eat, faith, rol) ||
+			Said( hump, faith, rol) ||
+			Said( kiss, faith, rol) ||
+			Said( anyword, guns, rol) ||
+			Said( feel, her, rol) ||
+			Said( touch, boobs, rol)))
+			{
+			Print( 8);
+			Print( 31);
+			mouth = C_FROWN;
+			}
+
+		if (Said( do, you, get, off))
+			{
+			Print( 64);
+			}
+
+		if ((Said( time, do, you, get, off) ||	
+			Said( time, do, you, get, off, work) ||	
+			Said( time, off, work) ||	
+			Said( time, off) ||	
+			Said( quit, time)))
+			{
+			Print( 72);
+			}
+
+		if (Said( come, with, me))
+			{
+			Print( 71);
+			}
+		}
+	}
+
+if ((Said( climb, over, desk) ||
+	Said( jump, over, desk)))
+	{
+	Print( 63);
+	}
+
+if ((Said( look) ||
+	Said( look, room) ||
+	Said( look, floor) ||
+	Said( look, hotel)))
+	{
+	if (nearEmployee'sExit && faithGone)
+		{
+		Print( 10);
+		}
+	else
+		{
+		if (nearPentElevator)
+			{
+			if (!pentDoorsOpen)
+				{
+				Print( 22);
+				}
+			else
+				{
+				Print( 34);
+				}
+			}
+		else
+			{
+			if (!nearDesk)
+				{
+				if (faithGone)
+					{
+					Print( 15);
+					}
+				else
+					{
+					Print( 1);
+					}
+				}
+			else
+				{
+				if (!faithGone)
+					{
+					Print( 11);
+					}
+				else
+					{
+					Print( 12);
+					}
+				}
+			}
+		}
+	}
+
+
+if (!faithGone &&
+	Said( wave, faith))
+	{
+	Print( 57);
+	}
+
+
+if ((Said( look, door) ||
+	Said( look, elevator)))
+	{
+	if (nearEmployee'sExit && faithGone)
+		{
+		Print( 10);
+		}
+	else
+		{
+		if (inElevator)
+			{
+			Print( 9);
+			}
+		else
+			{
+			if (!nearPentElevator)
+				{
+				Print( 24);
+				}
+			else
+				{
+				if (!pentDoorsOpen)
+					{
+					Print( 22);
+					}
+				else
+					{
+					Print( 34);
+					}
+				}
+			}
+		}
+	}
+
+if ((Said( look, down) ||
+	Said( spit, down) ||
+	Said( spit, over, railing) ||
+	Said( look, over, railing) ||
+	Said( spit)))
+	{
+	Print( 26);
+	Print( 27);
+	Print( 28);
+	}
+
+if (Said( jump, rol))
+	{
+	Print( 62);
+	}
+
+if ((Said( look, plants) ||
+	Said( look$in, plants)))
+	{
+	Print( 25);
+	}
+
+if ((Said( knock) ||
+	Said( knock, on, door) ||
+	Said( knock, door)))
+	{
+	Print( 29);
+	Print( 54);
+	}
+
+if ((Said( use, stairs) ||
+	Said( go, down) ||
+	Said( go, down, stairs)))
+	{
+	Print( 10);
+	}
+
+if ((Said( unlock, door, rol) ||
+	Said( use, key, rol)))
+	{
+	Print( 61);
+	}
+
+if (Said( open, door))
+	{
+	Print( 30);
+	}
+
+if ((Said( open, door, use, rol) ||
+	Said( break, door, rol)))
+	{
+	Print( 60);
+	}
+
+
+
+[	Last, handle the elevator stuff.
+
+if (elevatorMoving && !haveMatch)
+	{
+	if ((Said( listen) ||
+		Said( sing) ||
+		Said( sing, along)))
+		{
+		Print( 7);
+		}
+	else
+		{
+		Set( haveMatch);
+		Print( 5);
+		}
+	}
+
+
+if (!script && inElevator)
+	{
+	if ((Said( press, one) ||
+		Said( press, button, one) ||
+		Said( one)))
+		{
+		destinationFloor = 1;
+		Set( scriptDone);
+		}
+
+	if ((Said( press, two) ||
+		Said( press, button, two) ||
+		Said( two)))
+		{
+		destinationFloor = 2;
+		Set( scriptDone);
+		}
+
+	if ((Said( press, three) ||
+		Said( press, button, three) ||
+		Said( three)))
+		{
+		destinationFloor = 3;
+		Set( scriptDone);
+		}
+
+	if ((Said( press, four) ||
+		Said( press, button, four) ||
+		Said( four)))
+		{
+		destinationFloor = 4;
+		Set( scriptDone);
+		}
+
+	if ((Said( press, five) ||
+		Said( press, button, five) ||
+		Said( five)))
+		{
+		destinationFloor = 5;
+		Set( scriptDone);
+		}
+
+	if ((Said( press, six) ||
+		Said( press, button, six) ||
+		Said( six)))
+		{
+		destinationFloor = 6;
+		Set( scriptDone);
+		}
+
+	if ((Said( press, seven) ||
+		Said( press, button, seven) ||
+		Said( seven)))
+		{
+		destinationFloor = 7;
+		Set( scriptDone);
+		}
+
+	if ((Said( press, eight) ||
+		Said( press, button, eight) ||
+		Said( eight)))
+		{
+		destinationFloor = 8;
+		Set( scriptDone);
+		}
+
+	if ((Said( push, rol) ||
+		Said( push, button, rol)))
+		{
+		Print( 23);
+		}
+	}
+
+
+
+[*****
+:noInput
+[*****
+
+if (cutToCloseup)
+	{
+	Reset( cutToCloseup);
+	Set( lookingAtFaith);
+    	Set( handsOff);
+
+	UnanimateAll();
+	DrawPic( picture);
+
+	AnimateObj( aMouth);
+	SetView( aMouth, vReceptionistFace);
+	SetLoop( aMouth, L_MOUTH);
+	SetCel( aMouth, 0);
+	SetPriority( aMouth, 4);
+	Position( aMouth, 49, 77);
+	StopCycling( aMouth);
+
+	AnimateObj( aEyes);
+	SetView( aEyes, vReceptionistFace);
+	SetLoop( aEyes, L_EYES);
+	SetCel( aEyes, 0);
+	SetPriority( aEyes, 5);
+	Position( aEyes, 48, 45);
+	CycleTime( aEyes, three);
+	StopCycling( aEyes);
+
+	if (!mouthOK)
+		{
+		SetCel( aMouth, C_FROWN);
+		breathLineTimer = 6;
+		}
+	else
+		{
+		SetCel( aMouth, C_NORMAL);
+		Draw( aEyes);
+		Random( 6, 19, eyeCycles);
+		Reset( eyesCycling);
+		}
+	Draw( aMouth);
+	mouth = DONE;
+	StopUpdate( aMouth);
+	ShowPic();
+	}
+
+if (cutToLongShot)
+	{
+	Reset( cutToLongShot);
+	Reset( lookingAtFaith);
+    	Reset( handsOff);
+
+	eyeCycles = 0;
+	breathLineTimer = 0;
+
+	UnanimateAll();
+	DrawPic( currentRoom);
+
+	AnimateObj( ego);
+	Draw( ego);
+	
+	AnimateObj( aFaith);
+	IgnoreHorizon( aFaith);
+	IgnoreBlocks( aFaith);
+	IgnoreObjs( aFaith);
+	SetPriority( aFaith, 13);
+	StepSize( aFaith, two);
+	Draw( aFaith);
+	StopUpdate( aFaith);
+
+	AnimateObj( aPentElevator);
+	IgnoreBlocks( aPentElevator);
+	IgnoreObjs( aPentElevator);
+	SetPriority( aPentElevator, 10);
+	Draw( aPentElevator);
+	work = DOOR_CYCLE_TIME;
+	CycleTime( aPentElevator, work);
+	StopUpdate( aPentElevator);
+
+	AnimateObj( aNumber);
+	IgnoreBlocks( aNumber);
+	IgnoreObjs( aNumber);
+	SetPriority( aNumber, 5);
+	StopCycling( aNumber);
+
+	AnimateObj( aElevator);
+	IgnoreBlocks( aElevator);
+	IgnoreObjs( aElevator);
+	SetPriority( aElevator, 12);
+	FixLoop( aElevator);
+	StepSize( aElevator, two);
+	Draw( aElevator);
+	StopUpdate( aElevator);
+
+	AnimateObj( aDoor);
+	IgnoreBlocks( aDoor);
+	IgnoreObjs( aDoor);
+	FixLoop( aDoor);
+	SetPriority( aDoor, 4);
+	work = DOOR_CYCLE_TIME;
+	CycleTime( aDoor, work);
+	
+	AnimateObj( aFloor);
+	IgnoreBlocks( aFloor);
+	IgnoreObjs( aFloor);
+	FixLoop( aFloor);
+	SetPriority( aFloor, 5);
+	Draw( aFloor);
+	StopUpdate( aFloor);
+
+	ShowPic();
+	}
+
+
+if (lookingAtFaith)
+	{
+	--eyeCycles;					[	bat them eyes
+	if (eyeCycles == 1)
+		{
+		Toggle( eyesCycling);
+		if (eyesCycling)
+			{
+			StartCycling( aEyes);
+			Random( 6, 18, eyeCycles);
+			}
+		else
+			{
+			StopCycling( aEyes);
+			SetCel( aEyes, 0);
+			Random( 11, 33, eyeCycles);
+			}
+		}
+
+	if (aSecondPassed)
+		{
+		--breathLineTimer;
+		if (breathLineTimer == 1)	[	Lay a zinger on him.
+			{
+			Print( 18);
+			}
+
+		--mouthTimer;
+		if (mouthTimer == 1)		[	Resume after frown/smile
+			{
+			mouth = NORMAL;
+			}
+
+		if (mouth != DONE)
+			{
+			if (mouth == NORMAL)
+				{
+				eyeCycles = 2;		[	Restart eyes.
+				}
+
+			if (mouth == C_SMILE)
+				{
+				mouthTimer = SMILE_SECONDS;
+				Set( eyesCycling);
+				eyeCycles = 22;	[	Bat 'em, baby.
+				StartCycling( aEyes);
+				}
+
+			if (mouth == C_FROWN)
+				{
+				mouthTimer = FROWN_SECONDS;
+				Reset( eyesCycling);
+				eyeCycles = 0;		[	Stare him down, Faithie.
+				StopCycling( aEyes);
+				SetCel( aEyes, 0);
+				}
+
+			SetCelV( aMouth, mouth);
+			ForceUpdate( aMouth);
+			mouth = DONE;
+			}
+		}
+	}
+
+
+if (scriptDone)
+	{
+	Reset( scriptDone);
+	++script;
+
+
+
+	[	Make ego go down (on) the elevator.
+
+	if (script == 1)
+		{
+		Set( elevatorMoving);
+		currentStatus = IN_ELEVATOR;
+		StopMotion( ego);
+		Set( programControl);
+		SetView( ego, vEgoPushingElevator);
+		SetCel( ego, 0);
+		RepositionTo( ego, 76, 127);
+		CycleTime( ego, three);
+		Set( keepCycling);
+		EndOfLoop( ego, scriptDone);
+		}
+
+	if (script == 2)
+		{
+		Erase( ego);
+		SetView( ego, vEgo);
+
+		SetLoop( aElevator, L_WITH_EGO);
+		SetCel( aElevator, 0);
+		CycleTime( aElevator, three);
+		EndOfLoop( aElevator, scriptDone);
+		}
+
+	if (script == 3)
+		{
+		Erase( aFloor);
+		Draw( aDoor);
+		Draw( aNumber);
+
+		StopCycling( aElevator);
+		if (destinationFloor == 8)
+			{
+			Print( 6);
+			script = 101;			[	We'll catch it immediately.
+			}
+		else
+			{
+			MoveObj( aElevator, 73, 167, 2, scriptDone);
+			}
+		}
+
+	if (script == 4)
+		{
+		newRoom = rmElevators;
+		}
+
+
+
+	[	He's at top; let him out.
+
+	if (script == 101)
+		{
+		Erase( aDoor);
+		Erase( aNumber);
+
+		CycleTime( aElevator, two);
+		StartCycling( aElevator);
+		BeginningOfLoop( aElevator, scriptDone);
+		}
+
+	if (script == 102)
+		{
+		Reset( elevatorMoving);
+		currentStatus = NORMAL;
+		destinationFloor = 0;
+		script = 0;
+		SetLoop( aElevator, L_EMPTY);
+
+		Draw( aFloor);
+
+		SetView( ego, vEgo);
+		SetLoop( ego, FACING_FRONT);
+		SetCel( ego, 0);
+		Position( ego, 76, 127);
+		Draw( ego);
+		StartMotion( ego);
+		Reset( programControl);
+		Reset( keepCycling);
+		Reset( noCycling);
+		CycleTime( ego, one);
+		}
+
+
+		
+	[	He gave Faith the Spanish Fly pills; make it Springtime
+	[so we can "watch Faith leave."
+
+	if (script == 201)
+		{
+		SetCel( aMouth, C_SMILE);
+		ForceUpdate( aMouth);
+		mouthTimer = 0;			[	Keep smiling.
+
+		StartCycling( aEyes);		[	Make eyes keep batting!
+		eyeCycles = 0;
+		
+
+		Drop( iPills);
+		currentScore += 5;
+		Print( 2);
+		scriptTimer = 6;
+		}
+
+	if (script == 202)
+		{
+		if (lookingAtFaith)
+			{
+			Set( cutToLongShot);
+			--script;				[	Let's try again next pass.
+			Set( scriptDone);
+			}
+		else
+			{
+			script = 203;
+			}
+		}
+
+	if (script == 203)
+		{
+		Set( faithGone);
+		Print( 4);
+
+		StartUpdate( aFaith);
+		SetLoop( aFaith, L_LEAVING);
+		CycleTime( aFaith, two);
+		EndOfLoop( aFaith, scriptDone);
+		}
+
+	if (script == 204)
+		{
+		CycleTime( aFaith, one);
+		StartCycling( aFaith);
+		RepositionTo( aFaith, 139, 146);
+		SetLoop( aFaith, L_WALKING);
+		FixLoop( aFaith);
+		MoveObj( aFaith, 129, 156, 2, scriptDone);
+		ReleasePriority( aFaith);
+		IgnoreObjs( aFaith);
+		ForceUpdate( aFaith);
+		Print( 20);
+		}
+
+	if (script == 205)
+		{
+		MoveObj( aFaith, 0, 156, 2, scriptDone);
+		}
+
+	if (script == 206)
+		{
+		Print( 33);
+		Erase( aFaith);
+		script = 0;
+		}
+
+
+
+	if (script == 241)				[	open doors
+		{
+		StartUpdate( aPentElevator);
+		EndOfLoop( aPentElevator, scriptDone);
+		}
+
+	if (script == 242)
+		{
+		StopUpdate( aPentElevator);
+		Set( pentDoorsOpen);
+		StartMotion( ego);
+		Reset( programControl);
+		}
+
+	if (script == 243)				[	He's clear; close the doors.
+		{
+		Reset( pentDoorsOpen);
+		StartUpdate( aPentElevator);
+		BeginningOfLoop( aPentElevator, scriptDone);
+		}
+
+	if (script == 244)
+		{
+		script = 0;
+		StopUpdate( aPentElevator);
+		}
+
+
+	if (script == 251)				[	Ego's in elevator; take him up.
+		{
+		Reset( pentDoorsOpen);
+		StopUpdate( ego);
+
+		StartUpdate( aPentElevator);
+		BeginningOfLoop( aPentElevator, scriptDone);
+		}
+
+	if (script == 252)
+		{
+		if (!beenInPenthouse)
+			{
+			Set( beenInPenthouse);
+			Print( 13);
+			currentScore += 5;
+			}
+		newRoom = rmLivingRoom;
+		}
+	}
+
+
+if (doorDone)
+	{
+	Reset( doorDone);
+	StopUpdate( aPentElevator);
+	}
+
+
+
+[*****
+:exit							[	test for leaving the room
+[*****

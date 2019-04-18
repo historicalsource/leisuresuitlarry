@@ -1,0 +1,634 @@
+[logics for room 40 -- rmElevators
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm40.msg"
+%include	"gamedefs.h"
+
+
+
+[	Vertical elevator maze.  One floor has the honeymoon suite entrance,
+
+
+#define	L_HALL_DOOR			0
+#define	HONEYMOON_FLOOR		4
+
+%define	nearTHEDoor			lf0
+%define	doorDone				lf2
+%define	elevatorMoving			lf4
+%define	inElevator			lf5
+%define	goingDown				lf6
+
+%define	currentFloor			lv0
+
+%object	aElevator				1
+%object	aDoors				2
+%object	aFloor				3
+%object	aDoor				4
+%object	aNumber				6
+
+
+
+if (initLog)
+	{
+	SetHorizon( 1);
+
+	LoadPic( currentRoom);
+	DrawPic( currentRoom);
+	DiscardPic( currentRoom);
+
+	LoadView( vElevator);
+	LoadView( vElevatorNumbers);
+	LoadView( vHoneymoonHallwayDoor);
+	LoadView( vEgoPushingElevator);
+	LoadView( vEgo);
+
+	IgnoreObjs( ego);
+
+
+	AnimateObj( aDoor);
+	IgnoreBlocks( aDoor);
+	IgnoreObjs( aDoor);
+	SetView( aDoor, vHoneymoonHallwayDoor);
+	SetCel( aDoor, 0);
+	SetPriority( aDoor, 10);
+	Position( aDoor, 6, 134);
+	work = DOOR_CYCLE_TIME;
+	CycleTime( aDoor, work);
+
+	AnimateObj( aNumber);
+	IgnoreBlocks( aNumber);
+	IgnoreObjs( aNumber);
+	SetView( aNumber, vElevatorNumbers);
+	SetPriority( aNumber, 5);
+	Position( aNumber, 73, 100);
+	StopCycling( aNumber);
+
+	AnimateObj( aDoors);
+	IgnoreBlocks( aDoors);
+	IgnoreObjs( aDoors);
+	SetView( aDoors, vElevator);
+	SetLoop( aDoors, L_DOORS);
+	FixLoop( aDoors);
+	SetPriority( aDoors, 4);
+	Position( aDoors, 73, 120);
+	work = DOOR_CYCLE_TIME;
+	CycleTime( aDoors, work);
+
+	AnimateObj( aFloor);
+	IgnoreBlocks( aFloor);
+	IgnoreObjs( aFloor);
+	SetView( aFloor, vElevator);
+	SetLoop( aFloor, L_FLOOR);
+	FixLoop( aFloor);
+	Position( aFloor, 73, 128);
+	SetPriority( aFloor, 5);
+
+	AnimateObj( aElevator);
+	IgnoreBlocks( aElevator);
+	IgnoreObjs( aElevator);
+	SetView( aElevator, vElevator);
+	SetPriority( aElevator, 12);
+	FixLoop( aElevator);
+	StepSize( aElevator, two);
+	if (currentStatus == IN_ELEVATOR)
+		{
+		if (previousRoom == rmSecurityDesk)
+			{
+			Set( goingDown);
+			currentFloor = 7;
+			Position( aElevator, 73, 36);
+			}
+		else
+			{
+			currentFloor = 2;
+			Position( aElevator, 73, 167);
+			}
+
+		Set( elevatorMoving);
+		currentStatus = IN_ELEVATOR;
+
+		SetLoop( aElevator, L_WITH_EGO);
+		LastCel( aElevator, work);
+		SetCelV( aElevator, work);
+		StopCycling( aElevator);
+
+		if (destinationFloor > currentFloor)
+			{
+			MoveObj( aElevator, 73, 36, 2, scriptDone);
+			script = 200;
+			}
+		else
+			{
+			if (destinationFloor < currentFloor)
+				{
+				MoveObj( aElevator, 73, 167, 2, scriptDone);
+				script = 200;
+				}
+			else
+				{
+				MoveObj( aElevator, 73, 128, 2, scriptDone);
+				script = 100;
+				}
+			}
+
+		Draw( aElevator);
+		Draw( aDoors);
+		StopUpdate( aDoors);
+
+		SetCelV( aNumber, currentFloor);
+		Draw( aNumber);
+
+		SetView( ego, vEgo);
+		SetLoop( ego, FACING_FRONT);
+		SetPriority( ego, 12);
+		egoX = 76;
+		egoY = 126;
+		PositionV( ego, egoX, egoY);
+		[	Don't Draw ego!
+		}
+	else							[	NOT in elevator.
+		{
+		Draw( aFloor);
+		StopUpdate( aFloor);
+
+		SetLoop( aElevator, L_EMPTY);
+		SetCel( aElevator, 0);
+		Position( aElevator, 73, 128);
+		Draw( aElevator);
+		StopUpdate( aElevator);
+
+		currentFloor = HONEYMOON_FLOOR;
+
+		Draw( aDoor);
+		StopUpdate( aDoor);
+
+		SetLoop( ego, FACING_RIGHT);
+		egoX = 9;
+		egoY = 132;
+		PositionV( ego, egoX, egoY);
+		Draw( ego);
+		StartMotion( ego);
+		}
+
+
+	ShowPic( );
+
+	if (previousRoom == rmHoneymoonSuite)
+		{
+		Print( 18);
+		}
+
+	Return( );
+
+	}							[	end initLOG
+
+
+
+Reset( inElevator);
+if (Posn( ego, 73, 119, 83, 127))
+	{
+	Set( inElevator);
+	}
+
+if (inElevator)
+	{
+	SetPriority( ego, 11);
+	}
+else
+	{
+	ReleasePriority( ego);
+	}
+
+
+Reset( nearTHEDoor);
+if (currentFloor == HONEYMOON_FLOOR &&
+	Posn( ego, 6, 126, 15, 135))
+	{
+	Set( nearTHEDoor);
+	}
+
+
+
+[*****
+:handleInput
+[*****
+
+if (!haveInput)			{goto noInput;}
+
+if (elevatorMoving && !haveMatch)
+	{
+	if ((Said( listen) ||
+		Said( listen, elevator) ||
+		Said( listen, music) ||
+		Said( sing, music) ||
+		Said( sing) ||
+		Said( sing, along)))
+		{
+		Print( 7);
+		}
+	else
+		{
+		Set( haveMatch);
+		Print( 5);
+		}
+	}
+
+
+if ((Said( look) ||
+	Said( look, room) ||
+	Said( look, floor) ||
+	Said( look, hotel)))
+	{
+	Print( 1);
+
+	if (currentFloor == HONEYMOON_FLOOR)
+		{
+		Print( 2);
+		}
+
+	if (inElevator)
+		{
+		Print( 20);
+		}
+	}
+
+if (Said( look, elevator))
+	{
+	if (inElevator)
+		{
+		Print( 20);
+		}
+	else
+		{
+		Print( 22);
+		}
+	}
+
+
+if (Said( look, plants))
+	{
+	Print( 16);
+	}
+
+if (Said( look, door))
+	{
+	if (nearTHEDoor)
+		{
+		Print( 11);
+		}
+	else
+		{
+		Print( 12);
+		}
+	}
+
+if (Said( anyword, heart, rol))
+	{
+	if (nearTHEDoor)
+		{
+		Print( 23);
+		}
+	else
+		{
+		Print( 24);
+		}
+	}
+
+if ((Said( knock) ||
+	Said( knock, on, door) ||
+	Said( knock, door)))
+	{
+	if (!nearTHEDoor)
+		{
+		Print( 32);
+		Random( 34, 50, message);
+		PrintV( message);
+		Print( 33);
+		}
+	else
+		{
+		if (!fawnInRoom)
+			{
+			Print( 4);
+			}
+		else
+			{
+			if (orderedWine && !seenDeliveryBoyGag)
+				{
+				Print( 25);
+				Print( 26);
+				}
+			else
+				{
+				Print( 6);
+				Print( 8);
+				}
+
+			Print( 10);
+			StartUpdate( aDoor);
+			EndOfLoop( aDoor, doorDone);
+			StopMotion( ego);
+			Set( programControl);
+			}
+		}
+	}
+
+
+if (Said( open, door))
+	{
+	if (!nearTHEDoor)
+		{
+		Print( 17);
+		}
+	else
+		{
+		Print( 9);
+		}
+	}
+
+if ((Said( open, door, use, rol) ||
+	Said( break, door, rol)))
+	{
+	Print( 27);
+	}
+
+
+if ((Said( unlock, door, rol) ||
+	Said( use, key, rol)))
+	{
+	if (!nearTHEDoor)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 21);
+		}
+	}
+
+if (Said( jump, rol))
+	{
+	Print( 31);
+	}
+
+if ((Said( look, down) ||
+	Said( spit)))
+	{
+	Print( 28);
+	Print( 29);
+	Print( 30);
+	}
+
+
+if (!script && inElevator)
+	{
+	if ((Said( press, one) ||
+		Said( press, button, one) ||
+		Said( one)))
+		{
+		destinationFloor = 1;
+		Set( scriptDone);
+		}
+
+	if ((Said( press, two) ||
+		Said( press, button, two) ||
+		Said( two)))
+		{
+		destinationFloor = 2;
+		Set( scriptDone);
+		}
+
+	if ((Said( press, three) ||
+		Said( press, button, three) ||
+		Said( three)))
+		{
+		destinationFloor = 3;
+		Set( scriptDone);
+		}
+
+	if ((Said( press, four) ||
+		Said( press, button, four) ||
+		Said( four)))
+		{
+		destinationFloor = 4;
+		Set( scriptDone);
+		}
+
+	if ((Said( press, five) ||
+		Said( press, button, five) ||
+		Said( five)))
+		{
+		destinationFloor = 5;
+		Set( scriptDone);
+		}
+
+	if ((Said( press, six) ||
+		Said( press, button, six) ||
+		Said( six)))
+		{
+		destinationFloor = 6;
+		Set( scriptDone);
+		}
+
+	if ((Said( press, seven) ||
+		Said( press, button, seven) ||
+		Said( seven)))
+		{
+		destinationFloor = 7;
+		Set( scriptDone);
+		}
+
+	if ((Said( press, eight) ||
+		Said( press, button, eight) ||
+		Said( eight)))
+		{
+		destinationFloor = 8;
+		Set( scriptDone);
+		}
+
+	if ((Said( push, rol) ||
+		Said( push, button, rol)))
+		{
+		Print( 19);
+		}
+	}
+
+
+
+[*****
+:noInput
+[*****
+
+if (doorDone)
+	{
+	Reset( programControl);
+	newRoom = rmHoneymoonSuite;
+	}
+
+
+if (scriptDone)
+	{
+	Reset( scriptDone);
+	++script;
+
+	if (script == 1)
+		{
+		Set( elevatorMoving);
+		currentStatus = IN_ELEVATOR;
+		StopMotion( ego);
+		Set( programControl);
+		SetView( ego, vEgoPushingElevator);
+		SetCel( ego, 0);
+		RepositionTo( ego, 76, 126);
+		CycleTime( ego, three);
+		Set( keepCycling);
+		EndOfLoop( ego, scriptDone);
+		}
+
+	if (script == 2)
+		{
+		Erase( ego);
+		SetView( ego, vEgo);
+
+		SetLoop( aElevator, L_WITH_EGO);
+		SetCel( aElevator, 0);
+		CycleTime( aElevator, three);
+		EndOfLoop( aElevator, scriptDone);
+		}
+
+	if (script == 3)
+		{
+		Erase( aFloor);
+		Draw( aDoors);
+
+		SetCelV( aNumber, currentFloor);
+		Draw( aNumber);
+
+		script = 200;
+		StopCycling( aElevator);
+
+		if (destinationFloor > currentFloor)
+			{
+			Reset( goingDown);
+			MoveObj( aElevator, 73, 36, 2, scriptDone);
+			script = 200;
+			}
+		else
+			{
+			if (destinationFloor < currentFloor)
+				{
+				Set( goingDown);
+				MoveObj( aElevator, 73, 167, 2, scriptDone);
+				script = 200;
+				}
+			else
+				{
+				Print( 3);
+				script = 101;		[	We'll catch it immediately.
+				}
+			}
+		}
+
+
+
+	if (script == 101)				[	He's at the floor he wants.
+		{
+		Erase( aDoors);
+		Erase( aNumber);
+
+		CycleTime( aElevator, two);
+		StartCycling( aElevator);
+		BeginningOfLoop( aElevator, scriptDone);
+		}
+
+	if (script == 102)				[	Let him out.
+		{
+		Reset( elevatorMoving);
+		currentStatus = NORMAL;
+		destinationFloor = 0;
+		script = 0;
+		SetLoop( aElevator, L_EMPTY);
+
+		Draw( aFloor);
+
+		SetView( ego, vEgo);
+		SetLoop( ego, FACING_FRONT);
+		SetCel( ego, 0);
+		Position( ego, 76, 126);
+		Draw( ego);
+		StartMotion( ego);
+		CycleTime( ego, one);
+		Reset( keepCycling);
+		Reset( programControl);
+		}
+
+
+
+	if (script == 201)
+		{
+		if (goingDown)
+			{
+			--currentFloor;
+			if (currentFloor == 1)
+				{
+				newRoom = rmElevatorBottom;
+				Return();
+				}
+			}
+		else
+			{
+			++currentFloor;
+			if (currentFloor == 8)
+				{
+				newRoom = rmSecurityDesk;
+				Return();
+				}
+			}
+
+		if (goingDown)
+			{
+			RepositionTo( aElevator, 73, 36);
+			}
+		else
+			{
+			RepositionTo( aElevator, 73, 167);
+			}
+
+		if (currentFloor != HONEYMOON_FLOOR)
+			{
+			Erase( aDoor);
+			}
+		else
+			{
+			Draw( aDoor);
+			StopUpdate( aDoor);
+			}
+
+		SetCelV( aNumber, currentFloor);
+
+		if (destinationFloor > currentFloor)
+			{
+			MoveObj( aElevator, 73, 36, 2, scriptDone);
+			script = 200;
+			}
+		else
+			{
+			if (destinationFloor < currentFloor)
+				{
+				MoveObj( aElevator, 73, 167, 2, scriptDone);
+				script = 200;
+				}
+			else
+				{
+				MoveObj( aElevator, 73, 128, 2, scriptDone);
+				script = 100;
+				}
+			}
+		}
+	}
+
+
+[*****
+:exit							[	test for leaving the room
+[*****

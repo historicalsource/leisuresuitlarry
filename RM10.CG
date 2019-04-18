@@ -1,0 +1,649 @@
+[logics for room 10 -- rmTaxi
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm10.msg"
+%include	"gamedefs.h"
+
+
+[	PROBLEMS:		make driver cycle randomly, except when driving drunk.
+[Drunk driving sequence never speeds up. 
+[Erase driver at start of crash flash.
+
+
+#define	MIN_CABFARE			5
+#define	MAX_CABFARE			15
+
+%define	L_TALKING				0	[	Taxi driver
+%define	L_LOWERING_FLAG		1
+%define	L_STEERING			2
+
+%define	C_FLAG_UP				0	[	Meter cells
+%define	C_FLAG_DOWN			1
+
+%define	L_NORMAL				0	[	Scroll loops
+%define	L_DRUNK				1
+%define	L_CRASH				2
+
+%define	SCROLL_CYCLES			11
+
+[	%define	LOWER_METER			1
+[	%define	METER_DOWN			2
+[	%define	START_SPEEDUP			3	[	script values
+[	%define	START_SLOWDOWN			4
+[	%define	WAITING_FOR_MONEY		5
+[	%define	PAID_FOR_TRIP			6
+
+
+%define	rideDone				lf0
+%define	manDone				lf1
+%define	stopTalking			lf2
+%define	bgOn					lf3
+%define	gaveDestination		lf4
+%define	speedingUp			lf5
+%define	meterDone				lf6
+%define	cabbieSteering			lf7
+
+
+%define	fare					lv0	[	Don't change this one!! %v200!!
+%define	talkCycles			lv1
+%define	destCount				lv2
+%define	parkTimer				lv3
+%define	scrollCycles			lv4
+%define	scrollSpeed			lv5
+%define	destRoom				lv6
+%define	steeringCycles			lv7
+
+
+%object	aScroll				1
+%object	aMeter				2
+%object	aCabbie				3
+
+
+
+if (initLog)
+	{
+	LoadPic( currentRoom);
+	DrawPic( currentRoom);
+	DiscardPic( currentRoom);
+
+	LoadView( vTaxiWindshieldMovie);
+	LoadView( vTaxiMeter);
+	LoadView( vTaxiDriver);
+
+
+	AnimateObj( aScroll);
+	SetView( aScroll, vTaxiWindshieldMovie);
+	SetLoop( aScroll, L_NORMAL);
+	SetPriority( aScroll, 4);
+	Position( aScroll, 57, 77);
+	Draw( aScroll);
+	work = 6;
+	CycleTime( aScroll, work);
+	Set( bgOn);					[	Scroll is cycling.
+
+	AnimateObj( aMeter);
+	SetView( aMeter, vTaxiMeter);
+	SetCel( aMeter, C_FLAG_UP);
+	SetPriority( aMeter, 14);
+	Position( aMeter, 75, 82);
+	Draw( aMeter);
+	CycleTime( aMeter, three);
+	StopCycling( aMeter);
+
+	AnimateObj( aCabbie);
+	IgnoreObjs( aCabbie);
+	SetView( aCabbie, vTaxiDriver);
+	SetPriority( aCabbie, 15);
+	Position( aCabbie, 56, 83);
+
+	if (!Has( iWine))
+		{
+		SetLoop( aCabbie, L_LOWERING_FLAG);
+		SetCel( aCabbie, 0);
+		CycleTime( aCabbie, three);
+		StopCycling( aCabbie);
+		}
+	else
+		{
+		SetLoop( aCabbie, L_TALKING);
+		}
+
+	Draw( aCabbie);
+
+	ShowPic( );
+
+	if (!Has( iWine))
+		{
+		Print( 1);
+		AcceptInput();
+		parkTimer = 20;
+		Random( 0, 10, fare);
+		fare += cabFareMin;
+		if (cabFareMin < 40)
+			{
+			++cabFareMin;
+			}
+		if (cabRideLength > 4)
+			{
+			--cabRideLength;
+			}
+		scriptTimer = 2;
+		}
+	else
+		{
+		Print( 12);
+
+		PreventInput();
+		Set( programControl);
+		Set( meterDone);
+		steeringCycles = 0;
+		script = 100;
+		scriptTimer = 5;
+		}
+
+	Set( handsOff);
+	Set( programControl);
+	Reset( noFawnInDisco);			[	After a drive, she'll be back.
+
+	Return( );
+
+	}							[	end initLOG
+
+
+
+if (aSecondPassed && secondsInRoom > 5)
+	{
+	Set( nearPerson);
+	}
+
+
+[*****
+:handleInput
+[*****
+
+if (!haveInput)			{goto noInput;}
+
+if ((Said( talk, rol) ||
+	Said( take, me, action) ||
+	Said( take, me, where, action) ||
+	Said( where, action, town) ||
+	Said( where, action)))
+	{
+	Print( 2);
+	}
+
+
+if ((Said( disco) ||
+	Said( go, disco) ||
+	Said( take, me, disco)))
+	{
+	++destCount;
+	if (destCount > 2)
+		{
+		Print( 28);
+		}
+	else
+		{
+		Set( scriptDone);
+		destRoom = rmOutsideDisco;
+		if (script > 2)
+			{
+			script = 200;
+			}
+		}
+	}
+
+if ((Said( casino) ||
+	Said( casino, hotel) ||
+	Said( go, casino) ||
+	Said( go, casino, hotel) ||
+	Said( take, me, casino) ||
+	Said( take, me, casino, hotel)))
+	{
+	++destCount;
+	if (destCount > 2)
+		{
+		Print( 28);
+		}
+	else
+		{
+		Set( scriptDone);
+		destRoom = rmOutsideCasino;
+		if (script > 2)
+			{
+			script = 200;
+			}
+		}
+	}
+
+if ((Said( bar) ||
+	Said( go, bar) ||
+	Said( take, me, bar)))
+	{
+	++destCount;
+	if (destCount > 2)
+		{
+		Print( 28);
+		}
+	else
+		{
+		Set( scriptDone);
+		destRoom = rmOutsideBar;
+		if (script > 2)
+			{
+			script = 200;
+			}
+		}
+	}
+
+if ((Said( chapel) ||
+	Said( go, chapel) ||
+	Said( take, me, chapel)))
+	{
+	++destCount;
+	if (destCount > 2)
+		{
+		Print( 28);
+		}
+	else
+		{
+		Set( scriptDone);
+		destRoom = rmOutsideChapel;
+		if (script > 2)
+			{
+			script = 200;
+			}
+		}
+	}
+
+if ((Said( store) ||
+	Said( go, store) ||
+	Said( take, me, store)))
+	{
+	++destCount;
+	if (destCount > 2)
+		{
+		Print( 28);
+		}
+	else
+		{
+		Set( scriptDone);
+		destRoom = rmOutside7_11;
+		if (script > 2)
+			{
+			script = 200;
+			}
+		}
+	}
+
+if ((Said( leave, rol) ||
+	Said( stop, rol) ||
+	Said( open, door, rol) ||
+	Said( go)))
+	{
+	if (script < 5)
+		{
+		Print( 7);
+		}
+
+	if (script == 5)
+		{
+		Print( 9);
+		Set( rideDone);
+		currentStatus = STIFFED_CABBIE;
+		}
+
+	if (script == 6)
+		{
+		Set( OK);
+		Set( rideDone);
+		}
+	}
+
+if ((Said( take, me, home) ||
+	Said( go, home) ||
+	Said( home)))
+	{
+	Print( 26);
+	NewRoom( rmWorkshop);
+	}
+
+if (Said( look, meter))
+	{
+	Print( 23);
+	}
+
+if ((Said( look, cab) ||
+	Said( look$in, cab) ||
+	Said( look, room) ||
+	Said( look, seat) ||
+	Said( look, floor) ||
+	Said( look)))
+	{
+	Print( 24);
+	}
+
+if (Said( look, ceiling))
+	{
+	Print( 25);
+	}
+
+if ((Said( look, out, window) ||
+	Said( look, window)))
+	{
+	Print( 27);
+	}
+
+if (Said( look, cabbie))
+	{
+	if (!lookedAtCabbie)
+		{
+		Set( lookedAtCabbie);
+		Print( 10);
+		}
+	else
+		{
+		Print( 11);
+		}
+	}
+
+if ((Said( give, money, man) ||
+	Said( give, man, money) ||
+	Said( give, money) ||
+	Said( pay, man, money) ||
+	Said( pay) ||
+	Said( pay, money, man) ||
+	Said( pay, money) ||
+	Said( pay, man)))
+	{
+	if (script < 5)
+		{
+		Print( 6);
+		}
+
+	if (script == 5)
+		{
+		if (dollars < fare)
+			{
+			Print( 20);
+			Print( 14);
+			Set( rideDone);
+			currentStatus = STIFFED_CABBIE;
+			}
+		else
+			{
+		    	dollars -= fare;
+		    	Set( scriptDone);
+			parkTimer = 30;
+		    	}
+		}
+
+	if (script == 6)
+		{
+		Print( 19);
+		}
+	}
+
+
+if ((Said( give, tip, rol) ||
+	Said( give, man, tip, rol) ||
+	Said( tip, rol)))
+	{
+	Print( 19);
+	}
+
+
+[*****
+:noInput
+[*****
+
+if (aSecondPassed)
+	{
+	--parkTimer;
+	if (parkTimer == 1)
+		{
+		parkTimer = 30;
+		if (script < 3)
+			{
+			Print( 5);
+			}
+
+		if (script == 5)
+			{
+			Print( 22);
+			}
+
+		if (script == 6)
+			{
+			Print( 21);
+			}
+		}
+	}
+
+
+if (scriptDone)
+	{
+	Reset( scriptDone);
+	++script;
+
+	if (script == 1)
+		{
+		EndOfLoop( aMeter, meterDone);
+		EndOfLoop( aCabbie, scriptDone);
+		}
+
+	if (script == 2)
+		{
+		SetLoop( aCabbie, L_STEERING);
+		steeringCycles = 2;
+		Reset( cabbieSteering);		[	This makes him start immediately.
+		CycleTime( aCabbie, two);
+		}
+
+	if (script == 3)				[	This starts us moving.
+		{
+		Set( speedingUp);
+		parkTimer = 0;
+		scrollCycles = SCROLL_CYCLES;
+		scrollSpeed = 4;
+		CycleTime( aScroll, scrollSpeed);
+
+		if (destRoom != previousRoom)
+			{
+			scriptTimer = cabRideLength; [Seconds before start slowdown.
+			if (!gaveDestination)	[	No message if trip #2 or more.
+				{
+				Print( 15);
+				}
+			}
+		else
+			{
+			scriptTimer = 6;
+			if (scriptTimer > cabRideLength)
+				{
+				scriptTimer = cabRideLength;
+				}
+
+			if (!gaveDestination)
+				{
+				Print( 3);
+				}
+			}
+		Set( gaveDestination);
+		}
+
+	if (script == 4)				[	Trip timer has expired. Slowdown.
+		{
+		Reset( speedingUp);
+		}
+
+	if (script == 5)				[	Slowdown has ended.
+		{
+		Reset( bgOn);
+		StopUpdate( aScroll);
+
+		StartUpdate( aMeter);
+		BeginningOfLoop( aMeter, meterDone);
+
+		steeringCycles = 0;
+		StartCycling( aCabbie);
+		SetLoop( aCabbie, L_LOWERING_FLAG);
+		LastCel( aCabbie, work);
+		SetCelV( aCabbie, work);
+		BeginningOfLoop( aCabbie, manDone);
+
+		Print( 4);
+		parkTimer = 30;
+		}
+
+	if (script == 6)
+		{
+		Print( 8);
+		}
+
+
+	
+	if (script == 101)				[	He be a drunk cabbie!
+		{
+		parkTimer = 0;
+		SetLoop( aCabbie, L_STEERING);
+		steeringCycles = 2;
+		Reset( cabbieSteering);		[	This makes him start immediately.
+		CycleTime( aCabbie, one);
+
+		scrollCycles = 0;			[	Never change speed of scroll.
+		scrollSpeed = 3;
+		CycleTime( aScroll, scrollSpeed);
+		SetLoop( aScroll, L_DRUNK);
+	 	StartCycling( aScroll);
+		Print( 16);
+		scriptTimer = 9;
+		}
+
+	if (script == 102)				[	He's hit a bridge!
+		{
+		Erase( aCabbie);
+		Erase( aMeter);
+		SetLoop( aScroll, L_CRASH);
+		CycleTime( aScroll, one);
+		scriptTimer = 5;
+		}
+
+	if (script == 103)				[	You're dead.
+		{
+	   	Print( 18);
+		Erase( aScroll);
+		Set( certainDeath);
+		}
+
+
+
+	if (script == 201)				[	Start all over again.
+		{
+		Random( MIN_CABFARE, MAX_CABFARE, work);
+		fare += work;
+		Print( 13);
+		LastCel( aMeter, work);
+		SetCelV( aMeter, work);
+		ForceUpdate( aMeter);
+
+		StartUpdate( aCabbie);
+		StartCycling( aCabbie);
+		SetLoop( aCabbie, L_STEERING);
+		steeringCycles = 2;
+		Reset( cabbieSteering);		[	This makes him start immediately.
+		CycleTime( aCabbie, two);
+
+		StartUpdate( aScroll);
+		StartCycling( aScroll);
+		Set( bgOn);
+		Set( scriptDone);
+		script = 2;
+		}
+	}
+
+
+--scrollCycles;
+if (bgOn && scrollCycles == 1)
+	{
+	scrollCycles = SCROLL_CYCLES;
+	if (!speedingUp)
+		{
+		++scrollSpeed;
+		}
+	else
+		{
+		if (scrollSpeed > 1)
+			{
+			--scrollSpeed;
+			}
+		}
+
+	if (scrollSpeed == cabRideLength)	[	we go down to 0, then up to CRL.
+		{
+		Set( scriptDone);
+		}
+	else
+		{
+		CycleTime( aScroll, scrollSpeed);
+		}
+	}
+
+
+if (meterDone)
+	{
+	Reset( meterDone);
+	StopUpdate( aMeter);
+	}
+
+
+if (manDone)
+	{
+	Reset( manDone);
+	SetLoop( aCabbie, L_TALKING);
+	StartCycling( aCabbie);
+	talkCycles = 22;
+	}
+
+--talkCycles;
+if (talkCycles == 1)
+	{
+	StopCycling( aCabbie);
+	}
+
+
+--steeringCycles;					[	turn that wheel
+if (steeringCycles == 1)
+	{
+	Toggle( cabbieSteering);
+	if (cabbieSteering)
+		{
+		StartCycling( aCabbie);
+		Random( 5, 22, steeringCycles);
+		}
+	else
+		{
+		StopCycling( aCabbie);
+		Random( 22, 44, steeringCycles);
+		}
+	}
+
+
+[*****
+:exit							[	test for leaving the room
+[*****
+
+if (rideDone)
+	{
+	Reset( programControl);
+	Reset( handsOff);
+	newRoom = destRoom;
+	if (!rodeInCab)
+		{
+		Set( rodeInCab);
+		Reset( OK);
+		currentScore += 1;
+		Print( 17);
+		}
+	}

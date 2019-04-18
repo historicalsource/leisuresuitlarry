@@ -1,0 +1,53 @@
+[messages for room 44 -- rmLivingRoom
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"This is the living room of the hotel's penthouse suite.
+ Obviously, the hotel spared no expense here.
+ There's a fireplace on the wall to the south.
+ No one is here, but you hear a gurgling noise coming from somewhere."
+
+%message	2
+"You wonder how they can make those gas logs look so real!"
+
+%message	3
+"There is a button on either side of the elevator."
+
+%message	4
+"The bear looks back at you with a glassy-eyed stare,
+ possibly because his eyes are made of glass!"
+
+%message	5
+"It's another one of those boring works of modern art;
+ this one is signed \"Mark Crowe.\""
+
+%message	6
+"Yep. It's a sofa!"
+
+%message	7
+"From this height, the view of the city is spectacular."
+
+%message	8
+"The elevator doors are already open. Just walk inside."
+
+%message	9
+"Instead of sitting, you should investigate that gurgling sound you hear."
+
+%message	10
+"There's a sound coming from outside."
+
+%message	11
+"The door to the terrace is already open."
+
+%message	12
+"You find nothing but dust."
+
+%message	13
+"Tired already?"
+
+%message	14
+"You can't. It's screwed to the wall."
+

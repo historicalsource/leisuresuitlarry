@@ -1,0 +1,56 @@
+[logics for room 58 -- lgcSlots
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm58.msg"
+%include	"gamedefs.h"
+%include	"slots.h"
+
+
+
+if (function == PAY_WINNER)
+	{
+	winnings = bet;
+	MulV( winnings, multiple);
+	work = 250;
+	work -= winnings;
+
+	if (work > dollars)
+		{
+		dollars += winnings;
+		}
+	else
+		{
+		winnings = 250;
+		winnings -= dollars;
+		dollars = 250;
+		Print( 4);
+		Set( readyToLeave);
+		}
+
+	function = UPDATE_STATUS;		[	Auto update.
+	}
+
+
+if (function == UPDATE_STATUS)
+	{
+	if (monitorType == MONO)
+		{
+		ClearLines( 24, 24, BG_COLOR);
+		Display( 24, 0, 1);
+		}
+	else
+		{
+		ClearLines( 21, 21, BG_COLOR);
+		Display( 21, 0, 1);
+		}
+	}
+
+
+
+[*****
+:exit
+[*****
+
+function = 0;
+

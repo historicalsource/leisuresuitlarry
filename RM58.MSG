@@ -1,0 +1,14 @@
+[messages for room 58 -- lgcSlots
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"Bet is $%v200.00         You have $%v90.00"
+
+%message	4
+"Congratulations, you've broken the bank!
+ This casino has a limit of $250.00 per person, and you've reached it.
+ No more for you, Larry!"
+

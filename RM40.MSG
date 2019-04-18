@@ -1,0 +1,171 @@
+[messages for room 40 -- rmElevatorMaze
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"You are in the Casino's hotel.
+ Doors line each side, many with \"Do Not Disturb\" signs on their doorknobs."
+
+%message	2
+"There's a door with a heart on it to the west."
+
+%message	3
+"Not one for those long elevator rides, eh, Larry?"
+
+%message	4
+"You rap your knuckles on the door.
+ There is no response, but now your knuckles hurt."
+
+%message	5
+"Whee!"
+
+%message	6
+"Fawn's delicate voice booms out across the hotel:\n\n
+\"Just a minute, Larry!\""
+
+%message	7
+"\"strangers in the night, da da da dee da...\""
+
+%message	8
+"There's a click as she unlocks the door, then a piercing
+ \"Come on in. The door's open.\""
+
+%message	9
+"You can't. This door is locked."
+
+%message	10
+"Subtly, you shout, \"Here I come, baby!\""
+
+%message	11
+"It's a door not unlike all the others, except this one has a cute,
+ trite, cracked, little, plastic heart stuck to it with a thumbtack."
+
+%message	12
+"It's a door just like all the others."
+
+%message	13
+""
+
+%message	14
+""
+
+%message	15
+""
+
+%message	16
+"They almost look real, don't they?"
+
+%message	17
+"You seem surprised that the door is locked."
+
+%message	18
+"You close the door behind you, and jiggle the knob to confirm it is locked."
+
+%message	19
+"Type a word, like \"one\" or \"two.\""
+
+%message	20
+"There are buttons labeled \"one\" through \"eight.\""
+
+%message	21
+"You can't. There's no key in this game!"
+
+%message	22
+"Isn't it funny how the elevator is always waiting for you?"
+
+%message	23
+"The cheap, plastic heart is not worth the bother."
+
+%message	24
+"Where?"
+
+%message	25
+"Fawn's sexy voice oozes through the door,
+ \"Oh, baby, it's you! You're back!!\""
+
+%message	26
+"There's a click as she unlocks the door.
+ \"Come on in, you wonderful hunk!\""
+
+%message	27
+"It's no good. The door resists all of your efforts."
+
+%message	28
+"You contemplate expec- toration, but remember that discretion is the better
+ part of valium."
+
+%message	29
+"...or helium,"
+
+%message	30
+"...or something."
+
+%message	31
+"Suicide is illegal here."
+
+%message	32
+"You rap your knuckles on the nearest door."
+
+%message	33
+"This must not be the right door, Larry."
+
+%message	34
+"\"Hey, Scott, the girls are here!!\""
+
+%message	35
+"\"It says 'Do NOT Disturb!' Can't you read?\""
+
+%message	36
+"You hear some extremely heavy breathing."
+
+%message	37
+"\"Go away! I gave at the office!\""
+
+%message	38
+"\"Oh, Russ, there's someone at the door!\"\n\n
+\"They're gonna have to wait, Kim Baby!
+ It's too late for me to stop now!!\""
+
+%message	39
+"\"Baaaaah. Baaaaah!\"\n\n
+Don't even ask, Larry!"
+
+%message	40
+"\"Oh, Bruce!\n
+Oh, Howard!\n\n
+Oh, Terri!\n
+Oh, Carrie!\""
+
+%message	41
+"\"Ken! Get off me, Ken!!\""
+
+%message	42
+"\"Oh, gawd, Ed!! Get in the closet. It's my husband!!\""
+
+%message	43
+"\"Bobbit, is that you?\""
+
+%message	44
+"\"Not now; I've got wessonality!\""
+
+%message	45
+"\"Is that Room Service? I didn't order anchovies.\""
+
+%message	46
+"An eye appears at the peephole.
+ \"Hey, Mary! Isn't it a little early for Trick or Treaters?\""
+
+%message	47
+"\"Oh, gawd, Ed!! Get in the closet. It's my wife!!\""
+
+%message	48
+"Hmmm. Is that the smell of burning rubber?"
+
+%message	49
+"\"Oh, Jeff. You really know how to hurt a guy!\""
+
+%message	50
+"\"Get away from him, you big bully! He's mine.\""
+

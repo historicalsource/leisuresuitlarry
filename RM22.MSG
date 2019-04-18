@@ -1,0 +1,261 @@
+[messages for room 22 -- rmOutside7_11
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"You are outside an all-night convenience store.
+ There is a telephone on the pole.
+ The portion of the telephone book that wasn't illegible from
+ being water-soaked has been torn out."
+
+%message	2
+"\"Slurp. Thanks, I needed that! See ya 'round!!\""
+
+%message	3
+"\"Hello, you have reached the National Hot Line Sex Survey.
+ Please answer the following questions.
+ There may be a wonderful prize waiting for you!!\""
+
+%message	4
+"\"What is the name of your favorite sex partner?\""
+
+%message	5
+"\"What's the best part of your partner's anatomy?\""
+
+%message	6
+"\"What do the two of you like to do together?\""
+
+%message	7
+"\"What is the best part of your body?\""
+
+%message	8
+"\"And, finally, name your partner's favorite object.\""
+
+%message	9
+"\"Thanks for participating. Your prize is...\""
+
+%message	10
+"            \n
+\n
+\n"
+
+%message	11
+"Hum. Looks like they hung up on you.
+ Oh, well. It was probably a bummer prize anyway!"
+
+%message	12
+"Where?!"
+
+%message	13
+"\"Ring.\""
+
+%message	14
+"\"Ring ring.\""
+
+%message	15
+"\"Ring ring ring.\""
+
+%message	16
+"\"Ring ring ring ring.\""
+
+%message	17
+"How long are we going to do this before you type in \"answer phone?!\""
+
+%message	18
+"You pick up the telephone, and hear a woman's voice."
+
+%message	19
+"\"Hello, Larry! This is %s6. Why don't you forget this silly game,
+ and come over to my place so we can %s8?\""
+
+%message	20									    
+"\"After all, your %s9 has always turned me on! So bring along a %s10 and
+ come play with my %s7! Bye, now.\""
+
+%message	21
+"You hang up the telephone and wipe the sweat from your hands!"
+
+%message	22
+"There are some numbers scribbled on the side of the telephone.
+ The only thing legible (and printable) is: \"555-6969.\""
+
+%message	23
+"\"Howsha 'bout a drink, Shonney?\""
+
+%message	24
+"\"Why, thanshk, Shonney!\" (Glug, glug.)"
+
+%message	25
+"\"I ain't got no remote control, but, sssshay, I'll tell ya what:
+ here'ssh my trussshty ol' pocket knife.
+ Ya never know!
+ There are sssshome kinky girlssh in this town.
+ Sssshexy hunkssh like ussh might have to defend oursshelves sometime!\""
+
+%message	26
+"With that, he \"sssshtumbles\" off into the darkness."
+
+%message	27
+"\"Got any sshhpare change, buddy?\""
+
+%message	28
+"\"Al'right. Be that way!\""
+
+%message	29
+"Cheezzzz! He makes that dog smell refreshing!"
+
+%message	30
+"Please enter number: "
+
+%message	31	
+"You fish a dollar out of your wallet, and hand it to the bum.
+ \"Gossshhh thanssskks, buddy,\" he says sarcastically.
+ \"With all thisssh, maybe I can finally invessst in sssome mutual fundsssh!\""
+
+%message	32	
+"He looks like a man that could (ab)use a drink."
+
+%message	33	
+"There's nothing to see on this side of the pole."
+
+%message	34	
+"The store is open all night for your convenience.
+ That's why they call it an \"all-night convenience store,\" Larry!"
+
+%message	35	
+"\"Why, thanshk, Shonney! Glug, glug.\""
+
+%message	36	
+"All you get is a busy signal."
+
+%message	37	
+"Try dialing the telephone."
+
+%message	38	
+"What's left is illegible."
+
+%message	39	
+"Try answering the telephone."
+
+%message	40	
+"It's not that easy; you'll have to find the correct telephone
+ number yourself!"
+
+%message	41	
+"Give him the bottle of what?"
+
+%message	42
+"\"I'm sorry, but you have reached a number that is disconnected, or
+ no longer in service. Please hang up and dial again.\""
+
+%message	43
+"\"This is a computer.\""
+
+%message	44
+"\"Hello. Ajax Liquor Store. We deliver!\""
+
+%message	45
+"\"So, what do you want to buy?\""
+
+%message	46
+"\"Fine. Where do you want it delivered?\""
+
+%message	47
+"\"Ok. We'll get it right there. Consider it done, and thanks for
+ calling!\""
+
+%message	48
+"\"Well, ok. Have ya got any spare wine, then?\""
+
+%message	49
+"You find a strong aroma, which you allow him to keep!"
+
+%message	50
+"It's not ringing."
+
+%message	51
+"\"Hello.\""
+
+%message	52						[	This must REMAIN a single blank!
+" "
+
+%message	53						[	The phony prompt.
+"]"
+
+%message	54
+"\"Sorry, by law all we can deliver is wine. Ok, talk to ya again
+ sometime. Bye!\""
+
+%message	55
+"\"Ok, I'll take it there, but I doubt if you ever see it! Bye!\""
+
+%message	56
+"555-8039"
+
+%message	57
+"5558039"
+
+%message	58
+"555-6969"
+
+%message	59
+"5556969"
+
+%message	60
+"(209) 683-6858"
+
+%message	61
+"209 683-6858"
+
+%message	62
+"209 683-6858"
+
+%message	63
+"2096836858"
+
+%message	64
+"209683-6858"
+
+%message	65
+"209 6836858"
+
+%message	66
+"You could see better if you'd walk inside."
+
+%message	67
+"It IS open."
+
+%message	68
+"\"Hello,\" a pleasant voice responds. \"Sierra On-Line.\""
+
+%message	69
+"\"We're not open right now, but if you'd call during business hours
+ (and stop using this pretend telephone),
+ we would be happy to sell you a 'Leisure Suit Larry Hint Book.'\""
+
+%message	70
+"\"Written by Al Lowe, the author of Leisure Suit Larry,
+ you know it at least tries to be humorous.
+ The answers are invisible, until you mark them with the special pen provided,
+ so you never have to worry about inadvertently learning something
+ you didn't want to know.\""
+
+%message	71
+"\"Thank you for calling Sierra On-Line, and for your purchase of
+ 'Leisure Suit Larry in the Land of the Lounge Lizards.' Good bye.\""
+
+%message	72
+"Such blatant commercialism turns you on.
+ You make a mental note to purchase one of those great,
+ Al Lowe Hint Books!"
+
+%message	73
+"Now?!"
+
+%message	74	""	[MUST REMAIN A NULL STRING!!
+
+%message	75
+"\"I guess that means you don't want to take the survey!\""
+

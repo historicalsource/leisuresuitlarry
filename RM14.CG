@@ -1,0 +1,439 @@
+[logics for room 14 -- rmHallway
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm14.msg"
+%include	"gamedefs.h"
+
+
+
+%define	TALK_TIME				5
+#define	L_DRUNK				0	[	View.47
+#define	L_LEG				1
+#define	L_ROSE				0	[	View.57
+#define	L_DOOR				1
+
+%define	nearDrunk				lf0
+%define	nearRose				lf1
+%define	nearDoor				lf2
+%define	doorOpenDone			lf3
+%define	readMessage			lf4
+%define	nutsMessage			lf5
+%define	seenStinkMessage		lf6
+%define	talkMan				lf7
+
+%define	talkTimer				lv0
+%define	drunkMessage			lv1
+
+%object	aMan					1
+%object	aRose				2
+%object	aDoor				3
+
+
+
+if (initLog)
+	{
+	SetHorizon( 44);
+	ObserveBlocks( ego);
+
+	LoadView( vRm14Stuff);
+	LoadView( vRm14Drunk);
+
+	LoadSound( mRm14Drunk);
+
+	LoadPic( currentRoom);
+	DrawPic( currentRoom);
+	DiscardPic( currentRoom);
+
+	AnimateObj( aDoor);
+	IgnoreBlocks( aDoor);
+	IgnoreObjs( aDoor);
+	SetView( aDoor, vRm14Stuff);
+	SetLoop( aDoor, L_DOOR);
+	SetCel( aDoor, 0);
+	SetPriority( aDoor, 9);
+	work = DOOR_CYCLE_TIME;
+	CycleTime( aDoor, work);
+	Position( aDoor, 105, 123);
+	Draw( aDoor);
+	StopCycling( aDoor);
+
+	AnimateObj( aMan);
+	IgnoreBlocks( aMan);
+	IgnoreObjs( aMan);
+	SetView( aMan, vRm14Drunk);
+	SetLoop( aMan, L_DRUNK);
+	SetCel( aMan, 0);
+	Position( aMan, 99, 132);
+	Draw( aMan);
+	StopCycling( aMan);
+	CycleTime( aMan, two);
+
+	AddToPic( vRm14Drunk, L_LEG, 0, 99, 141, 0, 4);
+				[view, loop, cel, x, y, obj priority, box priority
+
+
+	if (ObjInRoom( iRose, currentRoom))
+		{
+		AnimateObj( aRose);
+		IgnoreBlocks( aRose);
+		IgnoreObjs( aRose);
+		Position( aRose, 48, 115);
+		SetView( aRose, vRm14Stuff);
+		SetLoop( aRose, L_ROSE);
+		SetCel( aRose, 0);
+		SetPriority( aRose, 12);
+		Draw( aRose);
+		StopUpdate( aRose);
+		}
+
+	if (previousRoom == rmToilet)
+		{
+		egoX = 100;
+		egoY = 123;
+		}
+	else
+		{
+		egoX = 76;
+		SetLoop( ego, FACING_BACK);
+	 	}
+	PositionV( ego, egoX, egoY);
+	Draw( ego);
+
+	ShowPic( );
+
+	Sound( mRm14Drunk, done);
+
+	Return( );
+
+	}							[	end initLOG
+
+
+
+Reset( nearDoor);
+if (Posn( ego, 95, 110, 104, 127))
+	{
+	Set( nearDoor);
+	}
+
+Reset( nearDrunk);
+if (Posn( ego, 90, 125, 150, 150))
+	{
+	Set( nearDrunk);
+	}
+
+Reset( nearRose);
+if (Posn( ego, 40, 114, 58, 134))
+	{
+	Set( nearRose);
+	}
+
+
+[*****
+:handleInput
+[*****
+
+if (!haveInput)			{goto noInput;}
+
+if ((Said( look) ||
+	Said( look, room)))
+	{
+	Print( 1);
+	}
+
+if ((Said( look, brick, rol) ||
+	Said( feel, wall) ||
+	Said( get, brick)))
+	{
+	if (!nearDoor)
+		{
+		Print( 17);
+		}
+	else
+		{
+		Print( 25);
+		}
+	}
+
+if (Said( look, drunk))
+	{
+	Print( 9);
+	Print( 10);
+	}
+
+if ((Said( buy, man, drink) ||
+	Said( buy, drink, for, man)))
+	{
+	if (!nearDrunk)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 19);
+		}
+	}
+
+
+if (Said( open, door))
+	{
+	if (!nearDoor)
+		{
+		Set( notCloseEnough);				
+		}
+	else
+		{
+		Set( OK);							
+		StopMotion( ego);
+		Set( programControl);
+		EndOfLoop( aDoor, doorOpenDone);
+		}
+	}
+
+if ((talkMan ||
+	Said( talk, man) ||
+	Said( ask, man, rol)))
+	{
+	Reset( talkMan);
+	if (!nearDrunk)
+		{
+		Set( notCloseEnough);				
+		}
+	else
+		{
+		drunkMessage = 5;
+		talkTimer = TALK_TIME;
+		StartCycling( aMan);
+		}
+	}
+
+if ((Said( give, money) ||
+	Said( use, money) ||
+	Said( give, man, money) ||
+	Said( give, money, man)))
+	{
+	if (!nearDrunk)
+		{
+		Set( notCloseEnough);				
+		}
+	else
+		{
+		--dollars;
+		Print( 16);
+		}
+	}
+
+if ((Said( give, whiskey) ||
+	Said( give, man, drink) ||
+	Said( give, drink, man) ||
+	Said( give, drink) ||
+	Said( use, whiskey) ||
+	Said( give, man, whiskey) ||
+	Said( give, whiskey, man)))
+	{
+	if (!Has( iWhiskey))
+		{
+		Print( 18);
+		}
+	else
+		{
+		if (!nearDrunk)
+			{
+			Set( notCloseEnough);				
+			}
+		else
+			{
+			Drop( iWhiskey);
+			talkTimer = TALK_TIME;
+			StartCycling( aMan);
+			if (!ObjInRoom( iRemoteControl, currentRoom))
+				{
+				drunkMessage = 15;
+				}
+			else
+				{
+				drunkMessage = 6;
+				}
+			}
+		}
+	}
+
+if ((Said( look, top$of, table) ||
+	Said( look, table)))
+	{
+	if (ObjInRoom( iRose, currentRoom))
+		{
+		Print( 11);
+		}
+	else
+		{
+		Print( 3);
+		}
+	}
+
+if (ObjInRoom( iRose, currentRoom) &&
+	Said( look, rose))
+	{
+	Print( 11);
+	}
+
+if (Said( take, rose))
+	{
+	if (!nearRose)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		if (!ObjInRoom( iRose, currentRoom))
+			{
+			Set( alreadyGotIt);
+			}
+		else
+			{
+			Set( OK);							
+			currentScore += 1;
+			Erase( aRose);
+			Get( iRose);
+			}
+		}
+	}
+
+
+
+if ((Said( give, anyword, man) ||
+	Said( give, man, rol)))
+	{
+	if (!nearDrunk)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 20);
+		}
+	}
+
+
+if ((Said( help, anyword, man, rol) ||
+	Said( help, man, rol)))
+	{
+	if (!nearDrunk)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 21);
+		}
+	}
+
+if ((Said( shake, man, rol) ||
+	Said( wake, man, rol) ||
+	Said( hit, man, rol)))
+	{
+	if (!nearDrunk)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 24);
+		Set( talkMan);
+		}
+	}
+
+if ((Said( look$in, man, rol) ||
+	Said( look$in, clothes, rol) ||
+	Said( rob, drunk, rol) ||
+	Said( rob, money, rol) ||
+	Said( take, wallet, rol) ||
+	Said( search, clothes, rol) ||
+	Said( search, man, rol)))
+	{
+	if (!nearDrunk)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 4);
+		}
+	}
+
+
+
+[*****
+:noInput
+[*****
+
+if (aSecondPassed)
+	{
+	--talkTimer;
+	if (talkTimer == 1)
+		{
+		SetCel( aMan, 0);
+		StopCycling( aMan);
+		PrintV( drunkMessage);
+
+		if (drunkMessage == 6)
+			{
+			Print( 7);
+			Print( 8);
+			Print( 22);
+			Print( 22);
+			Print( 22);
+			Print( 23);
+			currentScore += 2;
+			Get( iRemoteControl);
+			}
+		}
+	}
+
+if (!readMessage &&
+	egoX == 101 &&
+	egoY == 133)
+	{
+	Set( readMessage);
+	Toggle( nutsMessage);
+	if (nutsMessage)
+		{
+		Print( 13);
+		}
+	else
+		{
+		Print( 12);
+		}
+	}
+
+if  (toiletPaperOnShoe &&
+	nearDrunk &&
+	previousRoom == rmToilet &&
+	!seenStinkMessage)
+	{
+	Set( seenStinkMessage);
+	StartCycling( aMan);
+	talkTimer = TALK_TIME;
+	drunkMessage = 2;
+	}
+
+if (readMessage)
+	{
+	Distance( ego, aMan, work);
+	if (work > 25)
+		{
+		Reset( readMessage);
+		}
+	}
+
+
+[*****
+:exit							[	test for leaving the room
+[*****
+
+if (edgeEgoHit == BOTTOM)		{newRoom = rmInsideBar;}
+if (doorOpenDone)
+	{
+	Reset( programControl);
+	newRoom = rmToilet;
+	}

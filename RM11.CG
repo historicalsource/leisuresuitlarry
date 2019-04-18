@@ -1,0 +1,463 @@
+[logics for room 11 -- rmOutsideBar
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm11.msg"
+%include	"gamedefs.h"
+%include	"contrlrs.h"
+
+
+#define	L_HOTEL_SIGN			0
+#define	L_BAR_SIGN_1			1
+#define	L_BAR_SIGN_2			2
+
+%define	inClear				lf0
+%define	nearDoor				lf1
+%define	doorOpen				lf2
+%define	titleSongDone			lf3
+%define	titleSongPlaying		lf4
+%define	copAtEgo				lf5
+%define	copOnscreen			lf7
+
+%object	aDoor				1
+%object	aBarSign1				2
+%object	aBarSign2				3
+%object	aHotelSign			4
+
+
+if (initLog)
+	{
+	if  (watchHours > 4 &&			[	Anything after 5 am.
+		watchHours < 10)
+		{
+		NewRoom( rmSunrise);
+		}
+
+[		if (machineType == MAC)
+[			{
+[			Set( slowProcessor);
+[			}
+	
+	if (!beenIn11)
+		{
+		LoadSound( mTitle);
+		if (!testRoom)
+			{
+			Set( enableMenu);
+			DisableItem( cDummy);
+			StatusLineOn();
+			gameSeconds = 0;
+			gameMinutes = 0;
+			gameHours = 0;
+			gameDays = 0;
+
+			Reset( handsOff);
+			Reset( programControl);
+			AcceptInput();
+			animationInterval = NORMAL_SPEED;
+			currentStatus = NORMAL;
+
+			LoadView( vEgo);
+			SetView( ego, vEgo);
+			currentEgoView = NORMAL;
+			}
+		}
+
+
+	SetHorizon( 130);
+
+	LoadLogics( lgcStreet);
+
+	LoadPic( currentRoom);
+	DrawPic( currentRoom);
+	DiscardPic( currentRoom);
+
+	LoadView( vBarExterior);
+	LoadView( vBarDoor);
+
+	if (currentStatus != STIFFED_CABBIE &&
+		wearingRubber)
+		{
+		LoadView( vCop);
+		LoadSound( mCop);
+
+		AnimateObj( aCop);
+		SetView( aCop, vCop);
+		Position( aCop, 0, 145);
+		Draw( aCop);
+		FollowEgo( aCop, 8, copAtEgo);
+		Set( copOnscreen);
+		}
+
+
+	AnimateObj( aDoor);
+	IgnoreHorizon( aDoor);
+	IgnoreBlocks( aDoor);
+	Position( aDoor, 60, 131);
+	SetView( aDoor, vBarDoor);
+	SetPriority( aDoor, 8);
+	SetCel( aDoor, 0);
+	Draw( aDoor);
+	work = DOOR_CYCLE_TIME;
+	CycleTime( aDoor, work);
+	StopUpdate( aDoor);
+
+	if (slowProcessor)
+		{
+		AddToPic( vBarExterior, L_BAR_SIGN_1, 0, 36, 83, 4, 4);
+				[view, loop, cel, x, y, obj priority, box priority
+		}
+	else
+		{
+		AnimateObj( aBarSign1);
+		IgnoreHorizon( aBarSign1);
+		IgnoreBlocks( aBarSign1);
+		IgnoreObjs( aBarSign1);
+		Position( aBarSign1, 36, 83);
+		SetView( aBarSign1, vBarExterior);
+		SetLoop( aBarSign1, L_BAR_SIGN_1);
+		Draw( aBarSign1);
+		CycleTime( aBarSign1, four);
+		}
+
+	AnimateObj( aBarSign2);
+	IgnoreHorizon( aBarSign2);
+	IgnoreBlocks( aBarSign2);
+	IgnoreObjs( aBarSign2);
+	Position( aBarSign2, 83, 84);
+	SetView( aBarSign2, vBarExterior);
+	SetLoop( aBarSign2, L_BAR_SIGN_2);
+	Draw( aBarSign2);
+	CycleTime( aBarSign2, one);
+
+	AnimateObj( aHotelSign);
+	IgnoreHorizon( aHotelSign);
+	IgnoreBlocks( aHotelSign);
+	IgnoreObjs( aHotelSign);
+	Position( aHotelSign, 134, 67);
+	SetView( aHotelSign, vBarExterior);
+	SetLoop( aHotelSign, L_HOTEL_SIGN);
+	Draw( aHotelSign);
+	CycleTime( aHotelSign, five);
+
+	if (diedOfTheClap)
+		{
+		LoadView( vEgoMissingGroin);
+		LoadView( vEgoDead);
+		LoadView( vEgoCollapsing);
+		}
+
+	if (previousRoom == rmAlley)
+		{
+		egoX = 134;
+		egoY = 142;
+		SetLoop( ego, FACING_LEFT);
+		StartMotion( ego);
+		}
+	else
+		{
+		if (previousRoom == rmInsideBar)
+			{
+			egoX = 58;
+			egoY = 134;
+			SetLoop( ego, FACING_FRONT);
+			}
+		else
+			{
+			if (previousRoom != rmDarkAlley)
+				{
+				egoX = 63;
+				egoY = 156;
+				SetLoop( ego, FACING_BACK);
+				}
+			}
+	 	}
+	PositionV( ego, egoX, egoY);
+	Draw( ego);
+
+	Call( lgcStreet);
+
+	ShowPic( );
+
+	if (currentStatus != STIFFED_CABBIE &&
+		wearingRubber)
+		{
+		Sound( mCop, done);
+		}
+
+	if (!beenIn11)
+		{
+		Set( beenIn11);
+		Sound( mTitle, titleSongDone);
+		Set( titleSongPlaying);
+		}	
+
+	Return( );
+
+	}							[	end initLOG
+
+
+
+Reset( inClear);
+if (Posn( ego, 34, 142, 130, 166))
+	{
+	Set( inClear);
+	}
+
+Reset( nearDoor);
+if (Posn( ego, 50, 131, 75, 136))
+	{
+	Set( nearDoor);
+	}
+
+
+
+
+[*****
+:handleInput
+[*****
+
+if (!haveInput)			{goto noInput;}
+
+if ((Said( look) ||
+	Said( look, building) ||
+	Said( look, room) ||
+	Said( look, bar)))
+	{
+	Print( 1);
+	Print( 2);
+	}
+
+if (Said( look, mat))
+	{
+	Print( 9);
+	}
+
+if ((Said( lift, mat) ||
+	Said( look, under, mat)))
+	{
+	Print( 10);
+	Print( 11);
+	Print( 12);
+	}
+
+
+[	Now, do the cop stuff.
+
+if (copOnscreen)
+	{
+	if (Said( look, cop))
+		{
+		Print( 18);
+		}
+
+	if (Said( talk, cop))
+		{
+		Print( 15);
+		}
+	}
+
+
+if (Said( open, door))
+	{
+	if (nearTaxi)
+		{
+		Reset( haveMatch);
+		}
+	else
+		{
+		if (!nearDoor)
+			{
+			Set( notCloseEnough);
+			}
+		else
+			{
+			if  (watchHours > 2 &&	[	Anything after 3 am.
+				watchHours < 10)
+				{
+				Print( 13);
+				Print( 14);
+				}
+			else
+				{
+				Set( OK);
+				StartUpdate( aDoor);
+				EndOfLoop( aDoor, doorOpen);
+				PreventInput();
+				StopMotion( ego);
+				Set( programControl);
+				}
+			}
+		}
+	}
+
+if (Said( look, door))
+	{
+	if (!nearDoor)
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 8);
+		}
+	}
+
+
+if ((Said( look, bar) ||
+	Said( look, building)))
+	{
+	Print( 4);
+	}
+
+if ((Said( look, window) ||
+	Said( look$in, window)))
+	{
+	Print( 6);
+	}
+
+if ((Said( break, window) ||
+	Said( hit, window)))
+	{
+	Print( 7);
+	}
+
+
+[*****
+:noInput
+[*****
+
+if (!handsOff &&
+	diedOfTheClap &&
+	secondsInRoom > 5 &&
+	currentEgoView == NORMAL &&
+	currentStatus == NORMAL &&
+	inClear)
+	{
+	Set( scriptDone);
+	script = 0;
+	}
+
+if (script == 2 && inClear)
+	{
+	Set( scriptDone);
+	}
+
+
+if (scriptDone)
+	{
+	Reset( scriptDone);
+	++script;
+
+	if (script == 1)
+		{
+		Reset( diedOfTheClap);
+		currentStatus = DYING_OF_CLAP;
+		Set( handsOff);
+		PreventInput();
+
+		SetView( ego, vEgoMissingGroin);
+		ForceUpdate( ego);
+		Print( 3);
+		scriptTimer = 10;
+		}
+
+	if (script == 2)
+		{
+		[	This makes us wait until previous timer has expired,
+		[then wait again until inClear is set.
+		}
+
+	if (script == 3)
+		{
+		Print( 5);
+		StopMotion( ego);
+		Set( programControl);
+		SetView( ego, vEgoCollapsing);
+		SetCel( ego, 0);
+		CycleTime( ego, two);
+		Set( keepCycling);
+		EndOfLoop( ego, scriptDone);
+		}
+
+	if (script == 4)
+		{
+		Reset( keepCycling);
+		StopCycling( ego);
+		SetView( ego, vEgoDead);
+		SetCel( ego, 0);
+		egoX -= 3;
+		if (egoY < 160)
+			{
+			egoY += 7;
+			}
+		RepositionToV( ego, egoX, egoY);
+		scriptTimer = 5;
+		}
+
+	if (script == 5)
+		{
+		Set( keepCycling);
+		CycleTime( ego, three);
+		EndOfLoop( ego, scriptDone);
+		}
+
+	if (script == 6)
+		{
+		Reset( handsOff);
+		newRoom = rmWorkshop;
+		}
+	}
+
+
+
+[	Cop stuff:
+
+if  (aSecondPassed &&
+	secondsInRoom == 5 &&
+	wearingRubber)
+	{
+	Print( 15);
+	}
+
+if (copAtEgo)
+	{
+	Reset( copAtEgo);
+	Set( handsOff);
+	Erase( ego);
+	Erase( aCop);
+	Set( certainDeath);
+	Print( 16);
+	Print( 17);
+	}
+
+
+if (titleSongDone)
+	{
+	Reset( titleSongDone);
+	Reset( titleSongPlaying);
+	}
+
+if (titleSongPlaying)
+	{
+	notMovedCycles = 0;
+	}
+
+
+[*****
+:exit							[	test for leaving the room
+[*****
+
+Call( lgcStreet);
+
+if ((edgeEgoHit == RIGHT ||
+	edgeEgoHit == LEFT))				{newRoom = rmDarkAlley;}
+if (Posn( ego, 132, 120, SCREEN_RIGHT, 138))	{newRoom = rmAlley;}
+
+if (doorOpen)
+	{
+	AcceptInput();
+	StartMotion( ego);
+	Reset( programControl);
+	newRoom = rmInsideBar;
+	}

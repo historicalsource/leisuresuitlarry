@@ -1,0 +1,90 @@
+[messages for room 14 -- rmHallway
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"You are in a dimly lit hallway.
+ The paint peeling off the walls gives the cockroaches something to watch.
+ An old table is pushed against the west wall.
+ A filthy drunk sits on the filthy floor, leaning against the filthy wall."
+
+%message	2
+"\"Jeeezz! Somethin' die in there??\""							
+
+%message	3
+"You can remember when that table held a rose."
+
+%message	4
+"You find nothing but odor."
+
+%message	5
+"\"Hiya shhhhonny. How's 'bout you 'n' me havin' a lil' drink?\""
+
+%message	6
+"Glug, glug, glug, glug, glug."
+
+%message	7
+"Slurp! \"Ahhhh! That did hit the ol' spot!\""
+
+%message	8
+"\"Ya know, ya mus' be ma only frien' in the whole world!
+ Shhoooo, I'm gonna give ya my only posshhess... hhic!"
+
+%message	9
+"He's a poor little lamb, who has lost his way..."
+
+%message	10
+"...and also his bladder control!"
+
+%message	11
+"There is a single, lovely, long-stemmed,
+ red rose lying incongruously on the table."
+
+%message	12
+"\"Wadda ya tryin' to do; make me a soprano??\""
+
+%message	13
+"\"Geeze! Them pointy-toed shoes hurt!\""
+
+%message	14
+"You generously hand him a dollar."
+
+%message	15
+"\"Shhaay, thanksh buddy! How 'bout sshhom'ore?\""
+
+%message	16
+"He responds, \"Ya know, whad I really need is a good, sshhtiff belt!\""
+
+%message	17
+"You spend hours carefully examining every brick.
+ You find nothing."
+
+%message	18
+"You have no drink to give him."
+
+%message	19
+"There's no one selling anything here. Try the bartender out front."
+
+%message	20
+"He's too drunk to want anything."
+
+%message	21
+"He's beyond help, but thirsty."
+
+%message	22
+"\"...my only posshhess... hhic!"
+
+%message	23
+"\"...all I got in the world.\n\n
+What'sha guy like me need witta TV remote control!?\""
+
+%message	24
+"\"Hey! Wake up!\""
+
+%message	25
+"Caught ya! Now open the door,
+ then get your nose out of that manual
+ and start playing this game the right way!"
+

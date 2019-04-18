@@ -1,0 +1,222 @@
+[messages for room 21 -- rmInside7_11
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"You are in a 24-hour convenience store.
+ There is a magazine rack near the front door, with a sign reading
+ \"This no library -- no leeding.\"
+ Except for the clerk standing behind the counter,
+ the store appears to be deserted. A small sign graces the counter."
+
+%message	2
+"There are many magazines on the rack,
+ but your eyes immediately go to the ones with the naked girls on the cover."
+
+%message	3
+"Move to the counter when you are ready to pay for your selections."
+
+%message	4
+"Shouldn't you TAKE your purchases before paying for them?"
+
+%message	5
+"\n\"WHAT A PERVERT!!!\"\n"
+
+%message	6
+"The shelves are filled with all the necessities of life:
+ \"Dwinkies,\" \"Wallo-Wars,\" \"Loritos,\" various colas,
+ cheap wine, and coffee.
+ You don't see anything you really need in this part of the store."
+
+%message	7
+"Nah. You'd just be wasting your money."
+
+%message	8
+"\"You haven't used your old one yet!\""
+
+%message	9
+"Apparently the clerk is new to this country.
+ He only knows a few English words."
+
+%message	10
+"\"Sure, we got lubbers!\""
+
+%message	11
+"(Obviously you've hit his area of expertise!)"
+
+%message	12
+"\"What kind lubber you want? Smooth or libbed?\""
+
+%message	13
+"\"Colored or plain?\""
+
+%message	14
+"\"Lubricated or rough-cut?\""
+
+%message	15
+"\"Striped or plaid?\""
+
+%message	16
+"\"Peppermint or spearmint flavor?\""
+
+%message	17
+"\"Hey, everybody!!
+ This weird-o just bought a %s5-flavored, %s4, %s3, %s2, %s1 lubber!!!\""
+
+%message	18
+"After looking around to make certain you're alone,
+ you quietly ask the clerk if he has any available behind the counter."
+
+%message	19
+"The clerk does not take kindly to your shoplifting.
+ His shotgun makes a permanent impression on you.
+ (And, IN you!)"
+
+%message	20
+"\"Oakie, doakie Meester!\""
+
+%message	21
+"smooth"
+
+%message	22
+"libbed"
+
+%message	23
+"colored"
+
+%message	24
+"plain"
+
+%message	25
+"lubricated"
+
+%message	26
+"rough-cut"
+
+%message	27
+"striped"
+
+%message	28
+"plaid"
+
+%message	29
+"peppermint"
+
+%message	30
+"spearmint"
+
+%message	31
+"He hands you the package, saying
+ \"All together, that will be $%v200.00, prease.\""
+
+%message	32
+"Unfortunately, you only have $%v90.00.
+ (Perhaps you can sneak out without paying.)"
+
+%message	33
+"You give him the money, with a pleasant \"Thanks a lot, big mouth!\""
+
+%message	34						[	MUST remain 1 single space!!
+" "
+
+%message	35
+"\"Hey, Meester!!\" yells the clerk.
+ \"I hope you enjoy your %s5-flavored, %s4, %s3, %s2, %s1 lubber!!!\""
+
+%message	36
+"The magazines are on the rack nearest the door."
+
+%message	37
+""
+
+%message	38
+"Nah. That's enough reading material for one game."
+
+%message	39
+"\"Ooooooh, Meester!
+ Thank you for free money.
+ What wonderful country thees is!!\""
+
+%message	40
+"\"Oakie, doakie Meester! That'll be $%v200.00.\""
+
+%message	41
+"\"Have a nice day.\""
+
+%message	42
+"You grab a bottle of cheap wine,
+ and wonder how they can make a profit selling this stuff for only a
+ dollar a gallon!"
+
+%message	43
+"Not here. This place is too expensive!"
+
+%message	44
+"A small, discreetly hand-lettered sign says:\n\n
+\"Prophylactics For Sale\n
+       Ask Clerk\""
+
+%message	45
+"\"Nice turban, Leroy.\""
+
+%message	46
+"\"Hey, meester! Come over here, and get your lubber!!\""
+
+%message	47
+"He smiles back, pretending to understand."
+
+%message	48
+"The wine is on the left end of the back wall."
+
+%message	49
+"That extra large jug of wine looks like a bargain."
+
+%message	50
+"There's nothing of interest inside."
+
+%message	51
+"That is located behind the counter. Ask the clerk."
+
+%message	52
+"You still have some."
+
+%message	53
+"\"Here, Meester,\" he says. \"Thees smells like chur brand!\""
+
+%message	54
+"Hmm. That one looks particularly interesting."
+
+%message	55
+"Whew. One of those bottles is about all a guy needs, Larry."
+
+%message	56
+"The wall behind the clerk is blank and
+ the counter is completely bare, except for a small sign.
+ (You wonder where he keeps the slim jims.)"
+
+%message	57
+"\"Sorry, no gottee!\""
+
+%message	58
+"\"Fposwqa feinnzx. Ofewass gewyiu qfbva.\""
+
+%message	59
+"\"Poolskd asd woefpo lkjfq feps of foeps.\""
+
+%message	60
+"\"Owf wepa vpifk qpqwf? Qqwpp apifrp qp foiw!\""
+
+%message	61
+"\"Tqp nbq bqopni ba ajpqoi fqyq. HA HA HA!!\""
+
+%message	62
+"\"Pqwwo qfp qwfnbv qozdvie.  Ppqow poqw fvzxc ioplhjk.\""
+
+%message	63
+"\"Qufe weax zxo zvp zvqiw vpozcvajpbnv wf, apoz.  Wfipa?\""
+
+%message	64
+"\"Zxxz pofqsoo afpoistr zxcv.\""
+

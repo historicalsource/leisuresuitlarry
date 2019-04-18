@@ -1,0 +1,37 @@
+[messages for room 1 -- rm.titles
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+[	%message 	1		   "by Al Lowe & Mark Crowe"
+%message	2	   "Adventure Game Development System"
+%message	3	    "(C) 1987 by Sierra On-Line, Inc."
+[			 |    |    |    |    |    |    |    |   |
+[			 0    5    10   15   20   25   30   35 39
+
+
+
+[--------------------------------------------------------------------------]
+
+
+[	%message	11	"Lots of other stuff was done by:"
+[	%message	12		"Al Lowe"
+[	%message	13		"Mark Crowe"
+[	
+[	%message	21	"Quality Assurance by:"
+[	%message	22		"Larry Weissenborn"
+[	%message	23		"Bob Ballew"
+[	%message	24		"Russ TrueLove"
+[	%message	25		"Kim Covert"
+[	%message	26		"Linda Bye"
+[	
+[	%message	31	"Packaging and Documentation by:"
+[	%message	32		"Mark Crowe"
+[	%message	33		"John Williams"
+[	
+[	%message	41	"Inspired by a Recent Wet Dream of:"
+[	%message	42		"Ken Williams"
+[			 |    |    |    |    |    |    |    |   |
+[			 0    5    10   15   20   25   30   35 39
+

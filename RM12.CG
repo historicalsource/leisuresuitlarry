@@ -1,0 +1,1125 @@
+[logics for room 12 -- rmAlley
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"rm12.msg"
+%include	"gamedefs.h"
+
+
+
+#define	L_HOTEL_SIGN			0
+#define	L_WINDOW_OPEN			1	[	1 cell only
+#define	L_WINDOW_BREAKING		2
+#define	L_WINDOW_BROKEN		3
+
+#define	L_WITH_HAMMER			0
+#define	L_WITHOUT_HAMMER		1
+
+
+%define	onFireEscape			lf0
+%define	nearWindow			lf1
+%define	nearPills				lf2
+%define	hitWindow				lf3
+%define	nearDumpster			lf5
+%define	windowDone			lf7
+%define	ropeAroundWaist		lf8
+%define	ropeAroundRailing		lf9
+
+
+%define	yuchTimer				lv0
+
+
+%object	aHotelSign			1
+%object	aLadder				2
+%object	aWindow				3
+
+
+
+if (initLog)
+	{
+	LoadPic( currentRoom);
+	DrawPic( currentRoom);
+	DiscardPic( currentRoom);
+
+	LoadView( vAlleyStuff);
+	LoadView( vEgoOnLadder);
+	LoadView( vEgoFalling);
+	LoadView( vEgoIntoDumpster);
+	LoadView( vEgoLeavingDumpster);
+	LoadView( vEgoDead);
+	LoadView( vEgoOnRope);
+
+	LoadSound( sEgoFalling);
+
+
+	AnimateObj( aHotelSign);
+	IgnoreHorizon( aHotelSign);
+	IgnoreBlocks( aHotelSign);
+	IgnoreObjs( aHotelSign);
+	SetView( aHotelSign, vAlleyStuff);
+	SetLoop( aHotelSign, L_HOTEL_SIGN);
+	SetCel( aHotelSign, 0);
+	Position( aHotelSign, 18, 73);
+	Draw( aHotelSign);
+	work = 8;
+	CycleTime( aHotelSign, work);
+
+	AnimateObj( aLadder);
+	IgnoreHorizon( aLadder);
+	IgnoreBlocks( aLadder);
+	IgnoreObjs( aLadder);
+	SetView( aLadder, vEgoOnLadder);
+	SetCel( aLadder, 0);
+	CycleTime( aLadder, three);
+	Position( aLadder, 51, 101);
+	Draw( aLadder);
+	StopUpdate( aLadder);
+
+
+	if (!ObjInRoom( iPills, currentRoom) &&
+		alleyWindowBroken)
+		{
+		AddToPic( vAlleyStuff, L_WINDOW_BROKEN, 0, 112, 51, 4, 4);
+		}
+	else
+		{
+		AnimateObj( aWindow);
+		IgnoreHorizon( aWindow);
+		IgnoreBlocks( aWindow);
+		IgnoreObjs( aWindow);
+		SetView( aWindow, vAlleyStuff);
+		SetLoop( aWindow, L_WINDOW_BREAKING);
+		if (alleyWindowBroken)
+			{
+			LastCel( aWindow, work);
+			SetCelV( aWindow, work);
+			}
+		else
+			{
+			SetCel( aWindow, 0);
+			}
+		Position( aWindow, 112, 51);
+		Draw( aWindow);
+		StopUpdate( aWindow);
+		}
+
+	if (hookerWindowOpen)
+		{
+		AddToPic( vAlleyStuff, L_WINDOW_OPEN, 0, 65, 51, 4, 4);
+		}
+
+	currentStatus = NORMAL;
+	if (previousRoom == rmOutsideBar)
+		{
+		egoX = 0;
+		egoY = 148;
+		Reset( onFireEscape);
+		StartMotion( ego);
+		SetLoop( ego, FACING_RIGHT);
+		}
+	else
+		{
+		if (previousRoom == rmInsideBar)
+			{
+			egoX = 58;
+			egoY = 148;
+			currentStatus = IN_DUMPSTER;
+			}
+		else
+			{
+			egoX = 70;
+			egoY = 64;
+			SetLoop( ego, FACING_FRONT);
+			Set( onFireEscape);
+			Reset( keepCycling);
+			StartMotion( ego);
+			Reset( programControl);
+			ReleasePriority( ego);
+			}
+		}
+	PositionV( ego, egoX, egoY);
+
+	if (previousRoom != rmInsideBar)
+		{
+		Draw( ego);
+		}
+
+	ShowPic( );
+
+	if (currentStatus == IN_DUMPSTER)
+		{
+		PreventInput();
+		Set( programControl);
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Reset( programControl);
+		AcceptInput();
+		}
+	Return( );
+
+	}							[	end initLOG
+
+
+
+Reset( onFireEscape);
+if (Posn( ego, 53, 60, 94, 64))
+	{
+	Set( onFireEscape);
+	}
+
+Reset( nearPills);
+if  (ObjInRoom( iPills, currentRoom) &&
+	onFireEscape &&
+	Posn( ego, 82, 60, 99, 64))
+	{
+	Set( nearPills);
+	}
+
+if (currentStatus == HANGING_BY_ROPE &&
+	ObjInRoom( iPills, currentRoom))
+	{
+	Set( nearPills);
+	}
+
+Reset( nearWindow);
+if (onFireEscape)
+	{
+	if (Posn( ego, 61, 60, 79, 64))
+		{
+		Set( nearWindow);
+		}
+	}
+
+Reset( nearDumpster);
+if (!onFireEscape &&
+	Posn( ego, 42, 148, 58, 152))
+	{
+	Set( nearDumpster);
+	}
+
+if  (onFireEscape &&
+	currentStatus == NORMAL &&
+	ropeAroundWaist && ropeAroundRailing)
+	{
+	StopMotion( ego);
+	}
+
+if (currentStatus == NORMAL &&
+	Posn( ego, 53, 60, 54, 64))
+	{
+	Reset( onFireEscape);
+	script = 0;
+	Set( scriptDone);				[	make him start falling in trash
+	}
+
+
+[*****
+:handleInput
+[*****
+
+if (!haveInput)				{goto noInput;}
+
+if ((Said( look) ||
+	Said( look, room) ||
+	Said( look, alley)))
+	{
+	if (!ObjInRoom( iPills, currentRoom))
+		{
+		Print( 3);
+		}
+	else
+		{
+		Print( 6);
+		}
+	}
+
+if ((Said( look, ladder) ||
+	Said( look, rail)))
+	{
+	Print( 43);
+	}
+
+
+
+[	If on ground, can "search dumpster" to find old hammer.
+
+if (currentStatus != IN_DUMPSTER)
+	{
+	if ((Said( search, bin) ||
+		Said( look, bin) ||
+		Said( look$in, bin)))
+		{
+		if (!nearDumpster)
+			{
+			Print( 32);
+			}
+		else
+			{
+			Print( 28);
+			}
+		}
+
+	if ((Said( brush, off, clothes) ||
+		Said( brush, clothes) ||
+		Said( brush, me, off)))
+		{
+		Set( OK);
+		}
+
+	if ((Said( enter, bin) ||
+		Said( jump, bin) ||
+		Said( jump, in, bin) ||
+		Said( climb, bin) ||
+		Said( climb, in, bin)))
+		{
+		if (onFireEscape)
+			{
+			Print( 55);
+			}
+		else
+			{
+			if (!nearDumpster)
+				{
+				Print( 32);
+				}
+			else
+				{
+				script = 100;
+				Set( scriptDone);
+				}
+			}
+		}
+	}
+else
+	{
+	if ((Said( climb, out, bin) ||
+		Said( jump, out, bin) ||
+		Said( climb, out) ||
+		Said( get, out) ||
+		Said( go, out) ||
+		Said( go) ||
+		Said( leave, bin)))
+		{
+		script = 200;
+		Set( scriptDone);
+		}
+
+	if ((Said( search, bin) ||
+		Said( look$in, bin) ||
+		Said( look, bin)))
+		{
+		if (ObjInRoom( iHammer, currentRoom))
+			{
+			Print( 25);
+			}
+		else
+			{
+			Print( 26);
+			}
+		}
+
+	if (Said( get, hammer))
+		{
+		if (!ObjInRoom( iHammer, currentRoom))
+			{
+			Set( alreadyGotIt);
+			}
+		else
+			{
+			Set( OK);
+			Get( iHammer);
+			currentScore += 3;
+			}
+		}
+	}
+
+
+if (Said( look, sign))
+   	{
+	Print( 47);
+	Print( 48);
+	}
+
+if ((Said( climb, up) ||
+	Said( climb, rail) ||
+	Said( climb, up, rail) ||
+	Said( pull, down, ladder, rail) ||
+	Said( pull, ladder, rail) ||
+	Said( pull, down, ladder) ||
+	Said( pull, ladder) ||
+	Said( climb, ladder) ||
+	Said( stand, on, ladder) ||
+	Said( get, ladder) ||
+	Said( lower, ladder) ||
+	Said( jump, ladder) ||
+	Said( jump, up, ladder) ||
+	Said( jump, on, ladder) ||
+	Said( jump) ||
+	Said( jump, up)))
+	{
+	if ((onFireEscape ||
+		currentStatus == HANGING_BY_ROPE ||
+		nearWindow))
+		{
+		Print( 8);
+		}
+	else
+		{
+		if (nearDumpster)
+			{
+			Print( 33);
+			}
+		else
+			{
+			Print( 53);
+			}
+		}
+	}
+
+
+if ((Said( close, window) ||
+	Said( lower, window)))
+	{
+	if ((!onFireEscape ||
+		!nearWindow))
+		{
+		Set( notCloseEnough);
+		}
+	else
+		{
+		Print( 4);
+		}
+	}
+
+if ((Said( look, window) ||
+	Said( look$in, window)))
+	{
+	if (!onFireEscape)
+		{
+		Print( 14);
+		}
+	else
+		{
+		if (nearWindow)
+			{
+			Print( 12);
+			}
+		else
+			{
+			if (ObjInRoom( iPills, currentRoom))
+				{
+				Print( 13);
+				}
+			else
+				{
+				Print( 15);
+				}
+			}
+		}
+	}
+
+if ((Said( look, west, window) ||
+	Said( look$in, west, window)))
+	{
+	if (!onFireEscape)
+		{
+		Print( 14);
+		}
+	else
+		{
+		Print( 12);
+		}
+	}
+
+if ((Said( look, east, window) ||
+	Said( look$in, east, window)))
+	{
+	if (!onFireEscape)
+		{
+		Print( 14);
+		}
+	else
+		{
+		if (ObjInRoom( iPills, currentRoom))
+			{
+			Print( 13);
+			}
+		else
+			{
+			Print( 15);
+			}
+		}
+	}
+
+
+
+[	Handle ego on balcony going for the pill bottle.
+[If "reach window" without rope, fall from fire escape, and die.
+[If ties rope to self, and railing, reach him over.
+
+if (Has( iRope) &&
+	currentStatus != HANGING_BY_ROPE)
+	{
+	if ((Said( tie, rope, waist) ||
+		Said( tie, rope, me)))
+		{
+		if (!ropeAroundWaist)
+			{
+			Set( OK);							
+			Set( ropeAroundWaist);
+			}
+		else
+			{
+			Print( 22);
+			}
+		}
+
+	if (Said( tie, rope, rail))
+		{
+		if (!onFireEscape)
+			{
+			Print( 36);
+			}
+		else
+			{
+			if (!ropeAroundRailing)
+	    			{
+				Set( OK);							
+				Set( ropeAroundRailing);
+				}
+			else
+				{
+				Print( 22);
+				}
+			}
+		}
+	}
+
+
+if ((Said( get, pills) ||
+	Said( get, bottle) ||
+	Said( get, bottle, pills) ||
+	Said( reach, over, window) ||
+	Said( reach, over, rail, get, pills) ||
+	Said( reach, for, pills) ||
+	Said( reach, over, rail, for, pills) ||
+	Said( reach, over, rail) ||
+	Said( reach, window) ||
+	Said( jump, window) ||
+	Said( stand, rail) ||
+	Said( stand, on, rail) ||
+	Said( lean, over, rail) ||
+	Said( lean, over) ||
+	Said( lean, out) ||
+	Said( climb, on, rail) ||
+	Said( climb, over) ||
+	Said( climb, over, rail, get, pills) ||
+	Said( climb, rail, get, pills) ||
+	Said( climb, over, rail, pills) ||
+	Said( climb, rail, pills) ||
+	Said( climb, over, rail) ||
+	Said( climb, rail)))
+	{
+	if (Has( iPills))
+		{
+		Set( alreadyGotIt);
+		}
+	else
+		{
+		if (ObjInRoom( iPills, currentRoom) &&
+			!nearPills)
+			{
+			Print( 1);
+			}
+		else
+			{
+			if ((!ropeAroundWaist || !ropeAroundRailing))
+				{
+				script = 250;
+				Set( scriptDone);
+				message = 16;
+				}
+			else
+				{
+				if (currentStatus != HANGING_BY_ROPE)
+					{
+					currentStatus = HANGING_BY_ROPE;
+					Set( programControl);
+					StopMotion( ego);
+					SetView( ego, vEgoOnRope);
+					SetLoop( ego, L_WITHOUT_HAMMER);
+					RepositionTo( ego, 92, 61);
+					Set( keepCycling);
+					CycleTime( ego, three);
+					Print( 17);
+					}
+				else
+					{
+					if (!ObjInRoom( iPills, currentRoom))
+						{
+						Print( 24);
+						}
+					else
+						{
+						if (!alleyWindowBroken)
+							{
+							Print( 21);
+							Print( 9);
+							}
+						else
+							{
+							SetLoop( ego, L_WITHOUT_HAMMER);
+							StartUpdate( aWindow);
+							Erase( aWindow);
+		 		AddToPic( vAlleyStuff, L_WINDOW_BROKEN, 0, 112, 51, 4, 4);
+							Get( iPills);
+							currentScore += 8;
+							Print( 19);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+if (!alleyWindowBroken &&
+    (Said( break, window, hammer) ||
+	Said( use, hammer, break, window) ||
+	Said( break, window) ||
+	Said( break, window, with, hammer) ||
+	Said( hit, window, hammer) ||
+	Said( use, hammer, hit, window) ||
+	Said( hit, window) ||
+	Said( hit, window, with, hammer) ||
+	Said( use, hammer)))
+	{
+	if (!Has( iHammer))
+		{
+		Set( dontHaveIt);
+		}
+	else
+		{
+		if ((!nearPills ||
+			!ropeAroundWaist ||
+			!ropeAroundRailing))
+			{
+			Set( notCloseEnough);				
+			}
+		else
+			{
+			if (currentStatus != HANGING_BY_ROPE)
+				{
+				Print( 20);
+				}
+			else
+				{
+				SetLoop( ego, L_WITH_HAMMER);
+				SetCel( ego, 0);
+				EndOfLoop( ego, hitWindow);
+				}
+			}
+		}
+	}
+
+
+if (currentStatus == HANGING_BY_ROPE)
+	{
+	if (Said( unlock, window))
+		{
+		Print( 10);
+		}
+
+	if (Said( open, window))
+		{
+		Print( 11);
+		}
+
+	if (!alleyWindowBroken &&
+	    (Said( hit, window) ||
+		Said( hit, window, with, hand) ||
+		Said( use, hand, hit, window) ||
+		Said( break, window)))
+		{
+		Print( 21);
+		Print( 9);
+		}
+
+	if ((Said( go, rail) ||
+		Said( go, back, on, rail) ||
+		Said( go, on, rail) ||
+		Said( go, back) ||
+		Said( go, back, rail) ||
+		Said( get, on, rail) ||
+		Said( get, back, rail) ||
+		Said( get, back, on, rail) ||
+		Said( pull, on, rope) ||
+		Said( pull, rope) ||
+		Said( get, rail) ||
+		Said( climb, back) ||
+		Said( climb, back, rail) ||
+		Said( climb, back, on, rail) ||
+		Said( climb, on, rail) ||
+		Said( climb, rail) ||
+		Said( return, rail) ||
+		Said( return, rail) ||
+		Said( stop, hanging, rope)))
+		{
+		Set( OK);							
+		currentStatus = NORMAL;
+		SetView( ego, vEgo);
+		RepositionTo( ego, 86, 64);
+		AcceptInput();
+		StartMotion( ego);
+		Reset( programControl);
+		Reset( keepCycling);
+		CycleTime( ego, one);
+		}
+
+	if (Said( look, down))
+		{
+		Print( 52);
+		}
+	}
+
+
+if ((Said( cut, rope, rol) ||
+	Said( use, knife, rol)))
+	{
+	if (!Has( iPocketKnife))
+		{
+ 		Print( 56);
+		}
+	else
+		{
+		if (currentStatus == HANGING_BY_ROPE)
+			{
+			Print( 41);
+			script = 250;
+			Set( scriptDone);
+			message = 23;
+			}
+		else
+			{
+			if (!ropeAroundWaist && !ropeAroundRailing)
+				{
+				Print( 40);
+				}
+			else
+				{
+				Print( 41);
+				Reset( ropeAroundWaist);
+				Reset( ropeAroundRailing);
+				StartMotion( ego);
+				Reset( programControl);
+				Get( iRope);
+				}
+			}
+		}
+	}
+
+
+if ((Said( take, rope, rol) ||
+	Said( untie, rope, rol)))
+	{
+	if (currentStatus == HANGING_BY_ROPE)
+		{
+		script = 250;
+		Set( scriptDone);
+		message = 23;
+		}
+	else
+		{
+		if (!ropeAroundWaist && !ropeAroundRailing)
+			{
+			Print( 40);
+			}
+		else
+			{
+			Print( 39);
+			Get( iRope);
+			Reset( ropeAroundRailing);
+			Reset( ropeAroundWaist);
+			StartMotion( ego);
+			Reset( programControl);
+			}
+		}
+	}
+
+
+if (onFireEscape)
+	{
+	if (Said( look, fire$escape))
+		{
+		Print( 5);
+		}
+
+	if ((Said( enter, window) ||
+		Said( climb, window) ||
+		Said( go, back) ||
+		Said( go, room) ||
+		Said( go, window)))
+		{
+		if (!nearWindow)
+			{
+			Print( 54);
+			}
+		else
+			{
+			if (ropeAroundWaist && ropeAroundRailing)
+				{
+				Print( 57);
+				}
+			else
+				{
+				Set( OK);							
+				newRoom = rmHooker;
+				}
+			}
+		}
+
+	if ((Said( climb, down) ||
+		Said( lower, ladder) ||
+		Said( go, ladder) ||
+		Said( go, down, ladder) ||
+		Said( climb, down, ladder) ||
+		Said( climb, ladder)))
+		{
+		Print( 2);
+		}
+
+	if (Said( look, down))
+		{
+		Print( 52);
+		}
+
+	if ((Said( jump) ||
+		Said( jump, off) ||
+		Said( jump, down) ||
+		Said( jump, bin) ||
+		Said( stand, on, rail) ||
+		Said( jump, off, rail) ||
+		Said( climb, down, rail)))
+		{
+		if (ropeAroundWaist && ropeAroundRailing)
+			{
+			Print( 57);
+			}
+		else
+			{
+			script = 250;
+			Set( scriptDone);
+			message = 23;
+			}
+		}
+	}
+
+
+if (ObjInRoom( iPills, currentRoom) &&
+	Said( look, pills))
+	{
+	if (nearPills)
+		{
+		Print( 13);
+		}
+	else
+		{
+		Print( 51);
+		}
+	}
+
+
+
+[	Misses, give clue.
+
+if ((Said( take, ladder) ||
+	Said( remove, ladder)))
+	{
+	Print( 49);
+	}
+
+if ((Said( throw, rope, rol) ||
+	Said( climb, down, rope, rol) ||
+	Said( climb, rope, rol)))
+	{
+	Print( 37);
+	}
+
+if ((Said( tie, rope) ||
+	Said( use, rope)))
+	{
+	Print( 38);
+	}
+
+if ((Said( look, over, fence) ||
+	Said( look, fence)))
+	{
+	Print( 34);
+	}
+
+if ((Said( climb, fence) ||
+	Said( jump, fence) ||
+	Said( jump, over, fence) ||
+	Said( climb, over, fence)))
+	{
+	Print( 35);
+	}
+
+if ((Said( close, lid, rol) ||
+	Said( climb, on, bin, rol) ||
+	Said( climb, bin, rol) ||
+	Said( climb, on, top, bin, rol) ||
+	Said( lower, lid, rol) ||
+	Said( lower, bin, rol) ||
+	Said( stand, on, bin) ||
+	Said( move, lid, rol) ||
+	Said( close, bin, rol)))
+	{
+	Print( 44);
+	}
+
+if ((Said( look, behind, bin) ||
+	Said( move, bin, rol)))
+	{
+	Print( 45);
+	}
+
+if (Said( tie, rope, anyword))
+	{
+	Print( 46);
+	}
+
+if ((Said( cut, glass, with, ring) ||
+	Said( use, ring, cut, glass) ||
+	Said( hold, rope, rol) ||
+	Said( hold, ladder, rol) ||
+	Said( hit, fence, rol) ||
+	Said( hit, ladder, rol) ||
+	Said( hit, wall, rol)))
+	{
+	Print( 42);
+	}
+
+
+
+
+[*****
+:noInput
+[*****
+
+if (hitWindow)
+	{
+	Reset( hitWindow);
+	Print( 18);
+	PreventInput();
+	StartUpdate( aWindow);
+	EndOfLoop( aWindow, windowDone);
+	}
+
+if (windowDone)
+	{
+	Reset( windowDone);
+	Reset( keepCycling);
+	StopUpdate( aWindow);
+	Set( alleyWindowBroken);
+	AcceptInput();
+	}
+
+if (aSecondPassed)
+	{
+	--yuchTimer;
+	if (yuchTimer == 16)
+		{
+		Print( 30);
+		}
+
+	if (yuchTimer == 11)
+		{
+		Print( 31);
+		AcceptInput();
+		}
+
+	if (yuchTimer == 1 &&
+		currentStatus == IN_DUMPSTER)
+		{
+		Print( 27);
+		}
+	}
+
+CurrentCel( aLadder, work);
+if (work == 4)
+	{
+	Set( scriptDone);
+	}
+
+if (scriptDone)
+	{
+	Reset( scriptDone);
+	++script;
+
+	if (script == 1)				[	Fall down ladder.
+		{
+		currentStatus = FALLING;
+		StartUpdate( aLadder);
+		SetCel( aLadder, 1);
+
+		Set( programControl);
+		PreventInput();
+		Erase( ego);
+		EndOfLoop( aLadder, scriptDone);
+		Sound( sEgoFalling, done);
+		}
+
+	if (script == 2)
+		{
+		SetView( ego, vEgoFalling);
+		SetPriority( ego, 11);
+		Position( ego, 53, 99);
+		Draw( ego);
+		MoveObj( ego, 53, 137, 3, scriptDone);
+		}
+
+	if (script == 3)
+		{
+		SetCel( aLadder, 0);
+		StopUpdate( aLadder);
+		ForceUpdate( aLadder);
+		}
+
+	if (script == 4)
+		{
+		StopMotion( ego);
+		Set( programControl);
+		SetView( ego, vEgoIntoDumpster);
+		SetCel( ego, 1);
+		SetPriority( ego, 15);
+		RepositionTo( ego, 40, 126);
+		CycleTime( ego, three);
+		Set( keepCycling);
+		EndOfLoop( ego, scriptDone);
+		}
+
+	if (script == 5)
+		{
+		Reset( keepCycling);
+		StopCycling( ego);
+		LastCel( ego, work);
+		SetCelV( ego, work);
+		AcceptInput();
+		currentStatus = IN_DUMPSTER;
+		yuchTimer = 5;
+		script = 0;
+		}
+
+
+
+	if (script == 101)				[	Climbing into dumpster
+		{
+		Set( OK);
+		StopMotion( ego);
+		Set( programControl);
+		AcceptInput();
+		currentStatus = IN_DUMPSTER;
+		SetView( ego, vEgoLeavingDumpster);
+		LastCel( ego, work);
+		SetCelV( ego, work);
+		SetPriority( ego, 15);
+		RepositionTo( ego, 45, 145);
+		CycleTime( ego, two);
+		Set( keepCycling);
+		BeginningOfLoop( ego, scriptDone);
+		}
+
+	if (script == 102)
+		{
+		Reset( keepCycling);
+		StopCycling( ego);
+		SetView( ego, vEgoIntoDumpster);
+		RepositionTo( ego, 40, 126);
+		LastCel( ego, work);
+		SetCelV( ego, work);
+		yuchTimer = 5;
+		script = 0;
+		}
+
+
+
+	if (script == 201)				[	Climbing out of dumpster.
+		{
+		Set( programControl);
+		Set( OK);							
+		SetView( ego, vEgoLeavingDumpster);
+		SetCel( ego, 0);
+		SetPriority( ego, 15);
+		Position( ego, 49, 145);
+		CycleTime( ego, three);
+		Set( keepCycling);
+		EndOfLoop( ego, scriptDone);
+		}
+
+	if (script == 202)
+		{
+		Reset( keepCycling);
+		SetView( ego, vEgo);
+		RepositionTo( ego, 52, 148);
+		StartMotion( ego);
+		Reset( programControl);
+		ReleasePriority( ego);
+		StepSize( ego, one);
+		CycleTime( ego, one);
+		currentStatus = NORMAL;
+		script = 0;
+		}
+
+
+	if (script == 251)
+		{
+		Set( programControl);
+		PreventInput();
+		currentStatus = FALLING;
+		SetView( ego, vEgoFalling);
+		SetCel( ego, 3);
+		SetPriority( ego, 15);
+		RepositionTo( ego, 95, 68);
+		ForceUpdate( ego);
+
+		PrintV( message);
+		message = 0;
+		CycleTime( ego, one);
+		MoveObj( ego, 95, 157, 4, scriptDone);
+		Sound( sEgoFalling, done);
+		}
+
+	if (script == 252)
+		{
+		Reset( keepCycling);
+		StopCycling( ego);
+		SetView( ego, vEgoDead);
+		SetCel( ego, 0);
+		RepositionTo( ego, 83, 157);
+		scriptTimer = 5;
+		}
+
+	if (script == 253)
+		{
+		Set( keepCycling);
+		CycleTime( ego, three);
+		EndOfLoop( ego, scriptDone);
+		}
+
+	if (script == 254)
+		{
+		newRoom = rmWorkshop;
+		}
+	}
+
+
+[*****
+:exit							[	test for leaving the room
+[*****
+
+if (posn( ego, 0, 135, 3, 136))	{edgeEgoHit = LEFT;}
+if (edgeEgoHit == LEFT)			{newRoom = rmOutsideBar;}
+

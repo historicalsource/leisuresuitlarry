@@ -1,0 +1,65 @@
+[messages for room 37 -- rmSlots
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+
+
+%message	1
+"\n
+Press F4 to decrease bet.\n\n
+Press F6 to increase bet.\n\n
+Press F8 to pull handle.\n
+"
+
+%message	2
+"\n
+           RESULTS           PAYS\n
+|--------------------------------|\n
+| Cherry |        |        |  1  |\n
+| Cherry | Cherry |        |  2  |\n
+| Cherry | Cherry | Cherry |  4  |\n
+|--------|--------|--------|-----|\n
+| Orange | Orange |        |  2  |\n
+| Orange | Orange | Orange |  4  |\n
+|--------|--------|--------|-----|\n
+| Seven  | Seven  |        |  3  |\n
+| Seven  | Seven  | Seven  |  5  |\n
+|--------|--------|--------|-----|\n
+| Bar    | Bar    | Bar    |  7  |\n
+|--------------------------------|\n
+"
+
+%message	3
+"You insert zero dollars, and pretend to pull the handle."
+
+%message	4
+"You win zero dollars!"
+
+%message	5
+"Is this your idea of a good time?"
+
+%message	6
+"This machine has a $20.00 limit."
+
+%message	7
+"You can't bet more than you have."
+
+%message	8
+"It's an electronic slot machine.
+ When you tire of playing, just type \"stop.\""
+
+%message	9
+""
+
+%message	10
+""
+
+%message	11
+"Don't be in such a hurry!"
+
+%message	12
+"Slow down!"
+
+%message	13
+"What are you? A \"Type-A\" personality?"
+

@@ -1,0 +1,266 @@
+[logics for room 52 -- lgc.debug
+[	"Leisure Suit Larry in the Land of the Lounge Lizards"
+[	by Al Lowe
+
+%include	"gamedefs.h"
+%include	"contrlrs.h"
+%include	"colors.h"
+
+
+
+[	if (Said( blow$me, boob, hump, fag))
+[		{
+[		Call( lgcID);
+[		}
+
+
+%message	1	"New room:"
+%message	2	"X coordinate:"
+%message	3	"Y coordinate:"
+%message	4	"Object number:"
+%message	5	"Flag number:"
+%message	6	"New value:"
+%message	7	"You gottum, Larry."
+%message	8	"Variable number:"
+%message	9	"Variable %v45 = %v46"
+%message	10	"Flag %v45 set"
+%message	11	"Flag %v45 not set"
+%message	12	"New priority:"
+%message	13	"Object %v46 is in room %v45."
+%message	14	"%v45|3/%v46|3"
+%message	15	"Room %v0|3"
+%message	16	"%v45|2  %o45"
+%message	17	"Number  Name of Object"
+%message	18	"%v8 memory pages left."
+%message	19	""
+%message	20	"Unknown word:  \""
+[	%message	21	"%m20%w1\""
+[	%message	22	"%m20%w2\""
+[	%message	23	"%m20%w3\""
+[	%message	24	"%m20%w4\""
+[	%message	25	"%m20%w5\""
+[	%message	26	"%m20%w6\""
+[	%message	27	"%m20%w7\""
+[	%message	28	"%m20%w8\""
+%message	29	"H"
+%message	30	" "
+%message	31	""
+
+
+
+if (initLog && xyOn && monitorType != MONO)
+	{
+	SetTextAttribute( BROWN, BG_COLOR);
+	ClearTextRect( 24, 26, 24, 34, BG_COLOR);
+	Display( 24, 26, 15);
+	SetTextAttribute( TEXT_COLOR, BG_COLOR);
+[		if (memoryCheck)
+[			{
+[			Log( 18);
+[			}
+	}
+
+if (Controller( cObjInfo))
+	{
+	GetNum( 4, debug0);
+	if (debug0 > 15)
+		{
+		debug0 = 15;
+		}
+	ObjStatusV( debug0);
+	}
+
+if ((Controller( cShowEgo) ||
+	Said( where)))
+	{
+	debug0 = 0;
+	ObjStatusV( debug0);
+	}
+
+if (Controller( cShowMem))
+	{
+	ShowMem();
+[		Log( 18);
+	}
+
+if ((Controller( cShowPriority) ||
+	Said( show, priority)))
+	{
+	ShowPriScreen();
+	}
+
+if (monitorType != MONO)
+	{
+	if (handsOff)
+		{
+		SetTextAttribute( BROWN, BG_COLOR);
+		Display( 24, 35, 29);
+		SetTextAttribute( TEXT_COLOR, BG_COLOR);
+		}
+	else
+		{
+		Display( 24, 35, 30);
+		}
+	}
+
+
+if ((Controller( cInvNumbers) ||
+	Said( object, number)))
+	{
+	lastChar = 0;
+	SetTextAttribute( BROWN, WHITE);
+	TextScreen( );
+	Display( 2, 6, 17);
+	debug0 = 1;					[	Object number counter.
+	x = 10;
+	y = 4;
+	message = 16;
+
+	:mrLooper2;
+	DisplayV( y, x, message);
+	++debug0;
+	++y;
+	if (!debug0 > SIZE_OF_INVENTORY)
+		{
+		goto mrLooper2;
+		}
+
+	:checkKb2;
+	if (!HaveKey( ))
+		{
+		goto	checkKb2;
+		}
+	SetTextAttribute( TEXT_COLOR, BG_COLOR);
+	Graphics( );
+	}
+
+
+if (Said( object, room))
+	{
+	GetNum( 4, debug1);
+	GetRoomV( debug1, debug0);
+	Print( 13);
+	}
+
+if (Said( set, priority))
+	{
+	GetNum( 12, debug1);
+	SetPriorityV( ego, debug1);
+	}
+
+if (Said( release, priority))
+	{
+	ReleasePriority( ego);
+	}
+
+if (said( tp))
+	{
+	GetNum( 1, debug0);
+	NewRoomV( debug0);
+	}
+
+if (said( position))
+	{
+	GetNum( 2, debug0);
+	GetNum( 3, debug1);
+	RepositionToV( ego, debug0, debug1);
+	}
+
+if (monitorType != MONO &&
+    (Said( show, position) ||
+	Said( room, number) ||
+	Said( room) ||
+	Controller( cXY) ||
+	Said( xy)))
+	{
+	Toggle( xyOn);
+	SetTextAttribute( BROWN, BG_COLOR);
+	Display( 24, 26, 15);
+	SetTextAttribute( TEXT_COLOR, BG_COLOR);
+	}
+
+if (monitorType != MONO && xyOn)
+	{
+	debug0 = egoX;
+	debug1 = egoY;
+	SetTextAttribute( BROWN, BG_COLOR);
+	Display( 24, 16, 14);
+	SetTextAttribute( TEXT_COLOR, BG_COLOR);
+	}
+
+if ((Said( gimme, gimme) ||
+	Controller( cGimme)))
+	{
+	Display( 0, 0, 7);
+	debug0 = 0;
+	debug1 = INVENTORY;
+	
+	:mrLooper3;
+	++debug0;
+	if (!debug0 > SIZE_OF_INVENTORY)
+		{
+		PutV( debug0, debug1);
+		goto mrLooper3;
+		}
+	}
+
+if (Said( get, object))
+	{
+	GetNum( 4, debug0);
+	GetV( debug0);
+	}
+
+if (Said( show, flag))
+	{
+	GetNum( 5, debug0);
+	if (IssetV( debug0))
+		{
+		Print( 10);
+		}
+	else {
+		Print( 11);
+		}
+	}
+
+if (Said( set, flag))
+	{
+	GetNum( 5, debug0);
+	SetV( debug0);
+	}
+
+if (Said( Reset, flag))
+	{
+	GetNum( 5, debug0);
+	ResetV( debug0);
+	}
+
+if (Said( show, var))
+     {
+     GetNum( 8, debug0);
+	debug1 =@ debug0;
+	Print( 9);
+     }
+
+if (Said( set, var))
+     {
+     GetNum( 8, debug0);
+     GetNum( 6, debug1);
+     debug0 @= debug1;
+     }
+
+[	if (unknownWord)
+[		{
+[		if (unknownWord == 1)			{Log( 21);}
+[		if (unknownWord == 2)			{Log( 22);}
+[		if (unknownWord == 3)			{Log( 23);}
+[		if (unknownWord == 4)			{Log( 24);}
+[		if (unknownWord == 5)			{Log( 25);}
+[		if (unknownWord == 6)			{Log( 26);}
+[		if (unknownWord == 7)			{Log( 27);}
+[		if (unknownWord > 7)			{Log( 28);}
+[		}
+
+
+[*****
+:exit
+[*****

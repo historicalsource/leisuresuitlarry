@@ -18,3 +18,4 @@ The protagonist Larry Laffer is a 38-year-old (40-year-old in the 1991 remake) "
 * [Complete Video Walkthrough of Leisure Suit Larry](https://www.youtube.com/watch?v=9aPVnZTJ_mY)
 * [Adventure Game Interpreter Wikipedia Entry](https://en.wikipedia.org/wiki/Adventure_Game_Interpreter)
 * [ScummVM Overview of AGI Games](https://wiki.scummvm.org/index.php/AGI)
+* [Feel Like Leisure Suit Larry, by YTCracker Introducing Neals (Music Videp)](https://www.youtube.com/watch?v=b2dvfmD9DvA)
